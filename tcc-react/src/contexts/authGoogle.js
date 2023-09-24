@@ -13,11 +13,11 @@ export const AuthGoogleProvider = ({ children }) => {
             const sessionToken = sessionStorage.getItem("@AuthFirebase:token");
             const sessionUser = sessionStorage.getItem("@AuthFirebase:user");
             if(sessionToken && sessionUser){
-                setUser(sessionUser);
+                setUser(JSON.parse(sessionUser)); // Parse do JSON aqui
             }
         };
         loadStorageAuth();
-    });
+    }, []);
     const signInGoogle = () => {
         signInWithPopup(auth, provider)
             .then((result) => {

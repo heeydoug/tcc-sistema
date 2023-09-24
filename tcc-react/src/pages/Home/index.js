@@ -1,6 +1,10 @@
 import {useContext, useEffect} from "react";
 import {AuthGoogleContext} from "../../contexts/authGoogle";
 import { gapi } from 'gapi-script';
+import Box from '@mui/material/Box';
+import {Container} from "@mui/material";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
 const clientId = "308424476532-e40blk46kh67iussdbce2655m9lnacoq.apps.googleusercontent.com";
 const apiKey = "API_KEY";
 const scopes = "https://www.googleapis.com/auth/drive";
@@ -89,24 +93,24 @@ export const Home = () => {
   }
 
   const { user, signOut } = useContext(AuthGoogleContext)
-  let userLogged = JSON.parse(user)
-  console.log(userLogged)
+  const userLogged = user;
   return (
-      <div>
-          <h1>Home</h1>
-          <h1>Bem vindo, {userLogged.displayName}</h1>
+      <Container>
+        <Box height={30} />
+        <h1>Home - Bem vindo, {userLogged.displayName}</h1>
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <Typography paragraph>
+            Oie isso apenas eh um teste da home
+          </Typography>
           <button className="btn btn-primary btn-lg mt-3" onClick={() => createFile('Teste 2: Firebase -')}>
-              Criar Documento
+            Criar Documento
           </button>
-
-        <div style={{ textAlign: "center" }}>
           <h1>Informações do Usuário</h1>
           <img className="profile" src={userLogged.photoURL} alt="Profile" />
           <p>Nome: {userLogged.displayName}</p>
           <p>Email: {userLogged.email}</p>
-        </div>
-
-        <button onClick={() => signOut()}>Sair</button>
-      </div>
+          <button onClick={() => signOut()}>Sair</button>
+        </Box>
+      </Container>
   )
 }
