@@ -13,7 +13,7 @@ export const AuthGoogleProvider = ({ children }) => {
             const sessionToken = sessionStorage.getItem("@AuthFirebase:token");
             const sessionUser = sessionStorage.getItem("@AuthFirebase:user");
             if(sessionToken && sessionUser){
-                setUser(JSON.parse(sessionUser)); // Parse do JSON aqui
+                setUser(JSON.parse(sessionUser));
             }
         };
         loadStorageAuth();
