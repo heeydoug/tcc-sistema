@@ -6,6 +6,9 @@ import {Fragment} from "react";
 import {Usuarios} from "../pages/Usuários";
 import Sidenav from "../components/sidenav";
 import Navbar from "../components/navbar";
+import {Redatores} from "../pages/Redatores";
+import {Revisores} from "../pages/Revisores";
+import {Clientes} from "../pages/Clientes";
 
 
 export const AppRoutes = () => {
@@ -20,6 +23,9 @@ export const AppRoutes = () => {
                         <Route path="/home" element={<Home />} />
                     </Route>
                     <Route path="/usuarios" element={<Usuarios />} />
+                    <Route path="/redatores" element={<Redatores />} />
+                    <Route path="/revisores" element={<Revisores />} />
+                    <Route path="/clientes" element={<Clientes />} />
                 </Routes>
             </Fragment>
         </BrowserRouter>

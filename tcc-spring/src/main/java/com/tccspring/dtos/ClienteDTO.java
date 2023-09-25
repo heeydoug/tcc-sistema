@@ -9,6 +9,8 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class ClienteDTO {
+
+    private Long id;
     @NotBlank(message = "O nome do cliente é obrigatório.")
     private String nome;
 
@@ -23,6 +25,7 @@ public class ClienteDTO {
 
     @NotNull(message = "O status do cliente é obrigatório.")
     private Boolean ativo;
+
 
     // Método para converter o DTO em uma entidade Cliente
     public Cliente toCliente() {

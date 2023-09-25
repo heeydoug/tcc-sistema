@@ -19,6 +19,7 @@ import { useAppStore } from "../configs/appStore";
 import {useContext} from "react";
 import {AuthGoogleContext} from "../contexts/authGoogle";
 import {Avatar} from "@mui/material";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const AppBar = styled(MuiAppBar, {
 })(({ theme }) => ({
@@ -69,7 +70,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function Navbar() {
 
     // Usuário logado no sistema
-    const { user } = useContext(AuthGoogleContext)
+    const { user, signOut } = useContext(AuthGoogleContext);
     const userLogged = user;
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -210,20 +211,18 @@ export default function Navbar() {
                     </Search>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={4} color="error">
-                                <MailIcon />
-                            </Badge>
+                        <IconButton size="large" color="inherit" onClick={() => signOut()}>
+                            <LogoutIcon />
                         </IconButton>
-                        <IconButton
-                            size="large"
-                            aria-label="show 17 new notifications"
-                            color="inherit"
-                        >
-                            <Badge badgeContent={17} color="error">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
+                        {/*<IconButton*/}
+                        {/*    size="large"*/}
+                        {/*    aria-label="show 17 new notifications"*/}
+                        {/*    color="inherit"*/}
+                        {/*>*/}
+                        {/*    <Badge badgeContent={17} color="error">*/}
+                        {/*        <NotificationsIcon />*/}
+                        {/*    </Badge>*/}
+                        {/*</IconButton>*/}
                         <IconButton
                             size="large"
                             edge="end"

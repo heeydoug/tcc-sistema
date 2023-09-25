@@ -1,15 +1,21 @@
-import {useContext, useEffect} from "react";
-import {AuthGoogleContext} from "../../contexts/authGoogle";
+import React, { useContext, useEffect } from "react";
+import { AuthGoogleContext } from "../../contexts/authGoogle";
 import { gapi } from 'gapi-script';
-import Box from '@mui/material/Box';
-import {Container} from "@mui/material";
+import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import * as React from "react";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Avatar from "@mui/material/Avatar";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Paper from "@mui/material/Paper"; // Importe o Paper
+
 const clientId = "308424476532-e40blk46kh67iussdbce2655m9lnacoq.apps.googleusercontent.com";
 const apiKey = "API_KEY";
 const scopes = "https://www.googleapis.com/auth/drive";
-export const Home = () => {
 
+export const Home = () => {
   useEffect(() => {
     function start() {
       gapi.client.init({
@@ -20,7 +26,7 @@ export const Home = () => {
     }
     gapi.load('client:auth2', start);
   }, []);
-//
+
   function zeroFill(i) {
     return (i < 10 ? '0' : '') + i;
   }
@@ -52,9 +58,8 @@ export const Home = () => {
       console.log(val);
       console.log(val.documentId);
 
-
-      const folderName = 'Teste TCC - Dougla e Clarisse com o Firebase agora'; // Nome da pasta que deseja criar
-      const parentFolderId = '1EJrk68WbOvnuCEYN6qkQ1WlmWk2CksVr'; // ID da pasta pai onde deseja criar a nova pasta
+      const folderName = 'Teste TCC - Douglas e Clarisse com o Firebase agora';
+      const parentFolderId = '1EJrk68WbOvnuCEYN6qkQ1WlmWk2CksVr';
 
       const folderMetadata = {
         name: folderName,
@@ -62,19 +67,19 @@ export const Home = () => {
         parents: [parentFolderId]
       };
 
-      gapi.client.load('drive', 'v3', function() {
+      gapi.client.load('drive', 'v3', function () {
         gapi.client.drive.files.create({
           resource: folderMetadata,
           fields: 'id'
-        }).then(function(response) {
+        }).then(function (response) {
           const folderId = response.result.id;
           console.log('Pasta criada com sucesso. ID da pasta:', folderId);
           return folderId;
 
-        }).then(function(folderId){
+        }).then(function (folderId) {
 
-          const fileId = val.documentId; // ID do documento criado
-          const folderIdN = folderId; // ID da pasta em que deseja associar o documento
+          const fileId = val.documentId;
+          const folderIdN = folderId;
 
           const updateRequest = gapi.client.drive.files.update({
             fileId: fileId,
@@ -92,25 +97,45 @@ export const Home = () => {
     });
   }
 
-  const { user, signOut } = useContext(AuthGoogleContext)
+  const { user, signOut } = useContext(AuthGoogleContext);
   const userLogged = user;
+
   return (
       <Container>
-        <Box height={30} />
-        <h1>Home - Bem vindo, {userLogged.displayName}</h1>
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <Typography paragraph>
-            Oie isso apenas eh um teste da home
-          </Typography>
-          <button className="btn btn-primary btn-lg mt-3" onClick={() => createFile('Teste 2: Firebase -')}>
-            Criar Documento
-          </button>
-          <h1>Informações do Usuário</h1>
-          <img className="profile" src={userLogged.photoURL} alt="Profile" />
-          <p>Nome: {userLogged.displayName}</p>
-          <p>Email: {userLogged.email}</p>
-          <button onClick={() => signOut()}>Sair</button>
-        </Box>
+        <Box height={70} />
+        <Paper elevation={3}> {/* Use o Paper para definir o fundo cinza claro */}
+          <Card variant="outlined" sx={{ p: 4 }}>
+            <CardContent>
+              <Box mt={2}>
+                <Typography variant="h3" component="div" gutterBottom fontWeight="bold">
+                  Bem vindo, {userLogged.displayName}!
+                </Typography>
+                <hr />
+                <Typography variant="body1" paragraph>
+                  E essa é sua área administrativa, utilize um dos menus ou botões abaixo para navegar pelo sistema.
+                </Typography>
+                <Button variant="contained" color="primary" size="large" onClick={() => createFile('Teste 2: Firebase -')}>
+                  Criar Documento
+                </Button>
+              </Box>
+              <Box mt={2}>
+                <Typography variant="h5">Informações do Usuário</Typography>
+                <Grid container spacing={2}>
+                  <Grid item>
+                    <Avatar alt="Profile" src={userLogged.photoURL} />
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="subtitle1">Nome: {userLogged.displayName}</Typography>
+                    <Typography variant="subtitle1">Email: {userLogged.email}</Typography>
+                  </Grid>
+                </Grid>
+                <Button variant="outlined" color="secondary" onClick={() => signOut()}>Sair</Button>
+              </Box>
+            </CardContent>
+          </Card>
+        </Paper>
       </Container>
   )
 }
+
+

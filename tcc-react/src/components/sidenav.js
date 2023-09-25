@@ -13,11 +13,16 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PersonIcon from '@mui/icons-material/Person';
+import Person2Icon from '@mui/icons-material/Person2';
+import Person3Icon from '@mui/icons-material/Person3';
+import Person4Icon from '@mui/icons-material/Person4';
 import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate } from "react-router-dom";
 import {useContext} from "react";
 import {AuthGoogleContext} from "../contexts/authGoogle";
 import {useAppStore} from "../configs/appStore";
+import {Person4} from "@mui/icons-material";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const drawerWidth = 240;
 
@@ -74,7 +79,7 @@ export default function MiniDrawer() {
     const navigate = useNavigate();
     const open = useAppStore((state) => state.dopen);
 
-    const { user } = useContext(AuthGoogleContext)
+    const { user, signOut } = useContext(AuthGoogleContext);
 
 
     // Verifique se o usuário está logado
@@ -135,6 +140,90 @@ export default function MiniDrawer() {
                                 <PersonIcon />
                             </ListItemIcon>
                             <ListItemText primary="Usuários" sx={{ opacity: open ? 1 : 0 }} />
+                        </ListItemButton>
+                    </ListItem>
+                    {/* Clientes */}
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={ () => {navigate("/clientes")}}>
+                        <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <Person2Icon />
+                            </ListItemIcon>
+                            <ListItemText primary="Clientes" sx={{ opacity: open ? 1 : 0 }} />
+                        </ListItemButton>
+                    </ListItem>
+                    {/* Redatores */}
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={ () => {navigate("/redatores")}}>
+                        <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <Person3Icon />
+                            </ListItemIcon>
+                            <ListItemText primary="Redatores" sx={{ opacity: open ? 1 : 0 }} />
+                        </ListItemButton>
+                    </ListItem>
+                    {/* Revisores */}
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={ () => {navigate("/revisores")}}>
+                        <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <Person4Icon />
+                            </ListItemIcon>
+                            <ListItemText primary="Revisores" sx={{ opacity: open ? 1 : 0 }} />
+                        </ListItemButton>
+                    </ListItem>
+                    {/* Logout */}
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => signOut()}>
+                        <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <LogoutIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
                         </ListItemButton>
                     </ListItem>
                 </List>
