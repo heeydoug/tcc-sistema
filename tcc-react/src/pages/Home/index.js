@@ -9,7 +9,7 @@ import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import Paper from "@mui/material/Paper"; // Importe o Paper
+import Paper from "@mui/material/Paper";
 
 const clientId = "308424476532-e40blk46kh67iussdbce2655m9lnacoq.apps.googleusercontent.com";
 const apiKey = "API_KEY";
@@ -50,10 +50,8 @@ export const Home = () => {
     fetch('https://docs.googleapis.com/v1/documents?title=' + fileName, {
       method: "POST",
       headers: new Headers({ 'Authorization': 'Bearer ' + accessToken })
-
     }).then((res) => {
       return res.json();
-
     }).then(function (val) {
       console.log(val);
       console.log(val.documentId);
@@ -75,22 +73,17 @@ export const Home = () => {
           const folderId = response.result.id;
           console.log('Pasta criada com sucesso. ID da pasta:', folderId);
           return folderId;
-
         }).then(function (folderId) {
-
           const fileId = val.documentId;
           const folderIdN = folderId;
-
           const updateRequest = gapi.client.drive.files.update({
             fileId: fileId,
             addParents: folderIdN,
             fields: 'id, parents',
           });
-
           updateRequest.execute(function (response) {
             console.log('Documento atualizado:', response);
           });
-
         });
       });
       window.open("https://docs.google.com/document/d/" + val.documentId + "/edit", "_blank");
@@ -103,39 +96,41 @@ export const Home = () => {
   return (
       <Container>
         <Box height={70} />
-        <Paper elevation={3}> {/* Use o Paper para definir o fundo cinza claro */}
-          <Card variant="outlined" sx={{ p: 4 }}>
-            <CardContent>
-              <Box mt={2}>
-                <Typography variant="h3" component="div" gutterBottom fontWeight="bold">
-                  Bem vindo, {userLogged.displayName}!
-                </Typography>
-                <hr />
-                <Typography variant="body1" paragraph>
-                  E essa é sua área administrativa, utilize um dos menus ou botões abaixo para navegar pelo sistema.
-                </Typography>
-                <Button variant="contained" color="primary" size="large" onClick={() => createFile('Teste 2: Firebase -')}>
-                  Criar Documento
-                </Button>
-              </Box>
-              <Box mt={2}>
-                <Typography variant="h5">Informações do Usuário</Typography>
-                <Grid container spacing={2}>
-                  <Grid item>
-                    <Avatar alt="Profile" src={userLogged.photoURL} />
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="subtitle1">Nome: {userLogged.displayName}</Typography>
-                    <Typography variant="subtitle1">Email: {userLogged.email}</Typography>
-                  </Grid>
-                </Grid>
-                <Button variant="outlined" color="secondary" onClick={() => signOut()}>Sair</Button>
-              </Box>
-            </CardContent>
-          </Card>
-        </Paper>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={12}>
+            <Paper elevation={3}>
+              <Card variant="outlined" sx={{ p: 4 }}>
+                <CardContent>
+                  <Box mt={2}>
+                    <Typography variant="h3" component="div" gutterBottom fontWeight="bold">
+                      Bem vindo, {userLogged.displayName}!
+                    </Typography>
+                    <hr />
+                    <Typography variant="body1" paragraph>
+                      E essa é sua área administrativa, utilize um dos menus ou botões abaixo para navegar pelo sistema.
+                    </Typography>
+                    <Button variant="contained" color="primary" size="large" onClick={() => createFile('Teste 2: Firebase -')}>
+                      Criar Documento
+                    </Button>
+                  </Box>
+                  <Box mt={2}>
+                    <Typography variant="h5">Informações do Usuário</Typography>
+                    <Grid container spacing={2}>
+                      <Grid item>
+                        <Avatar alt="Profile" src={userLogged.photoURL} />
+                      </Grid>
+                      <Grid item>
+                        <Typography variant="subtitle1">Nome: {userLogged.displayName}</Typography>
+                        <Typography variant="subtitle1">Email: {userLogged.email}</Typography>
+                      </Grid>
+                    </Grid>
+                    <Button variant="outlined" color="secondary" onClick={() => signOut()}>Sair</Button>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Paper>
+          </Grid>
+        </Grid>
       </Container>
-  )
+  );
 }
-
-
