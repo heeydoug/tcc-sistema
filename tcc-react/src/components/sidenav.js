@@ -17,11 +17,11 @@ import Person2Icon from '@mui/icons-material/Person2';
 import Person3Icon from '@mui/icons-material/Person3';
 import Person4Icon from '@mui/icons-material/Person4';
 import HomeIcon from '@mui/icons-material/Home';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import { useNavigate } from "react-router-dom";
 import {useContext} from "react";
 import {AuthGoogleContext} from "../contexts/authGoogle";
 import {useAppStore} from "../configs/appStore";
-import {Person4} from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 const drawerWidth = 240;
@@ -203,6 +203,27 @@ export default function MiniDrawer() {
                                 <Person4Icon />
                             </ListItemIcon>
                             <ListItemText primary="Revisores" sx={{ opacity: open ? 1 : 0 }} />
+                        </ListItemButton>
+                    </ListItem>
+                    {/* Administradores */}
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={ () => {navigate("/administradores")}}>
+                        <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <SupervisorAccountIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Administradores" sx={{ opacity: open ? 1 : 0 }} />
                         </ListItemButton>
                     </ListItem>
                     {/* Logout */}

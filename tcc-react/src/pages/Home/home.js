@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from "react";
-import { AuthGoogleContext } from "../../contexts/authGoogle";
-import { gapi } from 'gapi-script';
+import React, {useContext, useEffect, useState} from "react";
+import {AuthGoogleContext} from "../../contexts/authGoogle";
+import {gapi} from 'gapi-script';
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -10,12 +10,17 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Paper from "@mui/material/Paper";
+import Skeleton from '@mui/material/Skeleton';
+
+import "../../components/skeleton.css";
 
 const clientId = "308424476532-e40blk46kh67iussdbce2655m9lnacoq.apps.googleusercontent.com";
 const apiKey = "API_KEY";
 const scopes = "https://www.googleapis.com/auth/drive";
 
 export const Home = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     function start() {
       gapi.client.init({
@@ -25,6 +30,11 @@ export const Home = () => {
       });
     }
     gapi.load('client:auth2', start);
+
+    // Simule um carregamento de dados
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
   }, []);
 
   function zeroFill(i) {
@@ -102,30 +112,42 @@ export const Home = () => {
               <Card variant="outlined" sx={{ p: 4 }}>
                 <CardContent>
                   <Box mt={2}>
-                    <Typography variant="h3" component="div" gutterBottom fontWeight="bold">
-                      Bem vindo, {userLogged.displayName}!
-                    </Typography>
-                    <hr />
-                    <Typography variant="body1" paragraph>
-                      E essa é sua área administrativa, utilize um dos menus ou botões abaixo para navegar pelo sistema.
-                    </Typography>
-                    <Button variant="contained" color="primary" size="large" onClick={() => createFile('Teste 2: Firebase -')}>
-                      Criar Documento
-                    </Button>
+                    {isLoading ? (
+                        <div>
+                          <Skeleton animation="wave" variant="rectangular" height={100} width="100%" />
+                          <Skeleton animation="wave" variant="text" height={40} width="80%" />
+                          <Skeleton animation="wave" variant="text" height={40} width="60%" />
+                        </div>
+                    ) : (
+                        <>
+                          <Typography variant="h3" component="div" gutterBottom fontWeight="bold">
+                            Bem vindo, {userLogged.displayName}!
+                          </Typography>
+                          <hr />
+                          <Typography variant="body1" paragraph>
+                            E essa é sua área administrativa, utilize um dos menus ou botões abaixo para navegar pelo sistema.
+                          </Typography>
+                          <Button variant="contained" color="primary" size="large" onClick={() => createFile('Teste 2: Firebase -')}>
+                            Criar Documento
+                          </Button>
+
+                          <Box mt={2}>
+                            <Typography variant="h5">Informações do Usuário</Typography>
+                            <Grid container spacing={2}>
+                              <Grid item>
+                                <Avatar alt="Profile" src={userLogged.photoURL} />
+                              </Grid>
+                              <Grid item>
+                                <Typography variant="subtitle1">Nome: {userLogged.displayName}</Typography>
+                                <Typography variant="subtitle1">Email: {userLogged.email}</Typography>
+                              </Grid>
+                            </Grid>
+                          </Box>
+
+                        </>
+                    )}
                   </Box>
-                  <Box mt={2}>
-                    <Typography variant="h5">Informações do Usuário</Typography>
-                    <Grid container spacing={2}>
-                      <Grid item>
-                        <Avatar alt="Profile" src={userLogged.photoURL} />
-                      </Grid>
-                      <Grid item>
-                        <Typography variant="subtitle1">Nome: {userLogged.displayName}</Typography>
-                        <Typography variant="subtitle1">Email: {userLogged.email}</Typography>
-                      </Grid>
-                    </Grid>
-                    <Button variant="outlined" color="secondary" onClick={() => signOut()}>Sair</Button>
-                  </Box>
+
                 </CardContent>
               </Card>
             </Paper>
@@ -134,3 +156,5 @@ export const Home = () => {
       </Container>
   );
 }
+
+export default Home;

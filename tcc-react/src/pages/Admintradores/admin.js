@@ -14,13 +14,13 @@ import {toast, ToastContainer} from "react-toastify";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import {DataGrid, ptBR} from "@mui/x-data-grid";
 import {useEffect, useState} from "react";
-import {deleteUser, getReviewer, getUsers, updateUser} from "../../actions/usuarios";
+import {deleteUser, getAdmin, updateUser} from "../../actions/usuarios";
 import Avatar from "@mui/material/Avatar";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditarRevisor from "./editarRevisor";
+import EditarAdmin from "./editarAdmin";
 
-export const Revisores = () => {
+export const Administrador = () => {
 
     const theme = createTheme(
         {
@@ -33,15 +33,15 @@ export const Revisores = () => {
         ptBR
     );
 
-    const [revisores, setRevisores] = useState([]);
+    const [admins, setAdmines] = useState([]);
 
     const [editDialogOpen, setEditDialogOpen] = useState(false);
     const [editingUserId, setEditingUserId] = useState(null);
 
     useEffect(() => {
-        getReviewer()
-            .then(data => setRevisores(data))
-            .catch(error => console.error('Erro ao buscar dados de revisores:', error));
+        getAdmin()
+            .then(data => setAdmines(data))
+            .catch(error => console.error('Erro ao buscar dados de admins:', error));
     }, []);
 
     // Colunas da tabela
@@ -102,7 +102,6 @@ export const Revisores = () => {
         },
     ];
 
-    // Função para excluir o revisor
     const [dialogOpen, setDialogOpen] = useState(false);
     const [userIdToDelete, setUserIdToDelete] = useState(null);
 
@@ -120,18 +119,18 @@ export const Revisores = () => {
         if (userIdToDelete) {
             deleteUser(userIdToDelete)
                 .then(() => {
-                    getReviewer()
+                    getAdmin()
                         .then(data => {
-                            setRevisores(data)
-                            toast.success('Revisor excluído com sucesso!');
+                            setAdmines(data)
+                            toast.success('Admin excluído com sucesso!');
                         })
-                        .catch(error => console.error('Erro ao buscar dados de revisores:', error));
+                        .catch(error => console.error('Erro ao buscar dados de admins:', error));
 
                     handleDialogClose();
                 })
                 .catch(error => {
-                    console.error('Erro ao excluir revisor:', error)
-                    toast.error('Erro ao excluir revisor.');
+                    console.error('Erro ao excluir Admin:', error)
+                    toast.error('Erro ao excluir administrador.');
                 });
         }
     };
@@ -150,15 +149,15 @@ export const Revisores = () => {
         if(updatedUser) {
             updateUser(updatedUser)
                 .then(() => {
-                    console.log("Revisor atualizado:", updatedUser);
-                    getReviewer()
+                    console.log("Admin atualizado:", updatedUser);
+                    getAdmin()
                         .then((data) => {
-                            setRevisores(data);
-                            toast.success("Revisor atualizado com sucesso!");
+                            setAdmines(data);
+                            toast.success("Administrador atualizado com sucesso!");
                         })
                         .catch((error) => {
-                            console.error("Erro ao buscar dados de revisores:", error);
-                            toast.error("Erro ao atualizar revisor.");
+                            console.error("Erro ao buscar dados de admins:", error);
+                            toast.error("Erro ao atualizar admins.");
                         });
                     handleCloseEditDialog();
                 })
@@ -166,13 +165,14 @@ export const Revisores = () => {
     }
 
     const handleRefresh = () => {
-        getReviewer()
+        getAdmin()
             .then(data => {
-                setRevisores(data)
-                toast.success("Revisores atualizados com sucesso!");
+                setAdmines(data)
+                toast.success("Administradores atualizados com sucesso!");
             })
-            .catch(error => console.error('Erro ao buscar dados de revisores:', error));
+            .catch(error => console.error('Erro ao buscar dados de admins:', error));
     };
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -191,7 +191,7 @@ export const Revisores = () => {
                         fontWeight="bold"
                         sx={{ textAlign: 'center', mt: 3, mb: 3 }}
                     >
-                        Gerenciar Revisores
+                        Gerenciar Administradores
                     </Typography>
                     {/* Botão de Atualização */}
                     <div style={{ textAlign: 'right', marginBottom: '10px' }}>
@@ -201,7 +201,7 @@ export const Revisores = () => {
                     </div>
                     <div style={{ height: 500, width: '100%' }}>
                         <DataGrid
-                            rows={revisores}
+                            rows={admins}
                             columns={columns}
                             pageSize={10}
                         />
@@ -219,7 +219,7 @@ export const Revisores = () => {
                 <DialogTitle id="alert-dialog-title">{"Confirmar Exclusão"}</DialogTitle>
                 <DialogContent>
                     <Typography variant="body1">
-                        Tem certeza de que deseja excluir este usuário?
+                        Tem certeza de que deseja excluir este administrador?
                     </Typography>
                 </DialogContent>
                 <DialogActions>
@@ -232,13 +232,12 @@ export const Revisores = () => {
                 </DialogActions>
             </Dialog>
 
-            <EditarRevisor
+            <EditarAdmin
                 open={editDialogOpen}
                 onClose={handleCloseEditDialog}
                 onSave={handleSaveUser}
-                usuario={revisores.find((user) => user.id === editingUserId)}
+                usuario={admins.find((user) => user.id === editingUserId)}
             />
-
         </ThemeProvider>
     )
 }

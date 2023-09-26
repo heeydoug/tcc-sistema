@@ -8,7 +8,7 @@ import * as React from "react";
 import '@fontsource/roboto';
 import '@fontsource/roboto/300.css';
 import { DataGrid, ptBR } from '@mui/x-data-grid';
-import {getUsers, deleteUser, updateUser} from "../../actions/usuarios"; // Certifique-se de ter uma função `deleteUser` que exclui o usuário
+import {getUsers, deleteUser, updateUser} from "../../actions/usuarios";
 import Avatar from "@mui/material/Avatar";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -16,6 +16,7 @@ import { Paper } from "@mui/material";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import EditarUsuario from "../Usuários/editarUsuario";
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 
 import "./usuarios.css";
@@ -100,7 +101,6 @@ export const Usuarios = () => {
                 </div>
             ),
         },
-
     ];
 
     // Função para excluir o usuário
@@ -149,27 +149,27 @@ export const Usuarios = () => {
         setEditDialogOpen(false);
     };
 
-    const handleUpdate = () => {
-        if (userIdToDelete) {
-            // Chame a função deleteUser para excluir o usuário
-            deleteUser(userIdToDelete)
-                .then(() => {
-                    // Atualize a lista de usuários após a exclusão
-                    getUsers()
-                        .then(data => {
-                            setUsuarios(data)
-                            toast.success('Usuário excluído com sucesso!');
-                        })
-                        .catch(error => console.error('Erro ao buscar dados de usuários:', error));
-
-                    handleDialogClose();
-                })
-                .catch(error => {
-                    console.error('Erro ao excluir usuário:', error)
-                    toast.error('Erro ao excluir usuário.');
-                });
-        }
-    };
+    // const handleUpdate = () => {
+    //     if (userIdToDelete) {
+    //         // Chame a função deleteUser para excluir o usuário
+    //         deleteUser(userIdToDelete)
+    //             .then(() => {
+    //                 // Atualize a lista de usuários após a exclusão
+    //                 getUsers()
+    //                     .then(data => {
+    //                         setUsuarios(data)
+    //                         toast.success('Usuário excluído com sucesso!');
+    //                     })
+    //                     .catch(error => console.error('Erro ao buscar dados de usuários:', error));
+    //
+    //                 handleDialogClose();
+    //             })
+    //             .catch(error => {
+    //                 console.error('Erro ao excluir usuário:', error)
+    //                 toast.error('Erro ao excluir usuário.');
+    //             });
+    //     }
+    // };
     const handleSaveUser = (updatedUser) => {
         if(updatedUser) {
             updateUser(updatedUser)
@@ -188,6 +188,15 @@ export const Usuarios = () => {
                 })
         }
     }
+
+    const handleRefresh = () => {
+        getUsers()
+            .then(data => {
+                setUsuarios(data)
+                toast.success("Usuários atualizados com sucesso!");
+            })
+            .catch(error => console.error('Erro ao buscar dados de usuários:', error));
+    };
 
     return (
         <ThemeProvider theme={theme}>
@@ -208,6 +217,12 @@ export const Usuarios = () => {
                     >
                         Gerenciar Usuários
                     </Typography>
+                    {/* Botão de Atualização */}
+                    <div style={{ textAlign: 'right', marginBottom: '10px' }}>
+                        <Button variant="contained" color="primary" onClick={handleRefresh}>
+                            <RefreshIcon />
+                        </Button>
+                    </div>
                     <div style={{ height: 500, width: '100%' }}>
                         <DataGrid
                             rows={usuarios}

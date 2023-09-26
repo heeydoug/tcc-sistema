@@ -85,5 +85,26 @@ public class UsuarioService {
                 .filter(usuario -> usuario.getTipo() == TipoUsuario.USUARIO)
                 .collect(Collectors.toList());
     }
+
+    public List<UsuarioDTO> listarUsuariosTipoCliente() {
+        return listarUsuarios().stream()
+                .filter(usuario -> usuario.getTipo() == TipoUsuario.CLIENTE)
+                .collect(Collectors.toList());
+    }
+    public List<UsuarioDTO> listarUsuariosTipoRedator() {
+        return listarUsuarios().stream()
+                .filter(usuario -> usuario.getTipo() == TipoUsuario.REDATOR)
+                .collect(Collectors.toList());
+    }
+    public List<UsuarioDTO> listarUsuariosTipoRevisor() {
+        return listarUsuarios().stream()
+                .filter(usuario -> usuario.getTipo() == TipoUsuario.REVISOR)
+                .collect(Collectors.toList());
+    }
+    public List<UsuarioDTO> listarUsuariosTipoAdm() {
+        return listarUsuarios().stream()
+                .filter(usuario -> usuario.getTipo() == TipoUsuario.ADMINISTRADOR)
+                .collect(Collectors.toList());
+    }
 }
 

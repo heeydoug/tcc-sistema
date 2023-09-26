@@ -1,7 +1,10 @@
+import * as React from "react";
 import {createContext, useEffect, useState} from "react";
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
-import { app } from "../services/firebaseConfig"
+import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth";
+import {app} from "../services/firebaseConfig"
 import {Navigate} from "react-router-dom";
+import {toast, ToastContainer} from "react-toastify";
+
 const provider = new GoogleAuthProvider();
 export const AuthGoogleContext = createContext({});
 export const AuthGoogleProvider = ({ children }) => {
@@ -27,6 +30,7 @@ export const AuthGoogleProvider = ({ children }) => {
                 setUser(user)
                 sessionStorage.setItem("@AuthFirebase:token", token);
                 sessionStorage.setItem("@AuthFirebase:user", JSON.stringify(user));
+                toast.success('Login realizado com sucesso!');
             }).catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -39,6 +43,7 @@ export const AuthGoogleProvider = ({ children }) => {
     function signOut(){
         sessionStorage.clear();
         setUser(null)
+        toast.success('Logout realizado com sucesso!');
         return <Navigate to="/" />
     }
 
@@ -50,6 +55,7 @@ export const AuthGoogleProvider = ({ children }) => {
             signInGoogle,
             signOut
         }}>
+            <ToastContainer position="top-right" autoClose={3000} pauseOnFocusLoss draggable hideProgressBar={false} />
             {children}
         </AuthGoogleContext.Provider>
     )

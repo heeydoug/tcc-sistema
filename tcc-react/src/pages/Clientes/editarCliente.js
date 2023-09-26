@@ -12,11 +12,10 @@ import {
 } from "@mui/material";
 
 import Select from '@mui/material/Select';
-import {deleteUser, getUsers} from "../../actions/usuarios";
 import {toast} from "react-toastify";
 import Grid from "@mui/material/Grid";
 
-const EditarUsuario = ({ open, onClose, usuario, onSave }) => {
+const EditarCliente = ({ open, onClose, usuario, onSave }) => {
     const [nome, setNome] = useState(usuario ? usuario.nome : "");
     const [tipo, setTipo] = useState(usuario ? usuario.tipo : "");
 
@@ -34,9 +33,16 @@ const EditarUsuario = ({ open, onClose, usuario, onSave }) => {
         onClose();
     };
 
+
+    const contentStyle = {
+        display: "flex",
+        flexDirection: "column",
+        gap: "16px",
+    };
+
     return (
         <Dialog open={open} onClose={onClose} fullWidth>
-            <DialogTitle>Editar Usuário</DialogTitle>
+            <DialogTitle  >Editar Cliente</DialogTitle>
             <DialogContent >
                 <Grid container spacing={2} sx={{paddingTop: '2%'}}>
                     <Grid item xs={12} >
@@ -80,4 +86,4 @@ const EditarUsuario = ({ open, onClose, usuario, onSave }) => {
     );
 };
 
-export default EditarUsuario;
+export default EditarCliente;

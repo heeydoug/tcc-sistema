@@ -2,10 +2,10 @@ import { useContext } from "react";
 import { AuthGoogleContext } from "../../contexts/authGoogle";
 import { Navigate } from "react-router-dom";
 import Box from "@mui/material/Box";
-import { Button, Card, CardContent, Container } from "@mui/material";
-import Typography from "@mui/material/Typography"; // Importe o Typography
+import { Button, Card, CardContent} from "@mui/material";
+import Typography from "@mui/material/Typography";
 
-import "./Login.css";
+import "./login.css";
 import '@fontsource/roboto';
 export const Login = () => {
     const { signInGoogle, signed } = useContext(AuthGoogleContext);

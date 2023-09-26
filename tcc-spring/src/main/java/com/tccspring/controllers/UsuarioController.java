@@ -71,5 +71,31 @@ public class UsuarioController {
         List<UsuarioDTO> usuariosTipoUsuario = usuarioService.listarUsuariosTipoUsuario();
         return ResponseEntity.ok(usuariosTipoUsuario);
     }
+
+    @GetMapping("/tipoCliente")
+    public ResponseEntity<List<UsuarioDTO>> listarUsuariosTipoCliente() {
+        List<UsuarioDTO> usuariosTipoCliente = usuarioService.listarUsuariosTipoCliente();
+        return ResponseEntity.ok(usuariosTipoCliente);
+    }
+
+    @GetMapping("/tipoRedator")
+    public ResponseEntity<List<UsuarioDTO>> listarUsuariosTipoRedator() {
+        List<UsuarioDTO> usuariosTipoRedator = usuarioService.listarUsuariosTipoRedator();
+        return ResponseEntity.ok(usuariosTipoRedator);
+    }
+
+    @GetMapping("/tipoRevisor")
+    public ResponseEntity<List<UsuarioDTO>> listarUsuariosTipoRevisor() {
+        List<UsuarioDTO> usuariosTipoRevisor = usuarioService.listarUsuariosTipoRevisor();
+        return ResponseEntity.ok(usuariosTipoRevisor);
+    }
+
+    @GetMapping("/tipoAdm")
+    public ResponseEntity<List<UsuarioDTO>> listarUsuariosTipoAdm() {
+        List<UsuarioDTO> usuariosTipoAdm = usuarioService.listarUsuariosTipoAdm();
+        return ResponseEntity.ok(usuariosTipoAdm);
+    }
+
+
 }
 
