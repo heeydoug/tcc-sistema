@@ -8,13 +8,14 @@ import * as React from "react";
 import '@fontsource/roboto';
 import '@fontsource/roboto/300.css';
 import { DataGrid, ptBR } from '@mui/x-data-grid';
-import { getUsers, deleteUser } from "../../actions/usuarios"; // Certifique-se de ter uma função `deleteUser` que exclui o usuário
+import {getUsers, deleteUser, updateUser} from "../../actions/usuarios"; // Certifique-se de ter uma função `deleteUser` que exclui o usuário
 import Avatar from "@mui/material/Avatar";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Paper } from "@mui/material";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import EditarUsuario from "../Usuários/editarUsuario";
 
 
 import "./usuarios.css";
@@ -33,14 +34,17 @@ export const Usuarios = () => {
 
     const [usuarios, setUsuarios] = useState([]); // Estado para armazenar os dados dos usuários
 
+    const [editDialogOpen, setEditDialogOpen] = useState(false);
+    const [editingUserId, setEditingUserId] = useState(null);
+
+
     useEffect(() => {
-        // Chame a função getUsers para buscar os dados dos usuários
         getUsers()
             .then(data => setUsuarios(data))
             .catch(error => console.error('Erro ao buscar dados de usuários:', error));
     }, []);
 
-    // Defina as colunas que você deseja exibir no grid
+    // Colunas da tabela
     const columns = [
         { field: 'id', headerName: 'ID', width: 100, headerClassName: 'center-aligned', cellClassName: 'center-aligned' },
         {
@@ -59,7 +63,7 @@ export const Usuarios = () => {
         { field: 'dataCriacao', headerName: 'Data de Criação', width: 150, headerClassName: 'center-aligned', cellClassName: 'center-aligned' },
         {
             field: 'ativo',
-            headerName: 'Ativo',
+            headerName: 'Status',
             width: 100,
             headerClassName: 'center-aligned',
             cellClassName: 'center-aligned',
@@ -86,24 +90,20 @@ export const Usuarios = () => {
             width: 150,
             renderCell: (params) => (
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button color="primary" onClick={() => handleEditar(params.row.id)}>
+                    <Button color="primary" onClick={() => handleEdit(params.row.id)}>
                         <EditIcon />
                     </Button>
+
                     <Button color="secondary" onClick={() => handleDialogOpen(params.row.id)}>
                         <DeleteIcon />
                     </Button>
                 </div>
             ),
         },
+
     ];
 
-    // Função para lidar com a ação de edição
-    const handleEditar = (id) => {
-        // Implemente a lógica de edição aqui
-        console.log(`Editar usuário com ID ${id}`);
-    };
-
-    // Função para lidar com a ação de exclusão
+    // Função para excluir o usuário
     const [dialogOpen, setDialogOpen] = useState(false);
     const [userIdToDelete, setUserIdToDelete] = useState(null);
 
@@ -138,6 +138,56 @@ export const Usuarios = () => {
                 });
         }
     };
+
+    const handleEdit = (id) => {
+        setEditingUserId(id);
+        setEditDialogOpen(true);
+    };
+
+    const handleCloseEditDialog = () => {
+        setEditingUserId(null);
+        setEditDialogOpen(false);
+    };
+
+    const handleUpdate = () => {
+        if (userIdToDelete) {
+            // Chame a função deleteUser para excluir o usuário
+            deleteUser(userIdToDelete)
+                .then(() => {
+                    // Atualize a lista de usuários após a exclusão
+                    getUsers()
+                        .then(data => {
+                            setUsuarios(data)
+                            toast.success('Usuário excluído com sucesso!');
+                        })
+                        .catch(error => console.error('Erro ao buscar dados de usuários:', error));
+
+                    handleDialogClose();
+                })
+                .catch(error => {
+                    console.error('Erro ao excluir usuário:', error)
+                    toast.error('Erro ao excluir usuário.');
+                });
+        }
+    };
+    const handleSaveUser = (updatedUser) => {
+        if(updatedUser) {
+            updateUser(updatedUser)
+                .then(() => {
+                    console.log("Usuário atualizado:", updatedUser);
+                    getUsers()
+                        .then((data) => {
+                            setUsuarios(data);
+                            toast.success("Usuário atualizado com sucesso!");
+                        })
+                        .catch((error) => {
+                            console.error("Erro ao buscar dados de usuários:", error);
+                            toast.error("Erro ao atualizar usuário.");
+                        });
+                    handleCloseEditDialog();
+                })
+        }
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -190,6 +240,15 @@ export const Usuarios = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            <EditarUsuario
+                open={editDialogOpen}
+                onClose={handleCloseEditDialog}
+                onSave={handleSaveUser}
+                usuario={usuarios.find((user) => user.id === editingUserId)}
+            />
+
+
         </ThemeProvider>
     );
 }
