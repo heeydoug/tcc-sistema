@@ -1,6 +1,8 @@
 package com.tccspring.controllers;
 
+import com.tccspring.domains.enums.TipoUsuario;
 import com.tccspring.dtos.RedatorDTO;
+import com.tccspring.exceptions.ErrorMessage;
 import com.tccspring.services.RedatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,10 +34,18 @@ public class RedatorController {
     }
 
     @PostMapping
-    public ResponseEntity<RedatorDTO> criarRedator(@RequestBody RedatorDTO redatorDTO) {
+    public ResponseEntity<?> criarRedator(@RequestBody RedatorDTO redatorDTO) {
+        if (redatorService.existeRedatorComEmail(redatorDTO.getEmail())) {
+            ErrorMessage errorMessage = new ErrorMessage("Já existe um Redator cadastrado com este email.");
+            return ResponseEntity.badRequest().body(errorMessage);
+        }
+
+        redatorDTO.setTipo(TipoUsuario.REDATOR);
+        redatorDTO.setAtivo(true);
         RedatorDTO novoRedator = redatorService.criarRedator(redatorDTO);
         return ResponseEntity.ok(novoRedator);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<RedatorDTO> atualizarRedator(@PathVariable Long id, @RequestBody RedatorDTO redatorDTO) {
@@ -56,5 +66,8 @@ public class RedatorController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
+
 }
 

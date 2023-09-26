@@ -1,6 +1,8 @@
 package com.tccspring.controllers;
 
+import com.tccspring.domains.enums.TipoUsuario;
 import com.tccspring.dtos.RevisorDTO;
+import com.tccspring.exceptions.ErrorMessage;
 import com.tccspring.services.RevisorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,10 +34,18 @@ public class RevisorController {
     }
 
     @PostMapping
-    public ResponseEntity<RevisorDTO> criarRevisor(@RequestBody RevisorDTO revisorDTO) {
+    public ResponseEntity<?> criarRevisor(@RequestBody RevisorDTO revisorDTO) {
+        if (revisorService.existeRevisorComEmail(revisorDTO.getEmail())) {
+            ErrorMessage errorMessage = new ErrorMessage("Já existe um Revisor cadastrado com este email.");
+            return ResponseEntity.badRequest().body(errorMessage);
+        }
+
+        revisorDTO.setTipo(TipoUsuario.REVISOR);
+        revisorDTO.setAtivo(true);
         RevisorDTO novoRevisor = revisorService.criarRevisor(revisorDTO);
         return ResponseEntity.ok(novoRevisor);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<RevisorDTO> atualizarRevisor(@PathVariable Long id, @RequestBody RevisorDTO revisorDTO) {

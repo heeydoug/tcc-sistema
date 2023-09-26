@@ -1,6 +1,8 @@
 package com.tccspring.controllers;
 
+import com.tccspring.domains.enums.TipoUsuario;
 import com.tccspring.dtos.AdministradorDTO;
+import com.tccspring.exceptions.ErrorMessage;
 import com.tccspring.services.AdministradorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,10 +34,17 @@ public class AdministradorController {
     }
 
     @PostMapping
-    public ResponseEntity<AdministradorDTO> criarAdministrador(@RequestBody AdministradorDTO administradorDTO) {
+    public ResponseEntity<?> criarAdministrador(@RequestBody AdministradorDTO administradorDTO) {
+        if (administradorService.existeAdministradorComEmail(administradorDTO.getEmail())) {
+            ErrorMessage errorMessage = new ErrorMessage("Já existe um Administrador cadastrado com este email.");
+            return ResponseEntity.badRequest().body(errorMessage);
+        }
+        administradorDTO.setTipo(TipoUsuario.ADMINISTRADOR);
+        administradorDTO.setAtivo(true);
         AdministradorDTO novoAdministrador = administradorService.criarAdministrador(administradorDTO);
         return ResponseEntity.ok(novoAdministrador);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<AdministradorDTO> atualizarAdministrador(@PathVariable Long id, @RequestBody AdministradorDTO administradorDTO) {

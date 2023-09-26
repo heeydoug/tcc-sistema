@@ -2,6 +2,7 @@ package com.tccspring.services;
 
 import com.tccspring.domains.Redator;
 import com.tccspring.dtos.RedatorDTO;
+import com.tccspring.exceptions.ObjectNotFoundException;
 import com.tccspring.repositories.RedatorRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,15 +46,26 @@ public class RedatorService {
 
     public RedatorDTO atualizarRedator(Long id, RedatorDTO redatorDTO) {
         Optional<Redator> redatorOptional = redatorRepository.findById(id);
+
         if (redatorOptional.isPresent()) {
             Redator redatorExistente = redatorOptional.get();
-            modelMapper.map(redatorDTO, redatorExistente);
+
+            if (redatorDTO.getNome() != null) {
+                redatorExistente.setNome(redatorDTO.getNome());
+            }
+
+            if (redatorDTO.getTipo() != null) {
+                redatorExistente.setTipo(redatorDTO.getTipo());
+            }
+
             redatorExistente = redatorRepository.save(redatorExistente);
+
             return modelMapper.map(redatorExistente, RedatorDTO.class);
         } else {
-            return null;
+            throw new ObjectNotFoundException("Redator com ID " + id + " não encontrado.");
         }
     }
+
 
     public boolean excluirRedator(Long id) {
         Optional<Redator> redatorOptional = redatorRepository.findById(id);
@@ -62,6 +74,10 @@ public class RedatorService {
             return true;
         }
         return false;
+    }
+
+    public boolean existeRedatorComEmail(String email) {
+        return redatorRepository.existsByEmail(email);
     }
 }
 

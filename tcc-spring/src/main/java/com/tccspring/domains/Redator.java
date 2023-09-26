@@ -17,6 +17,7 @@ public class Redator extends Usuario{
     private List<Artigo> artigos = new ArrayList<>();
 
     public Redator() {
+        super();
         this.setTipo(TipoUsuario.REDATOR);
     }
 }

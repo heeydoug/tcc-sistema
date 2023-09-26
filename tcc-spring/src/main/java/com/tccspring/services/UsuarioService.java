@@ -1,7 +1,9 @@
 package com.tccspring.services;
 
 import com.tccspring.domains.Usuario;
+import com.tccspring.domains.enums.TipoUsuario;
 import com.tccspring.dtos.UsuarioDTO;
+import com.tccspring.exceptions.ObjectNotFoundException;
 import com.tccspring.repositories.UsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +47,23 @@ public class UsuarioService {
 
     public UsuarioDTO atualizarUsuario(Long id, UsuarioDTO usuarioDTO) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+
         if (usuarioOptional.isPresent()) {
             Usuario usuarioExistente = usuarioOptional.get();
-            modelMapper.map(usuarioDTO, usuarioExistente);
+
+            if (usuarioDTO.getNome() != null) {
+                usuarioExistente.setNome(usuarioDTO.getNome());
+            }
+
+            if (usuarioDTO.getTipo() != null) {
+                usuarioExistente.setTipo(usuarioDTO.getTipo());
+            }
+
             usuarioExistente = usuarioRepository.save(usuarioExistente);
+
             return modelMapper.map(usuarioExistente, UsuarioDTO.class);
         } else {
-            return null;
+            throw new ObjectNotFoundException("Usuário com ID " + id + " não encontrado.");
         }
     }
 
@@ -62,6 +74,16 @@ public class UsuarioService {
             return true;
         }
         return false;
+    }
+
+    public boolean existeUsuarioComEmail(String email) {
+        return usuarioRepository.existsByEmail(email);
+    }
+
+    public List<UsuarioDTO> listarUsuariosTipoUsuario() {
+        return listarUsuarios().stream()
+                .filter(usuario -> usuario.getTipo() == TipoUsuario.USUARIO)
+                .collect(Collectors.toList());
     }
 }
 

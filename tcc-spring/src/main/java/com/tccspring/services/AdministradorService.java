@@ -2,6 +2,7 @@ package com.tccspring.services;
 
 import com.tccspring.domains.Administrador;
 import com.tccspring.dtos.AdministradorDTO;
+import com.tccspring.exceptions.ObjectNotFoundException;
 import com.tccspring.repositories.AdministradorRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,15 +46,26 @@ public class AdministradorService {
 
     public AdministradorDTO atualizarAdministrador(Long id, AdministradorDTO administradorDTO) {
         Optional<Administrador> administradorOptional = administradorRepository.findById(id);
+
         if (administradorOptional.isPresent()) {
             Administrador administradorExistente = administradorOptional.get();
-            modelMapper.map(administradorDTO, administradorExistente);
+
+            if (administradorDTO.getNome() != null) {
+                administradorExistente.setNome(administradorDTO.getNome());
+            }
+
+            if (administradorDTO.getTipo() != null) {
+                administradorExistente.setTipo(administradorDTO.getTipo());
+            }
+
             administradorExistente = administradorRepository.save(administradorExistente);
+
             return modelMapper.map(administradorExistente, AdministradorDTO.class);
         } else {
-            return null;
+            throw new ObjectNotFoundException("Administrador com ID " + id + " não encontrado.");
         }
     }
+
 
     public boolean excluirAdministrador(Long id) {
         Optional<Administrador> administradorOptional = administradorRepository.findById(id);
@@ -62,6 +74,9 @@ public class AdministradorService {
             return true;
         }
         return false;
+    }
+    public boolean existeAdministradorComEmail(String email) {
+        return administradorRepository.existsByEmail(email);
     }
 }
 

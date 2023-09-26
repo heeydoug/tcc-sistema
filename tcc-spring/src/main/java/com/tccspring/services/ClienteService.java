@@ -2,6 +2,8 @@ package com.tccspring.services;
 
 import com.tccspring.domains.Cliente;
 import com.tccspring.dtos.ClienteDTO;
+import com.tccspring.exceptions.EmailEmUsoException;
+import com.tccspring.exceptions.ObjectNotFoundException;
 import com.tccspring.repositories.ClienteRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,15 +46,26 @@ public class ClienteService {
 
     public ClienteDTO atualizarCliente(Long id, ClienteDTO clienteDTO) {
         Optional<Cliente> clienteOptional = clienteRepository.findById(id);
+
         if (clienteOptional.isPresent()) {
             Cliente clienteExistente = clienteOptional.get();
-            modelMapper.map(clienteDTO, clienteExistente);
+
+            if (clienteDTO.getNome() != null) {
+                clienteExistente.setNome(clienteDTO.getNome());
+            }
+
+            if (clienteDTO.getTipo() != null) {
+                clienteExistente.setTipo(clienteDTO.getTipo());
+            }
+
             clienteExistente = clienteRepository.save(clienteExistente);
+
             return modelMapper.map(clienteExistente, ClienteDTO.class);
         } else {
-            return null;
+            throw new ObjectNotFoundException("Cliente com ID " + id + " não encontrado.");
         }
     }
+
 
     public boolean excluirCliente(Long id) {
         Optional<Cliente> clienteOptional = clienteRepository.findById(id);
@@ -61,5 +74,8 @@ public class ClienteService {
             return true;
         }
         return false;
+    }
+    public boolean existeClienteComEmail(String email) {
+        return clienteRepository.existsByEmail(email);
     }
 }

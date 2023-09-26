@@ -1,6 +1,8 @@
 package com.tccspring.controllers;
 
+import com.tccspring.domains.enums.TipoUsuario;
 import com.tccspring.dtos.UsuarioDTO;
+import com.tccspring.exceptions.ErrorMessage;
 import com.tccspring.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,10 +34,17 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioDTO> criarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<?> criarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+        if (usuarioService.existeUsuarioComEmail(usuarioDTO.getEmail())) {
+            ErrorMessage errorMessage = new ErrorMessage("Já existe um Usuário cadastrado com este email.");
+            return ResponseEntity.badRequest().body(errorMessage);
+        }
+        usuarioDTO.setTipo(TipoUsuario.USUARIO);
+        usuarioDTO.setAtivo(true);
         UsuarioDTO novoUsuario = usuarioService.criarUsuario(usuarioDTO);
         return ResponseEntity.ok(novoUsuario);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioDTO> atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioDTO usuarioDTO) {
@@ -55,6 +64,12 @@ public class UsuarioController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/tipoUsuario")
+    public ResponseEntity<List<UsuarioDTO>> listarUsuariosTipoUsuario() {
+        List<UsuarioDTO> usuariosTipoUsuario = usuarioService.listarUsuariosTipoUsuario();
+        return ResponseEntity.ok(usuariosTipoUsuario);
     }
 }
 

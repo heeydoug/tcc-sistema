@@ -2,6 +2,7 @@ package com.tccspring.services;
 
 import com.tccspring.domains.Revisor;
 import com.tccspring.dtos.RevisorDTO;
+import com.tccspring.exceptions.ObjectNotFoundException;
 import com.tccspring.repositories.RevisorRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,15 +46,26 @@ public class RevisorService {
 
     public RevisorDTO atualizarRevisor(Long id, RevisorDTO revisorDTO) {
         Optional<Revisor> revisorOptional = revisorRepository.findById(id);
+
         if (revisorOptional.isPresent()) {
             Revisor revisorExistente = revisorOptional.get();
-            modelMapper.map(revisorDTO, revisorExistente);
+
+            if (revisorDTO.getNome() != null) {
+                revisorExistente.setNome(revisorDTO.getNome());
+            }
+
+            if (revisorDTO.getTipo() != null) {
+                revisorExistente.setTipo(revisorDTO.getTipo());
+            }
+
             revisorExistente = revisorRepository.save(revisorExistente);
+
             return modelMapper.map(revisorExistente, RevisorDTO.class);
         } else {
-            return null;
+            throw new ObjectNotFoundException("Revisor com ID " + id + " não encontrado.");
         }
     }
+
 
     public boolean excluirRevisor(Long id) {
         Optional<Revisor> revisorOptional = revisorRepository.findById(id);
@@ -62,6 +74,10 @@ public class RevisorService {
             return true;
         }
         return false;
+    }
+
+    public boolean existeRevisorComEmail(String email) {
+        return revisorRepository.existsByEmail(email);
     }
 }
 
