@@ -66,6 +66,12 @@ public class UsuarioController {
         }
     }
 
+    @GetMapping("/verificar-email")
+    public boolean verificarEmailExistente(@RequestParam String email) {
+        return usuarioService.existeUsuarioComEmail(email);
+    }
+
+
     @GetMapping("/tipoUsuario")
     public ResponseEntity<List<UsuarioDTO>> listarUsuariosTipoUsuario() {
         List<UsuarioDTO> usuariosTipoUsuario = usuarioService.listarUsuariosTipoUsuario();

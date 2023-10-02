@@ -30,11 +30,6 @@ export const Home = () => {
       });
     }
     gapi.load('client:auth2', start);
-
-    // Simule um carregamento de dados
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
   }, []);
 
   function zeroFill(i) {
@@ -83,6 +78,7 @@ export const Home = () => {
           const folderId = response.result.id;
           console.log('Pasta criada com sucesso. ID da pasta:', folderId);
           return folderId;
+
         }).then(function (folderId) {
           const fileId = val.documentId;
           const folderIdN = folderId;
@@ -112,40 +108,29 @@ export const Home = () => {
               <Card variant="outlined" sx={{ p: 4 }}>
                 <CardContent>
                   <Box mt={2}>
-                    {isLoading ? (
-                        <div>
-                          <Skeleton animation="wave" variant="rectangular" height={100} width="100%" />
-                          <Skeleton animation="wave" variant="text" height={40} width="80%" />
-                          <Skeleton animation="wave" variant="text" height={40} width="60%" />
-                        </div>
-                    ) : (
-                        <>
-                          <Typography variant="h3" component="div" gutterBottom fontWeight="bold">
-                            Bem vindo, {userLogged.displayName}!
-                          </Typography>
-                          <hr />
-                          <Typography variant="body1" paragraph>
-                            E essa é sua área administrativa, utilize um dos menus ou botões abaixo para navegar pelo sistema.
-                          </Typography>
-                          <Button variant="contained" color="primary" size="large" onClick={() => createFile('Teste 2: Firebase -')}>
-                            Criar Documento
-                          </Button>
-
-                          <Box mt={2}>
-                            <Typography variant="h5">Informações do Usuário</Typography>
-                            <Grid container spacing={2}>
-                              <Grid item>
-                                <Avatar alt="Profile" src={userLogged.photoURL} />
-                              </Grid>
-                              <Grid item>
-                                <Typography variant="subtitle1">Nome: {userLogged.displayName}</Typography>
-                                <Typography variant="subtitle1">Email: {userLogged.email}</Typography>
-                              </Grid>
-                            </Grid>
-                          </Box>
-
-                        </>
-                    )}
+                    <Typography variant="h3" component="div" gutterBottom fontWeight="bold">
+                      Bem vindo, {userLogged.displayName}!
+                    </Typography>
+                    <hr />
+                    <Typography variant="body1" paragraph>
+                      E essa é sua área administrativa, utilize um dos menus ou botões abaixo para navegar pelo sistema.
+                    </Typography>
+                    <Button variant="contained" color="primary" size="large" onClick={() => createFile('Teste 2: Firebase -')}>
+                      Criar Documento
+                    </Button>
+                  </Box>
+                  <Box mt={2}>
+                    <Typography variant="h5">Informações do Usuário</Typography>
+                    <Grid container spacing={2}>
+                      <Grid item>
+                        <Avatar alt="Profile" src={userLogged.photoURL} />
+                      </Grid>
+                      <Grid item>
+                        <Typography variant="subtitle1">Nome: {userLogged.displayName}</Typography>
+                        <Typography variant="subtitle1">Email: {userLogged.email}</Typography>
+                      </Grid>
+                    </Grid>
+                    <Button variant="outlined" color="secondary" onClick={() => signOut()}>Sair</Button>
                   </Box>
 
                 </CardContent>

@@ -12,6 +12,27 @@ export const getUsers = async () => {
     }
 };
 // ======================================================================
+
+export const createUser = async (user) => {
+    try {
+        const response = await axios.post('/usuarios', user);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// ======================================================================
+export const checkUserByEmail = async (email) => {
+    try {
+        const response = await axios.get(`/usuarios/verificar-email?email=${email}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// ======================================================================
 export const deleteUser = async (userId) => {
     try {
         const response = await axios.delete(`/usuarios/${userId}`);

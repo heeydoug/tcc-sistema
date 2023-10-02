@@ -4,6 +4,7 @@ import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth";
 import {app} from "../services/firebaseConfig"
 import {Navigate} from "react-router-dom";
 import {toast, ToastContainer} from "react-toastify";
+import {checkUserByEmail, createUser} from "../actions/usuarios";
 
 const provider = new GoogleAuthProvider();
 export const AuthGoogleContext = createContext({});
@@ -21,23 +22,40 @@ export const AuthGoogleProvider = ({ children }) => {
         };
         loadStorageAuth();
     }, []);
-    const signInGoogle = () => {
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-                const token = credential.accessToken;
-                const user = result.user;
-                setUser(user)
-                sessionStorage.setItem("@AuthFirebase:token", token);
-                sessionStorage.setItem("@AuthFirebase:user", JSON.stringify(user));
-                toast.success('Login realizado com sucesso!');
-            }).catch((error) => {
+    const signInGoogle = async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            const user = result.user;
+            setUser(user);
+            sessionStorage.setItem("@AuthFirebase:token", token);
+            sessionStorage.setItem("@AuthFirebase:user", JSON.stringify(user));
+
+            try {
+                const userExists = await checkUserByEmail(user.email);
+
+                if (userExists) {
+                    toast.success(`Bem-vindo de volta, ${user.displayName}!`);
+                } else {
+                    const newUser = {
+                        nome: user.displayName,
+                        email: user.email,
+                        urlFoto: user.photoURL
+                    };
+                    await createUser(newUser);
+                    toast.success(`Usuário ${newUser.nome} cadastrado com sucesso, seja bem-vindo!`);
+                }
+            } catch (error) {
+                console.error('Erro ao verificar ou criar usuário no banco de dados:', error);
+            }
+        } catch (error) {
             const errorCode = error.code;
             const errorMessage = error.message;
             const email = error.customData.email;
             const credential = GoogleAuthProvider.credentialFromError(error);
-            console.log(errorMessage)
-        });
+            console.log(errorMessage);
+        }
     };
 
     function signOut(){
