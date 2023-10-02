@@ -19,6 +19,8 @@ import Avatar from "@mui/material/Avatar";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditarAdmin from "./editarAdmin";
+import "../../actions/utils/util.css"
+import {useAppStore} from "../../configs/appStore";
 
 export const Administrador = () => {
 
@@ -37,6 +39,8 @@ export const Administrador = () => {
 
     const [editDialogOpen, setEditDialogOpen] = useState(false);
     const [editingUserId, setEditingUserId] = useState(null);
+
+    const dopen = useAppStore((state) => state.dopen);
 
     useEffect(() => {
         getAdmin()
@@ -175,69 +179,74 @@ export const Administrador = () => {
 
 
     return (
+
         <ThemeProvider theme={theme}>
-            <Container maxWidth="lg">
-                <ToastContainer position="top-right" autoClose={3000} pauseOnFocusLoss draggable hideProgressBar={false} />
-                <Box height={30} />
-                <Box
-                    sx={{
-                        height: 400,
-                        width: '100%',
-                    }}
-                >
-                    <Typography
-                        variant="h3"
-                        component="h1"
-                        fontWeight="bold"
-                        sx={{ textAlign: 'center', mt: 3, mb: 3 }}
+            <div className={`container ${dopen ? 'open' : ''}`}>
+                <Container maxWidth="lg">
+                    <ToastContainer position="top-right" autoClose={3000} pauseOnFocusLoss draggable hideProgressBar={false} />
+                    <Box height={30} />
+                    <Box
+                        sx={{
+                            height: 400,
+                            width: '100%',
+                        }}
                     >
-                        Gerenciar Administradores
-                    </Typography>
-                    {/* Botão de Atualização */}
-                    <div style={{ textAlign: 'right', marginBottom: '10px' }}>
-                        <Button variant="contained" color="primary" onClick={handleRefresh}>
-                            <RefreshIcon />
+                        <Typography
+                            variant="h3"
+                            component="h1"
+                            fontWeight="bold"
+                            sx={{ textAlign: 'center', mt: 3, mb: 3 }}
+                        >
+                            Gerenciar Administradores
+                        </Typography>
+                        {/* Botão de Atualização */}
+                        <div style={{ textAlign: 'right', marginBottom: '10px' }}>
+                            <Button variant="contained" color="primary" onClick={handleRefresh}>
+                                <RefreshIcon />
+                            </Button>
+                        </div>
+                        <div style={{ height: 500, width: '100%' }}>
+                            <DataGrid
+                                rows={admins}
+                                columns={columns}
+                                pageSize={10}
+                            />
+                        </div>
+                    </Box>
+                </Container>
+
+                {/* Botão de Exclusão */}
+                <Dialog
+                    open={dialogOpen}
+                    onClose={handleDialogClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"Confirmar Exclusão"}</DialogTitle>
+                    <DialogContent>
+                        <Typography variant="body1">
+                            Tem certeza de que deseja excluir este administrador?
+                        </Typography>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleDialogClose} color="primary">
+                            Cancelar
                         </Button>
-                    </div>
-                    <div style={{ height: 500, width: '100%' }}>
-                        <DataGrid
-                            rows={admins}
-                            columns={columns}
-                            pageSize={10}
-                        />
-                    </div>
-                </Box>
-            </Container>
+                        <Button onClick={handleExcluir} color="secondary">
+                            Excluir
+                        </Button>
+                    </DialogActions>
+                </Dialog>
 
-            {/* Botão de Exclusão */}
-            <Dialog
-                open={dialogOpen}
-                onClose={handleDialogClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">{"Confirmar Exclusão"}</DialogTitle>
-                <DialogContent>
-                    <Typography variant="body1">
-                        Tem certeza de que deseja excluir este administrador?
-                    </Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleDialogClose} color="primary">
-                        Cancelar
-                    </Button>
-                    <Button onClick={handleExcluir} color="secondary">
-                        Excluir
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
-            <EditarAdmin
-                open={editDialogOpen}
-                onClose={handleCloseEditDialog}
-                onSave={handleSaveUser}
-                usuario={admins.find((user) => user.id === editingUserId)}
-            />
+                <EditarAdmin
+                    open={editDialogOpen}
+                    onClose={handleCloseEditDialog}
+                    onSave={handleSaveUser}
+                    usuario={admins.find((user) => user.id === editingUserId)}
+                />
+            </div>
         </ThemeProvider>
+
+
     )
 }

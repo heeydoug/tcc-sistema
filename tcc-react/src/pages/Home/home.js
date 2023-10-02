@@ -13,7 +13,7 @@ import Paper from "@mui/material/Paper";
 import Skeleton from '@mui/material/Skeleton';
 
 import "../../components/skeleton.css";
-import "./home.css"
+import "../../actions/utils/util.css"
 import {useAppStore} from "../../configs/appStore";
 const clientId = "308424476532-e40blk46kh67iussdbce2655m9lnacoq.apps.googleusercontent.com";
 const apiKey = "API_KEY";
