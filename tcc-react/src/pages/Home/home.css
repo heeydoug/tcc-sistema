@@ -1,0 +1,8 @@
+.container {
+ margin-left: 0;
+ transition: margin-left 0.5s ease; /* Ajuste a duração e a curva de transição conforme necessário */
+}
+
+.open {
+ margin-left: 250px;
+}

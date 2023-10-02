@@ -13,13 +13,15 @@ import Paper from "@mui/material/Paper";
 import Skeleton from '@mui/material/Skeleton';
 
 import "../../components/skeleton.css";
-
+import "./home.css"
+import {useAppStore} from "../../configs/appStore";
 const clientId = "308424476532-e40blk46kh67iussdbce2655m9lnacoq.apps.googleusercontent.com";
 const apiKey = "API_KEY";
 const scopes = "https://www.googleapis.com/auth/drive";
 
 export const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const dopen = useAppStore((state) => state.dopen);
 
   useEffect(() => {
     function start() {
@@ -100,45 +102,47 @@ export const Home = () => {
   const userLogged = user;
 
   return (
-      <Container>
-        <Box height={70} />
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={12}>
-            <Paper elevation={3}>
-              <Card variant="outlined" sx={{ p: 4 }}>
-                <CardContent>
-                  <Box mt={2}>
-                    <Typography variant="h3" component="div" gutterBottom fontWeight="bold">
-                      Bem vindo, {userLogged.displayName}!
-                    </Typography>
-                    <hr />
-                    <Typography variant="body1" paragraph>
-                      E essa é sua área administrativa, utilize um dos menus ou botões abaixo para navegar pelo sistema.
-                    </Typography>
-                    <Button variant="contained" color="primary" size="large" onClick={() => createFile('Teste 2: Firebase -')}>
-                      Criar Documento
-                    </Button>
-                  </Box>
-                  <Box mt={2}>
-                    <Typography variant="h5">Informações do Usuário</Typography>
-                    <Grid container spacing={2}>
-                      <Grid item>
-                        <Avatar alt="Profile" src={userLogged.photoURL} />
+      <div className={`container ${dopen ? 'open' : ''}`}>
+        <Container>
+          <Box height={70} />
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={12}>
+              <Paper elevation={3}>
+                <Card variant="outlined" sx={{ p: 4, width: "100%" }}>
+                  <CardContent>
+                    <Box mt={2}>
+                      <Typography variant="h3" component="div" gutterBottom fontWeight="bold">
+                        Bem vindo, {userLogged.displayName}!
+                      </Typography>
+                      <hr />
+                      <Typography variant="body1" paragraph>
+                        E essa é sua área administrativa, utilize um dos menus ou botões abaixo para navegar pelo sistema.
+                      </Typography>
+                      <Button variant="contained" color="primary" size="large" onClick={() => createFile('Teste 2: Firebase -')}>
+                        Criar Documento
+                      </Button>
+                    </Box>
+                    <Box mt={2}>
+                      <Typography variant="h5">Informações do Usuário</Typography>
+                      <Grid container spacing={2}>
+                        <Grid item>
+                          <Avatar alt="Profile" src={userLogged.photoURL} />
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="subtitle1">Nome: {userLogged.displayName}</Typography>
+                          <Typography variant="subtitle1">Email: {userLogged.email}</Typography>
+                        </Grid>
                       </Grid>
-                      <Grid item>
-                        <Typography variant="subtitle1">Nome: {userLogged.displayName}</Typography>
-                        <Typography variant="subtitle1">Email: {userLogged.email}</Typography>
-                      </Grid>
-                    </Grid>
-                    <Button variant="outlined" color="secondary" onClick={() => signOut()}>Sair</Button>
-                  </Box>
+                      <Button variant="outlined" color="secondary" onClick={() => signOut()}>Sair</Button>
+                    </Box>
 
-                </CardContent>
-              </Card>
-            </Paper>
+                  </CardContent>
+                </Card>
+              </Paper>
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
+        </Container>
+      </div>
   );
 }
 
