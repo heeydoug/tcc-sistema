@@ -57,7 +57,7 @@ export const InfoUsuarios = () => {
         <ThemeProvider theme={theme}>
             <div className={`container ${dopen ? "open" : ""}`}>
                 <Box height={100} />
-                <Container maxWidth="lg">
+                <Container maxWidth="md">
                     <Paper elevation={3}>
                         <Card variant="outlined" sx={{ p: 4, width: "100%" }}>
                             <CardContent>
