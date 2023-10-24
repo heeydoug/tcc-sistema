@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect} from "react";
 import {AuthGoogleContext} from "../../contexts/authGoogle";
 import {gapi} from 'gapi-script';
 import Container from "@mui/material/Container";
@@ -10,7 +10,6 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Paper from "@mui/material/Paper";
-import Skeleton from '@mui/material/Skeleton';
 
 import "../../components/skeleton.css";
 import "../../actions/utils/util.css"
@@ -20,7 +19,6 @@ const apiKey = "API_KEY";
 const scopes = "https://www.googleapis.com/auth/drive";
 
 export const Home = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const dopen = useAppStore((state) => state.dopen);
 
   useEffect(() => {
@@ -51,8 +49,34 @@ export const Home = () => {
     return date.toLocaleTimeString();
   }
 
+  // useEffect(() => {
+  //   const start = async () => {
+  //     await gapi.client.init({
+  //       apiKey: apiKey,
+  //       clientId: clientId,
+  //       scope: scopes,
+  //     });
+  //
+  //     // Autenticar o usuário, se necessário
+  //     await gapi.auth2.getAuthInstance().signIn();
+  //
+  //     // Agora você pode acessar o token de autenticação
+  //     const accessToken = gapi.auth.getToken().access_token;
+  //     console.log(accessToken);
+  //
+  //     // Chame a função createFile aqui ou em resposta a algum evento
+  //   };
+  //
+  //   gapi.load('client:auth2', start);
+  // }, []);
+
   function createFile(tag) {
-    var accessToken = gapi.auth.getToken().access_token;
+    const token = sessionStorage.getItem("@AuthFirebase:token");
+    console.log("Token do firebase", token)
+    //var accessToken = gapi.auth.getToken().access_token;
+
+    var accessToken = "ya29.a0AfB_byAkkggaheAjiCUAcvyejVhIl191DMKYWF4lrH4fJEUaVYL_i-12pH8No667bUZay2FWGUlDgh5aD0qe0RNF0dKKkyomXuc4aC8LuW0FxT4a7-UrfgjEwce92Pww0o8cJoQJ52m3iZnBl35hDivfwRWfOQBTC18aCgYKAa8SARMSFQGOcNnC4cEYFrbDBB2qY9IBID_pBA0170"
+    console.log(accessToken)
     var fileName = tag + " " + getDateString() + " " + getTimeString();
     fetch('https://docs.googleapis.com/v1/documents?title=' + fileName, {
       method: "POST",
@@ -122,20 +146,6 @@ export const Home = () => {
                         Criar Documento
                       </Button>
                     </Box>
-                    <Box mt={2}>
-                      <Typography variant="h5">Informações do Usuário</Typography>
-                      <Grid container spacing={2}>
-                        <Grid item>
-                          <Avatar alt="Profile" src={userLogged.photoURL} />
-                        </Grid>
-                        <Grid item>
-                          <Typography variant="subtitle1">Nome: {userLogged.displayName}</Typography>
-                          <Typography variant="subtitle1">Email: {userLogged.email}</Typography>
-                        </Grid>
-                      </Grid>
-                      <Button variant="outlined" color="secondary" onClick={() => signOut()}>Sair</Button>
-                    </Box>
-
                   </CardContent>
                 </Card>
               </Paper>

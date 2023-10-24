@@ -1,5 +1,6 @@
 package com.tccspring.domains;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tccspring.domains.enums.EstadoArtigo;
 import jakarta.persistence.*;
@@ -15,6 +16,7 @@ public class HistoricoEstado {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     private Artigo artigo;
 
     @Enumerated(EnumType.STRING)

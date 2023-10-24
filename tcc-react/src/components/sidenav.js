@@ -16,6 +16,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import Person2Icon from '@mui/icons-material/Person2';
 import Person3Icon from '@mui/icons-material/Person3';
 import Person4Icon from '@mui/icons-material/Person4';
+import ArticleIcon from '@mui/icons-material/Article';
 import HomeIcon from '@mui/icons-material/Home';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import { useNavigate } from "react-router-dom";
@@ -223,6 +224,27 @@ export default function MiniDrawer() {
                                 <SupervisorAccountIcon />
                             </ListItemIcon>
                             <ListItemText primary="Administradores" sx={{ opacity: open ? 1 : 0 }} />
+                        </ListItemButton>
+                    </ListItem>
+                    {/* Artigos */}
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={ () => {navigate("/artigos")}}>
+                        <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <ArticleIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Artigos" sx={{ opacity: open ? 1 : 0 }} />
                         </ListItemButton>
                     </ListItem>
                     {/* Logout */}

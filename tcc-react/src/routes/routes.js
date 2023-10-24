@@ -10,6 +10,8 @@ import {Redatores} from "../pages/Redatores/redatores";
 import {Revisores} from "../pages/Revisores/revisores";
 import {Clientes} from "../pages/Clientes/clientes";
 import {Administrador} from "../pages/Admintradores/admin";
+import {Artigos} from "../pages/Artigos/artigos";
+import {InfoUsuarios} from "../pages/InfoUsuarios/infoUsuarios";
 
 
 export const AppRoutes = () => {
@@ -39,6 +41,12 @@ export const AppRoutes = () => {
                     </Route>
                     <Route path="/administradores" element={<PrivateRoutes />}>
                         <Route path="/administradores" element={<Administrador />} />
+                    </Route>
+                    <Route path="/artigos" element={<PrivateRoutes />}>
+                        <Route path="/artigos" element={<Artigos />} />
+                    </Route>
+                    <Route path="/meus-dados" element={<PrivateRoutes />}>
+                        <Route path="/meus-dados" element={<InfoUsuarios />} />
                     </Route>
                 </Routes>
             </Fragment>

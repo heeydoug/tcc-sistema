@@ -20,12 +20,15 @@ import {useContext} from "react";
 import {AuthGoogleContext} from "../contexts/authGoogle";
 import {Avatar} from "@mui/material";
 import LogoutIcon from '@mui/icons-material/Logout';
+import {useNavigate} from "react-router-dom";
 
 const AppBar = styled(MuiAppBar, {
 })(({ theme }) => ({
     zIndex: theme.zIndex.drawer + 1,
 
 }));
+
+
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -72,6 +75,7 @@ export default function Navbar() {
     // Usuário logado no sistema
     const { user, signOut } = useContext(AuthGoogleContext);
     const userLogged = user;
+    const navigate = useNavigate();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -115,8 +119,7 @@ export default function Navbar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            <MenuItem onClick={ () => {navigate("/meus-dados")}}>Meus dados</MenuItem>
         </Menu>
     );
 
@@ -226,27 +229,27 @@ export default function Navbar() {
                         <IconButton
                             size="large"
                             edge="end"
-                            aria-label="account of current user"
+                            aria-label="Perfil do usuário"
                             aria-controls={menuId}
                             aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
+                            onClick={ () => {navigate("/meus-dados")}}
                             color="inherit"
                         >
                             <Avatar alt="fotoPerfil" src={userLogged.photoURL} />
                         </IconButton>
                     </Box>
-                    <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                        <IconButton
-                            size="large"
-                            aria-label="show more"
-                            aria-controls={mobileMenuId}
-                            aria-haspopup="true"
-                            onClick={handleMobileMenuOpen}
-                            color="inherit"
-                        >
-                            <MoreIcon />
-                        </IconButton>
-                    </Box>
+                    {/*<Box sx={{ display: { xs: 'flex', md: 'none' } }}>*/}
+                    {/*    <IconButton*/}
+                    {/*        size="large"*/}
+                    {/*        aria-label="show more"*/}
+                    {/*        aria-controls={mobileMenuId}*/}
+                    {/*        aria-haspopup="true"*/}
+                    {/*        onClick={ () => {navigate("/meus-dados")}}*/}
+                    {/*        color="inherit"*/}
+                    {/*    >*/}
+                    {/*        <MoreIcon />*/}
+                    {/*    </IconButton>*/}
+                    {/*</Box>*/}
                 </Toolbar>
             </AppBar>
             {renderMobileMenu}
