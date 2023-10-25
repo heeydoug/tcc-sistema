@@ -180,7 +180,8 @@ export const Artigos = () => {
                                 redator: artigo.redator.nome,
                                 revisor: artigo.revisor.nome,
                                 cliente: artigo.cliente.nome,
-                            }))} columns={columns} pageSize={20} localeText={ptBR} />
+                            }))}
+                                      columns={columns} pageSize={20} localeText={ptBR} />
                         </div>
                         <div style={{ marginTop: "10px"}}>
                             <Button

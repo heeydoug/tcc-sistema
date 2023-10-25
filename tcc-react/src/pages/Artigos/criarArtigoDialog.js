@@ -9,7 +9,7 @@ import {
     MenuItem,
     TextField,
     Select,
-    Button,
+    Button, Autocomplete,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
 
@@ -29,8 +29,24 @@ export const CriarArtigoDialog = ({
                                       selectedCliente,
                                       setSelectedCliente,
                                   }) => {
+
+    setSelectedRedator(null);
+    setSelectedRevisor(null);
+    setSelectedCliente(null);
+    // Função para redefinir os valores dos campos para nulo
+    const resetDialogFields = () => {
+        setNovoArtigo({
+            titulo: "",
+            conteudo: "",
+            palavraChave: "",
+        });
+        setSelectedRedator(null);
+        setSelectedRevisor(null);
+        setSelectedCliente(null);
+    };
+
     return (
-        <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
+        <Dialog open={open} onClose={() => { onClose(); resetDialogFields(); }} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Criar Artigo</DialogTitle>
             <DialogContent>
                 <Grid container spacing={2} sx={{ paddingTop: "2%" }}>
@@ -68,55 +84,39 @@ export const CriarArtigoDialog = ({
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <FormControl fullWidth>
-                            <InputLabel>Redator</InputLabel>
-                            <Select
-                                value={selectedRedator}
-                                onChange={(e) => setSelectedRedator(e.target.value)}
-                            >
-                                {redatores.map((redator) => (
-                                    <MenuItem key={redator.id} value={redator.id}>
-                                        {redator.nome}
-                                    </MenuItem>
-                                ))}
-                            </Select>
+                        <Autocomplete
+                            options={redatores}
+                            getOptionLabel={(option) => option.nome}
+                            value={selectedRedator}
+                            onChange={(e, newValue) => setSelectedRedator(newValue)}
+                            renderInput={(params) => <TextField {...params} label="Redator" fullWidth />}
+                        />
+                    </Grid>
 
-                        </FormControl>
-                    </Grid>
                     <Grid item xs={12}>
-                        <FormControl fullWidth>
-                            <InputLabel>Revisor</InputLabel>
-                            <Select
-                                value={selectedRevisor}
-                                onChange={(e) => setSelectedRevisor(e.target.value)}
-                            >
-                                {revisores.map((revisor) => (
-                                    <MenuItem key={revisor.id} value={revisor.id}>
-                                        {revisor.nome}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                        <Autocomplete
+                            options={revisores}
+                            getOptionLabel={(option) => option.nome}
+                            value={selectedRevisor}
+                            onChange={(e, newValue) => setSelectedRevisor(newValue)}
+                            renderInput={(params) => <TextField {...params} label="Revisor" fullWidth />}
+                        />
                     </Grid>
+
                     <Grid item xs={12}>
-                        <FormControl fullWidth>
-                            <InputLabel>Cliente</InputLabel>
-                            <Select
-                                value={selectedCliente}
-                                onChange={(e) => setSelectedCliente(e.target.value)}
-                            >
-                                {clientes.map((cliente) => (
-                                    <MenuItem key={cliente.id} value={cliente.id}>
-                                        {cliente.nome}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                        <Autocomplete
+                            options={clientes}
+                            getOptionLabel={(option) => option.nome}
+                            value={selectedCliente}
+                            onChange={(e, newValue) => setSelectedCliente(newValue)}
+                            renderInput={(params) => <TextField {...params} label="Cliente" fullWidth />}
+                        />
                     </Grid>
+
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose} color="primary">
+                <Button onClick={() => { onClose(); resetDialogFields(); }} color="primary">
                     Cancelar
                 </Button>
                 <Button onClick={criarArtigo} color="secondary">
