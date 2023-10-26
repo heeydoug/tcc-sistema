@@ -9,7 +9,6 @@ import Typography from "@mui/material/Typography";
 import { CriarArtigoDialog } from "./criarArtigoDialog";
 import {getArticles} from "../../actions/artigos";
 import RefreshIcon from "@mui/icons-material/Refresh";
-
 export const Artigos = () => {
     const theme = createTheme(
         {
@@ -21,6 +20,7 @@ export const Artigos = () => {
         },
         ptBR
     );
+
 
     const openDialogCriarArtigo = () => {
         setOpenDialog(true);
@@ -181,7 +181,7 @@ export const Artigos = () => {
                                 revisor: artigo.revisor.nome,
                                 cliente: artigo.cliente.nome,
                             }))}
-                                      columns={columns} pageSize={20} localeText={ptBR} />
+                                      columns={columns} pageSize={20}/>
                         </div>
                         <div style={{ marginTop: "10px"}}>
                             <Button
@@ -201,6 +201,7 @@ export const Artigos = () => {
                             clientes={clientes}
                             criarArtigo={criarArtigo}
                             novoArtigo={novoArtigo}
+                            handleRefresh={handleRefresh}
                             setNovoArtigo={setNovoArtigo}
                             selectedRedator={selectedRedator}
                             setSelectedRedator={setSelectedRedator}

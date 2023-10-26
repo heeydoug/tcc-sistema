@@ -12,3 +12,21 @@ export const getArticles = async () => {
     }
 };
 // ======================================================================
+export const createArticle = async (artigoData) => {
+    try {
+        const response = await axios.post('/artigos', artigoData);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+// ======================================================================
+export const updateArticle = async (idDoArtigo, artigoData) => {
+    try {
+        const response = await axios.put(`/artigos/${idDoArtigo}`, artigoData);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+// ======================================================================

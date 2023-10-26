@@ -1,0 +1,8 @@
+.error {
+    border: 1px solid red;
+}
+
+/* Estilo para realçar o texto de erro em vermelho */
+.error-message {
+    color: red;
+}
