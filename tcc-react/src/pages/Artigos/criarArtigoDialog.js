@@ -70,7 +70,7 @@ export const CriarArtigoDialog = ({
     const createGoogleDriveDocument = (tag) => {
         const token = sessionStorage.getItem("@AuthFirebase:token");
         console.log("Token do Firebase", token);
-        var accessToken = "ya29.a0AfB_byABoy0AvwRr69K7ifnOO3X8rdzB8NllJhPBGbozgjBy2A7nnUzJdv7_IM2yAAytJLvWtTJdzzWUEjis7i8-ezdnKvBZWA4tNOm8zETTgvbe8nv95h6I7eBak2pfrPFYPRxFccu-8eJ-QUz12CyfoJwS9Y9tY7waCgYKAZYSARMSFQGOcNnCbGRZ3VV_4aG_yjNtFm739A0170";
+        var accessToken = "ya29.a0AfB_byBXSVsgD_MQmqZ73V0fUcvKLZzkKIwo2ksBoqqhAtkcNnYmuHQLnkwvZWXnHTW74Tq9AXvCyUNtECIFjZBq-PvV4viYPuU3FbqEai3KOyRQASV6uE6tWJ6jxiYyIW7baH-MHFFAZRcQjuL7I6KIFK8KSZIVlGEaCgYKAZkSARMSFQGOcNnChZv6ymSsXzZGvSqdk7EJzw0170";
         console.log(accessToken);
         var fileName = tag + " " + getDateString() + " " + getTimeString();
 
@@ -145,7 +145,7 @@ export const CriarArtigoDialog = ({
         }
         try {
             // Criando documento no Google Drive
-            const fileName = novoArtigo.titulo + " " + getDateString() + " " + getTimeString();
+            const fileName = novoArtigo.titulo + " ";
             const { idDocumentoDrive, idPastaDrive } = await createGoogleDriveDocument(fileName);
 
             // Objeto com os dados do artigo

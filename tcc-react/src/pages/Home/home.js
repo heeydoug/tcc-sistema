@@ -75,7 +75,7 @@ export const Home = () => {
     console.log("Token do firebase", token)
     var accessToken = gapi.auth.getToken().access_token;
 
-   // var accessToken = "ya29.a0AfB_byAVodeuqYZS6JVGX6utWP0lyiDabUBgUmfl1SN7sqoKDxwyrb30ZYF2KvjEB_QgzShFfvNVFPI6noesfDhZzArwsTGJGEdH5mdEiEAu09d2YAn-VDjiwPMnj9-0WaFo9jN0isVzgXJaFRo0tfsw2mIoq2b4tgaCgYKATQSARMSFQGOcNnClYiCctHdvgw4Rimk_OKDMw0169"
+    //var accessToken = "ya29.a0AfB_byBXSVsgD_MQmqZ73V0fUcvKLZzkKIwo2ksBoqqhAtkcNnYmuHQLnkwvZWXnHTW74Tq9AXvCyUNtECIFjZBq-PvV4viYPuU3FbqEai3KOyRQASV6uE6tWJ6jxiYyIW7baH-MHFFAZRcQjuL7I6KIFK8KSZIVlGEaCgYKAZkSARMSFQGOcNnChZv6ymSsXzZGvSqdk7EJzw0170"
     console.log(accessToken)
     var fileName = tag + " " + getDateString() + " " + getTimeString();
     fetch('https://docs.googleapis.com/v1/documents?title=' + fileName, {

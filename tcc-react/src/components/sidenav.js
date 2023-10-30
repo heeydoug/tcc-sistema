@@ -63,16 +63,24 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
         flexShrink: 0,
         whiteSpace: 'nowrap',
         boxSizing: 'border-box',
+        backgroundColor: '#1976D2',
         ...(open && {
             ...openedMixin(theme),
-            '& .MuiDrawer-paper': openedMixin(theme),
+            '& .MuiDrawer-paper': {
+                ...openedMixin(theme),
+                backgroundColor: '#1976D2',
+            },
         }),
         ...(!open && {
             ...closedMixin(theme),
-            '& .MuiDrawer-paper': closedMixin(theme),
+            '& .MuiDrawer-paper': {
+                ...closedMixin(theme),
+                backgroundColor: '#1976D2',
+            },
         }),
     }),
 );
+
 
 export default function MiniDrawer() {
     const theme = useTheme();
@@ -99,12 +107,13 @@ export default function MiniDrawer() {
                 <Divider />
                 <List>
                     {/* Home */}
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={ () => {navigate("/home")}} >
+                    <ListItem disablePadding sx={{ display: 'block'}} onClick={ () => {navigate("/home")}} >
                         <ListItemButton
                             sx={{
                                 minHeight: 48,
                                 justifyContent: open ? 'initial' : 'center',
                                 px: 2.5,
+                                color: 'white'
                             }}
                         >
                             <ListItemIcon
@@ -112,6 +121,7 @@ export default function MiniDrawer() {
                                     minWidth: 0,
                                     mr: open ? 3 : 'auto',
                                     justifyContent: 'center',
+                                    color: 'white'
                                 }}
                             >
                                 <HomeIcon />
@@ -128,6 +138,7 @@ export default function MiniDrawer() {
                                 minHeight: 48,
                                 justifyContent: open ? 'initial' : 'center',
                                 px: 2.5,
+                                color: 'white'
                             }}
                         >
                             <ListItemIcon
@@ -135,6 +146,7 @@ export default function MiniDrawer() {
                                     minWidth: 0,
                                     mr: open ? 3 : 'auto',
                                     justifyContent: 'center',
+                                    color: 'white'
                                 }}
                             >
                                 <PersonIcon />
@@ -149,6 +161,7 @@ export default function MiniDrawer() {
                                 minHeight: 48,
                                 justifyContent: open ? 'initial' : 'center',
                                 px: 2.5,
+                                color: 'white'
                             }}
                         >
                             <ListItemIcon
@@ -156,6 +169,7 @@ export default function MiniDrawer() {
                                     minWidth: 0,
                                     mr: open ? 3 : 'auto',
                                     justifyContent: 'center',
+                                    color: 'white'
                                 }}
                             >
                                 <Person2Icon />
@@ -170,6 +184,7 @@ export default function MiniDrawer() {
                                 minHeight: 48,
                                 justifyContent: open ? 'initial' : 'center',
                                 px: 2.5,
+                                color: 'white'
                             }}
                         >
                             <ListItemIcon
@@ -177,6 +192,7 @@ export default function MiniDrawer() {
                                     minWidth: 0,
                                     mr: open ? 3 : 'auto',
                                     justifyContent: 'center',
+                                    color: 'white'
                                 }}
                             >
                                 <Person3Icon />
@@ -191,6 +207,7 @@ export default function MiniDrawer() {
                                 minHeight: 48,
                                 justifyContent: open ? 'initial' : 'center',
                                 px: 2.5,
+                                color: 'white'
                             }}
                         >
                             <ListItemIcon
@@ -198,6 +215,7 @@ export default function MiniDrawer() {
                                     minWidth: 0,
                                     mr: open ? 3 : 'auto',
                                     justifyContent: 'center',
+                                    color: 'white'
                                 }}
                             >
                                 <Person4Icon />
@@ -212,6 +230,7 @@ export default function MiniDrawer() {
                                 minHeight: 48,
                                 justifyContent: open ? 'initial' : 'center',
                                 px: 2.5,
+                                color: 'white'
                             }}
                         >
                             <ListItemIcon
@@ -219,6 +238,7 @@ export default function MiniDrawer() {
                                     minWidth: 0,
                                     mr: open ? 3 : 'auto',
                                     justifyContent: 'center',
+                                    color: 'white'
                                 }}
                             >
                                 <SupervisorAccountIcon />
@@ -233,6 +253,7 @@ export default function MiniDrawer() {
                                 minHeight: 48,
                                 justifyContent: open ? 'initial' : 'center',
                                 px: 2.5,
+                                color: 'white'
                             }}
                         >
                             <ListItemIcon
@@ -240,6 +261,7 @@ export default function MiniDrawer() {
                                     minWidth: 0,
                                     mr: open ? 3 : 'auto',
                                     justifyContent: 'center',
+                                    color: 'white'
                                 }}
                             >
                                 <ArticleIcon />
@@ -254,6 +276,7 @@ export default function MiniDrawer() {
                                 minHeight: 48,
                                 justifyContent: open ? 'initial' : 'center',
                                 px: 2.5,
+                                color: 'white'
                             }}
                         >
                             <ListItemIcon
@@ -261,6 +284,7 @@ export default function MiniDrawer() {
                                     minWidth: 0,
                                     mr: open ? 3 : 'auto',
                                     justifyContent: 'center',
+                                    color: 'white'
                                 }}
                             >
                                 <LogoutIcon />
