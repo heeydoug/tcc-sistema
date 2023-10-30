@@ -1,7 +1,9 @@
 package com.tccspring.controllers;
 
 import com.tccspring.domains.Artigo;
+import com.tccspring.domains.EstadoArtigoRequest;
 import com.tccspring.domains.Usuario;
+import com.tccspring.domains.enums.EstadoArtigo;
 import com.tccspring.domains.enums.TipoUsuario;
 import com.tccspring.services.ArtigoService;
 import com.tccspring.services.UsuarioService;
@@ -45,6 +47,22 @@ public class ArtigoController {
     @DeleteMapping("/{id}")
     public void excluirArtigo(@PathVariable Long id) {
         artigoService.excluirArtigo(id);
+    }
+
+    @PutMapping("/{id}/alterar-status")
+    public Artigo alterarStatusArtigo(@PathVariable Long id, @RequestBody EstadoArtigoRequest estadoAtual) {
+        Artigo artigo = artigoService.obterArtigoPorId(id);
+        String estado = estadoAtual.getEstadoAtual();
+
+        if (artigo != null) {
+            //EstadoArtigo estadoAnterior = artigo.getEstadoAtual();
+            artigo.setEstadoAtual(EstadoArtigo.valueOf(estado));
+            artigo.adicionarHistorico(EstadoArtigo.valueOf(estado));
+
+            return artigoService.atualizarArtigo(id, artigo);
+        } else {
+            return null;
+        }
     }
 
     @GetMapping("/artigos-do-usuario")

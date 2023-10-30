@@ -30,3 +30,13 @@ export const updateArticle = async (idDoArtigo, artigoData) => {
     }
 };
 // ======================================================================
+
+export const updateStatusArtigo = async (idDoArtigo, estadoArtigo) => {
+    try {
+        const response = await axios.put(`/artigos/${idDoArtigo}/alterar-status`, { estadoAtual: estadoArtigo });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+// ======================================================================

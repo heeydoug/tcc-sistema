@@ -1,3 +1,29 @@
 .header-center {
     text-align: center;
 }
+
+.aberto-cell {
+    text-align: center;
+    background-color: lightblue;
+}
+
+.em-edicao-cell {
+    text-align: center;
+    background-color: lightgreen;
+}
+
+.em-revisao-cell {
+    background-color: yellow;
+}
+
+.revisado-cell {
+    background-color: lightcoral;
+}
+
+.aceito-cell {
+    background-color: lightgreen;
+}
+
+.cancelado-cell {
+    background-color: lightgray;
+}

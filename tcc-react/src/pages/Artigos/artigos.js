@@ -11,12 +11,12 @@ import {getArticles} from "../../actions/artigos";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import EnviarArtigoDialog from "./enviarArtigoEdicao";
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import EditRoadIcon from '@mui/icons-material/EditRoad';
 import VisualizarArtigoDialog from "./visualizarArtigoDialog";
 import StartIcon from '@mui/icons-material/Start';
 
 
 import "./artigos.css"
+import {Start} from "@mui/icons-material";
 export const Artigos = () => {
     const theme = createTheme(
         {
@@ -42,7 +42,10 @@ export const Artigos = () => {
     const [artigos, setArtigos] = useState([]);
     const [openDialog, setOpenDialog] = useState(false);
     const [openEnviarArtigoDialog, setOpenEnviarArtigoDialog] = useState(false);
+
     const [selectedArtigo, setSelectedArtigo] = useState(null);
+    const [selectedArtigoVisualizar, setSelectedArtigoVisulizar] = useState(null);
+
     const [openVisualizarArtigoDialog, setOpenVisualizarArtigoDialog] = useState(false);
 
 
@@ -101,35 +104,108 @@ export const Artigos = () => {
             field: "actions",
             headerName: "Ações",
             headerClassName: "header-center",
-            width: 150,
+            width: 130,
             renderCell: (params) => (
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
+
                     <Button
                         color="primary"
-                        onClick={() => handleVisualizarArtigo(params.row)}
+                        onClick={() => { handleVisualizarArtigo(params.row) }}
+                        sx={{
+                            fontSize: '1.7rem',
+                            cursor: 'pointer',
+                            marginLeft: '10px',
+                            marginRight: '10px',
+                            margin: '-5px',
+                            padding: '-20px',
+                            '&:hover': {
+                                backgroundColor: 'lightblue',
+                                padding: '1px',
+                                borderRadius: '10%',
+                            },
+                        }}
                     >
                         <VisibilityIcon />
                     </Button>
                     <Button
                         color="secondary"
                         onClick={() => handleEnviarArtigo(params.row)}
+                        sx={{
+                            fontSize: '1.7rem',
+                            cursor: 'pointer',
+                            marginLeft: '10px',
+                            marginRight: '10px',
+                            margin: '-5px',
+                            padding: '-20px',
+                            '&:hover': {
+                                backgroundColor: 'lightblue',
+                                borderRadius: '10%',
+                            },
+                        }}
+                        disabled={!isAtualizarStatusHabilitado(params.row)}
                     >
                         <StartIcon />
                     </Button>
+
                 </div>
             ),
         },
-        { field: "id", headerName: "ID", width: 100 },
+        { field: "id", headerName: "ID", width: 60 },
         { field: "titulo", headerName: "Título", width: 200 },
         { field: "conteudo", headerName: "Conteúdo", width: 200 },
-        { field: "palavraChave", headerName: "Palavra-Chave", width: 200 },
+        { field: "palavraChave", headerName: "Palavra-Chave", width: 180 },
         { field: "redator", headerName: "Redator", width: 200 },
         { field: "revisor", headerName: "Revisor", width: 200 },
         { field: "cliente", headerName: "Cliente", width: 200 },
-        { field: "estadoAtual", headerName: "Estado Atual", width: 150 },
+        { field: "estadoAtual",
+            headerName: "Estado Atual",
+            width: 150,
+            cellClassName: (params) => getEstadoAtualCellStyle(params.value),
+            valueGetter: (params) => getEstadoAtualText(params.value),
+        },
         { field: "dataCriacao", headerName: "Data de Criação", width: 150 },
         { field: "dataFinalizacao", headerName: "Data de Finalização", width: 150 },
     ];
+
+    function getEstadoAtualText(estadoAtual) {
+        switch (estadoAtual) {
+            case "ABERTO":
+                return "ABERTO";
+            case "EM_EDICAO":
+                return "EM EDIÇÃO";
+            case "EM_REVISAO":
+                return "EM REVISÃO";
+            case "REVISADO":
+                return "REVISADO";
+            case "ACEITO":
+                return "ACEITO";
+            case "CANCELADO":
+                return "CANCELADO";
+            default:
+                return estadoAtual;
+        }
+    }
+
+
+    function getEstadoAtualCellStyle(estadoAtual) {
+        switch (estadoAtual) {
+            case "ABERTO":
+                return "aberto-cell";
+            case "EM EDIÇÃO":
+                return "em-edicao-cell";
+            case "EM REVISÃO":
+                return "em-revisao-cell";
+            case "REVISADO":
+                return "revisado-cell";
+            case "ACEITO":
+                return "aceito-cell";
+            case "CANCELADO":
+                return "cancelado-cell";
+            default:
+                return "";
+        }
+    }
+
 
     useEffect(() => {
         async function fetchSelectData() {
@@ -183,9 +259,14 @@ export const Artigos = () => {
     };
 
     const handleVisualizarArtigo = (params) => {
-        setSelectedArtigo(params);
+        setSelectedArtigoVisulizar(params);
         setOpenVisualizarArtigoDialog(true);
     };
+
+    const isAtualizarStatusHabilitado = (artigo) => {
+        return artigo.estadoAtual !== "EM_EDICAO";
+    };
+
 
 
 
@@ -243,16 +324,17 @@ export const Artigos = () => {
                             </Button>
                         </div>
 
+                        <VisualizarArtigoDialog
+                            open={openVisualizarArtigoDialog}
+                            onClose={() => setOpenVisualizarArtigoDialog(false)}
+                            artigo={selectedArtigoVisualizar}
+                        />
+
                         <EnviarArtigoDialog
                             open={openEnviarArtigoDialog}
                             onClose={() => setOpenEnviarArtigoDialog(false)}
                             artigo={selectedArtigo}
-                        />
-
-                        <VisualizarArtigoDialog
-                            open={openVisualizarArtigoDialog}
-                            onClose={() => setOpenVisualizarArtigoDialog(false)}
-                            artigo={selectedArtigo}
+                            handleRefresh={startGridArtigo}
                         />
 
                         <CriarArtigoDialog

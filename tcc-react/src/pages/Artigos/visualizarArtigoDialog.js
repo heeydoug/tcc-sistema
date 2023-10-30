@@ -15,7 +15,7 @@ export default function VisualizarArtigoDialog({ open, onClose, artigo }) {
                     <Grid item xs={12}>
                         <TextField
                             label="ID"
-                            value={artigo.id}
+                            value={artigo ? JSON.stringify(artigo.id) : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
@@ -24,7 +24,7 @@ export default function VisualizarArtigoDialog({ open, onClose, artigo }) {
                     <Grid item xs={12}>
                         <TextField
                             label="Título"
-                            value={artigo.titulo}
+                            value={artigo ? JSON.stringify(artigo.titulo ) : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
@@ -33,7 +33,7 @@ export default function VisualizarArtigoDialog({ open, onClose, artigo }) {
                     <Grid item xs={12}>
                         <TextField
                             label="Conteúdo"
-                            value={artigo.conteudo}
+                            value={artigo ? JSON.stringify(artigo.conteudo) : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
@@ -42,7 +42,7 @@ export default function VisualizarArtigoDialog({ open, onClose, artigo }) {
                     <Grid item xs={12}>
                         <TextField
                             label="Palavra-Chave"
-                            value={artigo.palavraChave}
+                            value={artigo ? JSON.stringify(artigo.palavraChave) : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
@@ -51,7 +51,7 @@ export default function VisualizarArtigoDialog({ open, onClose, artigo }) {
                     <Grid item xs={12}>
                         <TextField
                             label="Redator"
-                            value={artigo.redator}
+                            value={artigo ? JSON.stringify(artigo.redator) : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
@@ -60,7 +60,7 @@ export default function VisualizarArtigoDialog({ open, onClose, artigo }) {
                     <Grid item xs={12}>
                         <TextField
                             label="Revisor"
-                            value={artigo.revisor}
+                            value={artigo ? JSON.stringify(artigo.revisor) : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
@@ -69,7 +69,7 @@ export default function VisualizarArtigoDialog({ open, onClose, artigo }) {
                     <Grid item xs={12}>
                         <TextField
                             label="Cliente"
-                            value={artigo.cliente}
+                            value={artigo ? JSON.stringify(artigo.cliente) : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
@@ -78,7 +78,7 @@ export default function VisualizarArtigoDialog({ open, onClose, artigo }) {
                     <Grid item xs={12}>
                         <TextField
                             label="Estado Atual"
-                            value={artigo.estadoAtual}
+                            value={artigo ? JSON.stringify(artigo.estadoAtual) : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
@@ -87,7 +87,7 @@ export default function VisualizarArtigoDialog({ open, onClose, artigo }) {
                     <Grid item xs={12}>
                         <TextField
                             label="Data de Criação"
-                            value={artigo.dataCriacao}
+                            value={artigo ? JSON.stringify(artigo.dataCriacao) : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
@@ -96,7 +96,7 @@ export default function VisualizarArtigoDialog({ open, onClose, artigo }) {
                     <Grid item xs={12}>
                         <TextField
                             label="Data de Finalização"
-                            value={artigo.dataFinalizacao}
+                            value={artigo ? JSON.stringify(artigo.dataFinalizacao) : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
