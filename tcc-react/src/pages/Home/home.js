@@ -73,9 +73,9 @@ export const Home = () => {
   function createFile(tag) {
     const token = sessionStorage.getItem("@AuthFirebase:token");
     console.log("Token do firebase", token)
-    //var accessToken = gapi.auth.getToken().access_token;
+    var accessToken = gapi.auth.getToken().access_token;
 
-    var accessToken = "ya29.a0AfB_byAVodeuqYZS6JVGX6utWP0lyiDabUBgUmfl1SN7sqoKDxwyrb30ZYF2KvjEB_QgzShFfvNVFPI6noesfDhZzArwsTGJGEdH5mdEiEAu09d2YAn-VDjiwPMnj9-0WaFo9jN0isVzgXJaFRo0tfsw2mIoq2b4tgaCgYKATQSARMSFQGOcNnClYiCctHdvgw4Rimk_OKDMw0169"
+   // var accessToken = "ya29.a0AfB_byAVodeuqYZS6JVGX6utWP0lyiDabUBgUmfl1SN7sqoKDxwyrb30ZYF2KvjEB_QgzShFfvNVFPI6noesfDhZzArwsTGJGEdH5mdEiEAu09d2YAn-VDjiwPMnj9-0WaFo9jN0isVzgXJaFRo0tfsw2mIoq2b4tgaCgYKATQSARMSFQGOcNnClYiCctHdvgw4Rimk_OKDMw0169"
     console.log(accessToken)
     var fileName = tag + " " + getDateString() + " " + getTimeString();
     fetch('https://docs.googleapis.com/v1/documents?title=' + fileName, {

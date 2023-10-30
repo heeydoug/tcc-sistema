@@ -35,4 +35,5 @@ public class ArtigoService {
     public void excluirArtigo(Long id) {
         artigoRepository.deleteById(id);
     }
+
 }

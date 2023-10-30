@@ -38,6 +38,7 @@ export const CriarArtigoDialog = ({
     // Função para redefinir os valores dos campos para nulo
     const resetDialogFields = () => {
         setNovoArtigo({
+
             titulo: "",
             conteudo: "",
             palavraChave: "",

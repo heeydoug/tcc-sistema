@@ -9,6 +9,14 @@ import Typography from "@mui/material/Typography";
 import { CriarArtigoDialog } from "./criarArtigoDialog";
 import {getArticles} from "../../actions/artigos";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import EnviarArtigoDialog from "./enviarArtigoEdicao";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import EditRoadIcon from '@mui/icons-material/EditRoad';
+import VisualizarArtigoDialog from "./visualizarArtigoDialog";
+import StartIcon from '@mui/icons-material/Start';
+
+
+import "./artigos.css"
 export const Artigos = () => {
     const theme = createTheme(
         {
@@ -33,6 +41,11 @@ export const Artigos = () => {
     const dopen = useAppStore((state) => state.dopen);
     const [artigos, setArtigos] = useState([]);
     const [openDialog, setOpenDialog] = useState(false);
+    const [openEnviarArtigoDialog, setOpenEnviarArtigoDialog] = useState(false);
+    const [selectedArtigo, setSelectedArtigo] = useState(null);
+    const [openVisualizarArtigoDialog, setOpenVisualizarArtigoDialog] = useState(false);
+
+
 
     // Função para buscar os artigos da API
     const fetchArtigosData = async () => {
@@ -84,6 +97,28 @@ export const Artigos = () => {
     };
 
     const columns = [
+        {
+            field: "actions",
+            headerName: "Ações",
+            headerClassName: "header-center",
+            width: 150,
+            renderCell: (params) => (
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Button
+                        color="primary"
+                        onClick={() => handleVisualizarArtigo(params.row)}
+                    >
+                        <VisibilityIcon />
+                    </Button>
+                    <Button
+                        color="secondary"
+                        onClick={() => handleEnviarArtigo(params.row)}
+                    >
+                        <StartIcon />
+                    </Button>
+                </div>
+            ),
+        },
         { field: "id", headerName: "ID", width: 100 },
         { field: "titulo", headerName: "Título", width: 200 },
         { field: "conteudo", headerName: "Conteúdo", width: 200 },
@@ -142,6 +177,18 @@ export const Artigos = () => {
         }
     };
 
+    const handleEnviarArtigo = (params) => {
+        setSelectedArtigo(params);
+        setOpenEnviarArtigoDialog(true);
+    };
+
+    const handleVisualizarArtigo = (params) => {
+        setSelectedArtigo(params);
+        setOpenVisualizarArtigoDialog(true);
+    };
+
+
+
     return (
         <ThemeProvider theme={theme}>
             <div className={`container ${dopen ? "open" : ""}`}>
@@ -181,7 +228,10 @@ export const Artigos = () => {
                                 revisor: artigo.revisor.nome,
                                 cliente: artigo.cliente.nome,
                             }))}
-                                      columns={columns} pageSize={20}/>
+                                      columns={columns}
+                                      pageSize={20}
+
+                            />
                         </div>
                         <div style={{ marginTop: "10px"}}>
                             <Button
@@ -192,6 +242,18 @@ export const Artigos = () => {
                                 Criar Artigo
                             </Button>
                         </div>
+
+                        <EnviarArtigoDialog
+                            open={openEnviarArtigoDialog}
+                            onClose={() => setOpenEnviarArtigoDialog(false)}
+                            artigo={selectedArtigo}
+                        />
+
+                        <VisualizarArtigoDialog
+                            open={openVisualizarArtigoDialog}
+                            onClose={() => setOpenVisualizarArtigoDialog(false)}
+                            artigo={selectedArtigo}
+                        />
 
                         <CriarArtigoDialog
                             open={openDialog}

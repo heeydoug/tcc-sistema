@@ -106,5 +106,9 @@ public class UsuarioService {
                 .filter(usuario -> usuario.getTipo() == TipoUsuario.ADMINISTRADOR)
                 .collect(Collectors.toList());
     }
+
+    public Usuario findByEmail(String email) {
+        return usuarioRepository.findByEmail(email);
+    }
 }
 
