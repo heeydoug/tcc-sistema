@@ -10,7 +10,9 @@ import com.tccspring.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.tccspring.domains.enums.TipoUsuario.*;
 
@@ -70,18 +72,28 @@ public class ArtigoController {
         Usuario usuario = usuarioService.findByEmail(email);
 
         if (usuario != null && usuario.getTipo() == tipo) {
-            switch (tipo) {
-                case REDATOR:
-                    return usuario.getArtigosRedator();
-                case REVISOR:
-                    return usuario.getArtigosRevisor();
-                case CLIENTE:
-                    return usuario.getArtigosCliente();
-                default:
-                    return null; // Trate outros tipos, se necessário.
-            }
+            return switch (tipo) {
+                case REDATOR -> usuario.getArtigosRedator();
+                case REVISOR -> usuario.getArtigosRevisor();
+                case CLIENTE -> usuario.getArtigosCliente();
+                default -> null;
+            };
         } else {
             return null;
         }
     }
+
+    @GetMapping("/listarArtigos")
+    public List<Artigo> listarArtigosPorEmailTipoEStatus(
+            @RequestParam String email,
+            @RequestParam TipoUsuario tipoUsuario,
+            @RequestParam EstadoArtigo estadoArtigo
+    ) {
+        return artigoService.listarArtigosPorEmailTipoEStatus(email, tipoUsuario, estadoArtigo);
+    }
+
+
+
+
+
 }

@@ -70,7 +70,7 @@ export const CriarArtigoDialog = ({
     const createGoogleDriveDocument = (tag) => {
         const token = sessionStorage.getItem("@AuthFirebase:token");
         console.log("Token do Firebase", token);
-        var accessToken = "ya29.a0AfB_byBXSVsgD_MQmqZ73V0fUcvKLZzkKIwo2ksBoqqhAtkcNnYmuHQLnkwvZWXnHTW74Tq9AXvCyUNtECIFjZBq-PvV4viYPuU3FbqEai3KOyRQASV6uE6tWJ6jxiYyIW7baH-MHFFAZRcQjuL7I6KIFK8KSZIVlGEaCgYKAZkSARMSFQGOcNnChZv6ymSsXzZGvSqdk7EJzw0170";
+        var accessToken = "ya29.a0AfB_byDYlpivh_ZTL1QX8g8BPV-tbzRlH9hm8VnS0lBjh5NNVhHywF4q1oF1mP3CGSbzrG_eLyA2A5lJr5SQks-hdeEf-Dkcsbv_m3jIHR5wgUGQ8SuanKOQqpwxJPhkwPyofxQFavQMHt_VT1K-b7pKA94K9UriUN0aCgYKAQgSARMSFQGOcNnCxTyDy_tvcz1QeqHQ62R_nw0170";
         console.log(accessToken);
         var fileName = tag + " " + getDateString() + " " + getTimeString();
 

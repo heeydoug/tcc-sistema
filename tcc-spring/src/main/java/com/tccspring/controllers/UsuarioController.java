@@ -1,5 +1,6 @@
 package com.tccspring.controllers;
 
+import com.tccspring.domains.Usuario;
 import com.tccspring.domains.enums.TipoUsuario;
 import com.tccspring.dtos.UsuarioDTO;
 import com.tccspring.exceptions.ErrorMessage;
@@ -64,6 +65,11 @@ public class UsuarioController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/obter-usuario-email")
+    public Usuario verificarUsarioPorEmail(@RequestParam String email) {
+        return usuarioService.findByEmail(email);
     }
 
     @GetMapping("/verificar-email")

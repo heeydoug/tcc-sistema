@@ -1,6 +1,8 @@
 package com.tccspring.services;
 
 import com.tccspring.domains.Artigo;
+import com.tccspring.domains.enums.EstadoArtigo;
+import com.tccspring.domains.enums.TipoUsuario;
 import com.tccspring.repositories.ArtigoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,11 @@ public class ArtigoService {
         }
         return null;
     }
+
+    public List<Artigo> listarArtigosPorEmailTipoEStatus(String email, TipoUsuario tipoUsuario, EstadoArtigo estadoArtigo) {
+        return artigoRepository.findByRedatorEmailAndEstadoAtual(email, estadoArtigo);
+    }
+
 
     public void excluirArtigo(Long id) {
         artigoRepository.deleteById(id);

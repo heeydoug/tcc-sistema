@@ -24,6 +24,8 @@ import {useContext} from "react";
 import {AuthGoogleContext} from "../contexts/authGoogle";
 import {useAppStore} from "../configs/appStore";
 import LogoutIcon from "@mui/icons-material/Logout";
+import TopicIcon from '@mui/icons-material/Topic';
+import DatasetLinkedIcon from '@mui/icons-material/DatasetLinked';
 
 const drawerWidth = 240;
 
@@ -267,6 +269,52 @@ export default function MiniDrawer() {
                                 <ArticleIcon />
                             </ListItemIcon>
                             <ListItemText primary="Artigos" sx={{ opacity: open ? 1 : 0 }} />
+                        </ListItemButton>
+                    </ListItem>
+                    {/* Meus Artigos Vinculados */}
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={ () => {navigate("/meus-artigos")}}>
+                        <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                                color: 'white'
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                    color: 'white'
+                                }}
+                            >
+                                <DatasetLinkedIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Meus Artigos" sx={{ opacity: open ? 1 : 0 }} />
+                        </ListItemButton>
+                    </ListItem>
+                    {/* Histórico de Artigos */}
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={ () => {navigate("/historico-artigos")}}>
+                        <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                                color: 'white'
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                    color: 'white'
+                                }}
+                            >
+                                <TopicIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Histórico de Artigos" sx={{ opacity: open ? 1 : 0 }} />
                         </ListItemButton>
                     </ListItem>
                     {/* Logout */}

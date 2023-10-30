@@ -33,6 +33,16 @@ export const checkUserByEmail = async (email) => {
 };
 
 // ======================================================================
+export const getUserByEmail = async (email) => {
+    try {
+        const response = await axios.get(`/usuarios/obter-usuario-email?email=${email}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// ======================================================================
 export const deleteUser = async (userId) => {
     try {
         const response = await axios.delete(`/usuarios/${userId}`);

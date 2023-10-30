@@ -310,7 +310,10 @@ export const Artigos = () => {
                                 cliente: artigo.cliente.nome,
                             }))}
                                       columns={columns}
-                                      pageSize={20}
+                                      pagination
+                                      paginationPageSize={10} // Defina o número de "Linhas por página" como 10
+                                      rowsPerPageOptions={[10, 20, 50]}
+                                      disableRowSelectionOnClick
 
                             />
                         </div>
