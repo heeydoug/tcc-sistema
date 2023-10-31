@@ -86,10 +86,10 @@ public class ArtigoController {
     @GetMapping("/listarArtigos")
     public List<Artigo> listarArtigosPorEmailTipoEStatus(
             @RequestParam String email,
-            @RequestParam TipoUsuario tipoUsuario,
-            @RequestParam EstadoArtigo estadoArtigo
+            @RequestParam TipoUsuario tipo,
+            @RequestParam EstadoArtigo estadoAtual
     ) {
-        return artigoService.listarArtigosPorEmailTipoEStatus(email, tipoUsuario, estadoArtigo);
+        return artigoService.listarArtigosPorEmailTipoEStatus(email, tipo, estadoAtual);
     }
 
 

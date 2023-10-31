@@ -55,13 +55,13 @@ export const listArticlesHistoric = async (email, tipo) => {
 };
 
 // ======================================================================
-export const listArticles = async (email, tipo, estadoArtigo) => {
+export const listArticles = async (email, tipo, estadoAtual) => {
     try {
         const response = await axios.get(`/artigos/listarArtigos`, {
             params: {
                 email: email,
-                tipoUsuario: tipo,
-                estadoArtigo: estadoArtigo
+                tipo: tipo,
+                estadoAtual: estadoAtual
             },
         });
         return response.data;

@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface ArtigoRepository extends JpaRepository<Artigo, Long> {
-    List<Artigo> findByRedatorEmailAndEstadoAtual(String email, EstadoArtigo estadoArtigo);
+    List<Artigo> findByRedatorEmailAndEstadoAtual(String email, EstadoArtigo estadoAtual);
 
 }

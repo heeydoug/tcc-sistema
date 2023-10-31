@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
     Dialog,
     DialogActions,
@@ -14,8 +14,11 @@ import {
 import Grid from "@mui/material/Grid";
 import {gapi} from "gapi-script";
 import {createArticle, updateArticle} from "../../actions/artigos";
-
 import { toast, ToastContainer } from "react-toastify";
+
+const clientId = "308424476532-e40blk46kh67iussdbce2655m9lnacoq.apps.googleusercontent.com";
+const apiKey = "API_KEY";
+const scopes = "https://www.googleapis.com/auth/drive";
 export const CriarArtigoDialog = ({
                                       open,
                                       onClose,
@@ -67,10 +70,22 @@ export const CriarArtigoDialog = ({
         return date.toLocaleTimeString();
     }
 
+    useEffect(() => {
+        function start() {
+            gapi.client.init({
+                apiKey: apiKey,
+                clientId: clientId,
+                scope: scopes
+            });
+        }
+        gapi.load('client:auth2', start);
+    }, []);
+
     const createGoogleDriveDocument = (tag) => {
         const token = sessionStorage.getItem("@AuthFirebase:token");
         console.log("Token do Firebase", token);
-        var accessToken = "ya29.a0AfB_byDYlpivh_ZTL1QX8g8BPV-tbzRlH9hm8VnS0lBjh5NNVhHywF4q1oF1mP3CGSbzrG_eLyA2A5lJr5SQks-hdeEf-Dkcsbv_m3jIHR5wgUGQ8SuanKOQqpwxJPhkwPyofxQFavQMHt_VT1K-b7pKA94K9UriUN0aCgYKAQgSARMSFQGOcNnCxTyDy_tvcz1QeqHQ62R_nw0170";
+        var accessToken = gapi.auth.getToken().access_token;
+        //var accessToken = "ya29.a0AfB_byDYlpivh_ZTL1QX8g8BPV-tbzRlH9hm8VnS0lBjh5NNVhHywF4q1oF1mP3CGSbzrG_eLyA2A5lJr5SQks-hdeEf-Dkcsbv_m3jIHR5wgUGQ8SuanKOQqpwxJPhkwPyofxQFavQMHt_VT1K-b7pKA94K9UriUN0aCgYKAQgSARMSFQGOcNnCxTyDy_tvcz1QeqHQ62R_nw0170";
         console.log(accessToken);
         var fileName = tag + " " + getDateString() + " " + getTimeString();
 
