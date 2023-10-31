@@ -40,3 +40,32 @@ export const updateStatusArtigo = async (idDoArtigo, estadoArtigo) => {
     }
 };
 // ======================================================================
+export const listArticlesHistoric = async (email, tipo) => {
+    try {
+        const response = await axios.get(`/artigos/artigos-do-usuario`, {
+            params: {
+                email: email,
+                tipo: tipo,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// ======================================================================
+export const listArticles = async (email, tipo, estadoArtigo) => {
+    try {
+        const response = await axios.get(`/artigos/listarArtigos`, {
+            params: {
+                email: email,
+                tipoUsuario: tipo,
+                estadoArtigo: estadoArtigo
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

@@ -311,7 +311,7 @@ export const Artigos = () => {
                             }))}
                                       columns={columns}
                                       pagination
-                                      paginationPageSize={10} // Defina o número de "Linhas por página" como 10
+                                      paginationPageSize={10}
                                       rowsPerPageOptions={[10, 20, 50]}
                                       disableRowSelectionOnClick
 

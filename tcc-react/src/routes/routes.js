@@ -12,6 +12,8 @@ import {Clientes} from "../pages/Clientes/clientes";
 import {Administrador} from "../pages/Admintradores/admin";
 import {Artigos} from "../pages/Artigos/artigos";
 import {InfoUsuarios} from "../pages/InfoUsuarios/infoUsuarios";
+import {HistoricoArtigos} from "../pages/HistóricoArtigos/historicoArtigos";
+import {MeusArtigos} from "../pages/MeusArtigos/meusArtigos";
 
 
 export const AppRoutes = () => {
@@ -47,6 +49,12 @@ export const AppRoutes = () => {
                     </Route>
                     <Route path="/meus-dados" element={<PrivateRoutes />}>
                         <Route path="/meus-dados" element={<InfoUsuarios />} />
+                    </Route>
+                    <Route path="/meus-artigos" element={<PrivateRoutes />}>
+                        <Route path="/meus-artigos" element={<MeusArtigos />} />
+                    </Route>
+                    <Route path="/historico-artigos" element={<PrivateRoutes />}>
+                        <Route path="/historico-artigos" element={<HistoricoArtigos />} />
                     </Route>
                 </Routes>
             </Fragment>
