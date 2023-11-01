@@ -165,6 +165,17 @@ export const Artigos = () => {
         },
         { field: "dataCriacao", headerName: "Data de Criação", width: 150 },
         { field: "dataFinalizacao", headerName: "Data de Finalização", width: 150 },
+        {
+            field: "historicoEstados",
+            headerName: "Histórico de Estados",
+            width: 200,
+            valueGetter: (params) => {
+                const historicoEstados = params.row.historicoEstados;
+                return historicoEstados
+                    .map((estado) => getEstadoAtualText(estado.estado))
+                    .join(", ");
+            },
+        },
     ];
 
     function getEstadoAtualText(estadoAtual) {

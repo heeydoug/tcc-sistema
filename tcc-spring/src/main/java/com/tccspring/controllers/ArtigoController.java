@@ -8,6 +8,7 @@ import com.tccspring.domains.enums.TipoUsuario;
 import com.tccspring.services.ArtigoService;
 import com.tccspring.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -82,6 +83,30 @@ public class ArtigoController {
             return null;
         }
     }
+
+    @GetMapping("/quantidade-artigos-do-usuario")
+    public ResponseEntity<Integer> obterQuantidadeArtigosDoUsuarioPorEmailETipo(@RequestParam String email, @RequestParam TipoUsuario tipo) {
+        Usuario usuario = usuarioService.findByEmail(email);
+
+        if (usuario != null && usuario.getTipo() == tipo) {
+            List<Artigo> artigos = switch (tipo) {
+                case REDATOR -> usuario.getArtigosRedator();
+                case REVISOR -> usuario.getArtigosRevisor();
+                case CLIENTE -> usuario.getArtigosCliente();
+                default -> null;
+            };
+
+            if (artigos != null) {
+                int quantidadeArtigos = artigos.size();
+                return ResponseEntity.ok(quantidadeArtigos);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
     @GetMapping("/listarArtigos")
     public List<Artigo> listarArtigosPorEmailTipoEStatus(

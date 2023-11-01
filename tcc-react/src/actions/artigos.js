@@ -69,3 +69,18 @@ export const listArticles = async (email, tipo, estadoAtual) => {
         throw error;
     }
 };
+// ======================================================================
+
+export const countArticleVinc = async (email, tipo) => {
+    try {
+        const response = await axios.get(`/artigos/quantidade-artigos-do-usuario`, {
+            params: {
+                email: email,
+                tipo: tipo,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

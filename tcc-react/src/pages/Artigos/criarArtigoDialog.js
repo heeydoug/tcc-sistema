@@ -33,7 +33,8 @@ export const CriarArtigoDialog = ({
                                       setSelectedRevisor,
                                       selectedCliente,
                                       setSelectedCliente,
-                                      handleRefresh
+                                      handleRefresh,
+
                                   }) => {
 
     const [buttonClicked, setButtonClicked] = useState(false);
@@ -167,9 +168,9 @@ export const CriarArtigoDialog = ({
                 titulo: novoArtigo.titulo,
                 conteudo: novoArtigo.conteudo,
                 palavraChave: novoArtigo.palavraChave,
-                idPastaDrive: idPastaDrive, // ID da pasta no Google Drive
-                idDocumentoDrive: idDocumentoDrive, // ID do documento no Google Drive
-                id: null, // Deixe o ID em branco para que o banco de dados o gere automaticamente
+                idPastaDrive: idPastaDrive,
+                idDocumentoDrive: idDocumentoDrive,
+                id: null, //ID em branco para que o banco de dados o gere automaticamente
                 redator: selectedRedator,
                 revisor: selectedRevisor,
                 cliente: selectedCliente,
@@ -185,22 +186,24 @@ export const CriarArtigoDialog = ({
                 ]
             };
 
+
             // Fazendo a solicitação POST para o backend para criar o artigo
             const createdArticleResponse = await createArticle(artigoData);
 
-
-            // Resposta do backend para obter o ID do artigo
-            const artigoCriado = createdArticleResponse.id;
-
-            const idDoArtigo = artigoCriado;
-
-
-            // Atualizando o ID do artigo na parte de historicoEstados
-            artigoData.historicoEstados[0].artigo.id = idDoArtigo;
-
-            // Fazendo a solicitação para atualizar o artigo usando a função updateArticle
-            const updatedArticle = await updateArticle(idDoArtigo, artigoData);
-            console.log("Artigo atualizado com sucesso:", updatedArticle);
+            console.log("Artigo Criado", createdArticleResponse);
+            //
+            // // Resposta do backend para obter o ID do artigo
+            // const artigoCriado = createdArticleResponse.id;
+            //
+            // const idDoArtigo = artigoCriado;
+            //
+            //
+            // // Atualizando o ID do artigo na parte de historicoEstados
+            // artigoData.historicoEstados[0].artigo.id = idDoArtigo;
+            //
+            // // Fazendo a solicitação para atualizar o artigo usando a função updateArticle
+            // const updatedArticle = await updateArticle(idDoArtigo, artigoData);
+            // console.log("Artigo atualizado com sucesso:", updatedArticle);
 
             toast.success("Artigo '" + artigoData.titulo + "' criado com sucesso!");
 

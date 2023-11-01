@@ -1,16 +1,17 @@
-import React, { useContext } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Card, CardContent, Container, createTheme, Paper, ThemeProvider} from "@mui/material";
-import { useAppStore } from "../../configs/appStore";
+import {useAppStore} from "../../configs/appStore";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import { AuthGoogleContext } from "../../contexts/authGoogle";
+import {AuthGoogleContext} from "../../contexts/authGoogle";
 
 // Importar makeStyles para criar estilos personalizados
-import { makeStyles } from "@mui/styles";
+import {makeStyles} from "@mui/styles";
 import LogoutIcon from "@mui/icons-material/Logout";
+import {countArticleVinc} from "../../actions/artigos";
+import {toast} from "react-toastify";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -50,8 +51,30 @@ export const InfoUsuarios = () => {
     const { user, signOut } = useContext(AuthGoogleContext);
     const userLogged = user;
     const dopen = useAppStore((state) => state.dopen);
+    const sessionUser = sessionStorage.getItem("@AuthFirebase:userSession");
+    const sessionUserF = JSON.parse(sessionUser);
+
+    const [quantArtigoVinculados, setQuantArtigoVinculados] = useState(0);
 
     const classes = useStyles();
+
+    const getArticlesVinc = async () => {
+        try {
+            if (sessionUserF && sessionUserF.tipo !== 'ADMINISTRADOR') {
+                const response = await countArticleVinc(
+                    sessionUserF.email,
+                    sessionUserF.tipo
+                );
+                setQuantArtigoVinculados(response);
+            }
+        } catch (error) {
+            toast.error("Error fetching data:", error);
+        }
+    };
+
+    useEffect(() => {
+        getArticlesVinc();
+    }, []);
 
     return (
         <ThemeProvider theme={theme}>
@@ -70,6 +93,17 @@ export const InfoUsuarios = () => {
                                         <div className={classes.info}>
                                             <Typography variant="subtitle1">Nome: {userLogged.displayName}</Typography>
                                             <Typography variant="subtitle1">Email: {userLogged.email}</Typography>
+                                            <Typography variant="subtitle1">
+                                                Tipo do Usuário: {sessionUserF.tipo === 'USUARIO' ? 'Usuário' :
+                                                sessionUserF.tipo === 'REDATOR' ? 'Redator' :
+                                                    sessionUserF.tipo === 'REVISOR' ? 'Revisor' :
+                                                        sessionUserF.tipo === 'ADMINISTRADOR' ? 'Administrador' : 'Desconhecido'}
+                                            </Typography>
+                                            <Typography variant="subtitle1">Data de Registro: {sessionUserF.dataCriacao}</Typography>
+                                            {sessionUserF.tipo !== 'ADMINISTRADOR' && (
+                                                <Typography variant="subtitle1">Quantidade de Artigos Vinculados: {quantArtigoVinculados}</Typography>
+                                            )}
+                                            <Typography variant="subtitle1">Status: {sessionUserF.ativo === true ? 'Ativo' : 'Inativo'}</Typography>
                                         </div>
                                         <Button
                                             variant="outlined"
@@ -83,9 +117,7 @@ export const InfoUsuarios = () => {
                                 </Box>
                             </CardContent>
                         </Card>
-
                     </Paper>
-
                 </Container>
             </div>
         </ThemeProvider>
