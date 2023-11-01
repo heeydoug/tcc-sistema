@@ -145,7 +145,6 @@ export const CriarArtigoDialog = ({
 
 
     const criarArtigo = async () => {
-        // Validação dos campos
         if (
             novoArtigo.titulo === "" ||
             novoArtigo.conteudo === "" ||
@@ -186,20 +185,20 @@ export const CriarArtigoDialog = ({
                 ]
             };
 
-            // Faça a solicitação POST para o backend para criar o artigo
+            // Fazendo a solicitação POST para o backend para criar o artigo
             const createdArticleResponse = await createArticle(artigoData);
 
 
-            // Aguarde a resposta do backend e obtenha o ID do artigo
+            // Resposta do backend para obter o ID do artigo
             const artigoCriado = createdArticleResponse.id;
 
             const idDoArtigo = artigoCriado;
 
 
-            // Agora, atualize o ID do artigo na parte de historicoEstados
+            // Atualizando o ID do artigo na parte de historicoEstados
             artigoData.historicoEstados[0].artigo.id = idDoArtigo;
 
-            // Faça a solicitação para atualizar o artigo usando a função updateArticle
+            // Fazendo a solicitação para atualizar o artigo usando a função updateArticle
             const updatedArticle = await updateArticle(idDoArtigo, artigoData);
             console.log("Artigo atualizado com sucesso:", updatedArticle);
 

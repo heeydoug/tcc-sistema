@@ -34,8 +34,8 @@ public class ArtigoService {
         return null;
     }
 
-    public List<Artigo> listarArtigosPorEmailTipoEStatus(String email, TipoUsuario tipo, EstadoArtigo estadoAtual) {
-        return artigoRepository.findByRedatorEmailAndEstadoAtual(email, estadoAtual);
+    public List<Artigo> listarArtigosPorEmailTipoEStatus(String email, String tipo, EstadoArtigo estadoAtual) {
+        return artigoRepository.listarArtigosPorFiltro(email, tipo, estadoAtual);
     }
 
 
