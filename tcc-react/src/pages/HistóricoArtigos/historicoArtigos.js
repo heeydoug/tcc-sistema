@@ -12,6 +12,9 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import { toast, ToastContainer } from "react-toastify";
 import { useAppStore } from "../../configs/appStore";
 import { listArticlesHistoric } from "../../actions/artigos";
+import FileOpenIcon from "@mui/icons-material/FileOpen";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisualizarArtigoDialog from "../Artigos/visualizarArtigoDialog";
 
 
 
@@ -29,27 +32,86 @@ export const HistoricoArtigos = () => {
 
     const dopen = useAppStore((state) => state.dopen);
     const [data, setData] = useState([]);
+    const [selectedArtigoVisualizar, setSelectedArtigoVisulizar] = useState(null);
+    const [openVisualizarArtigoDialog, setOpenVisualizarArtigoDialog] = useState(false);
+    const handleVisualizarArtigo = (params) => {
+        setSelectedArtigoVisulizar(params);
+        setOpenVisualizarArtigoDialog(true);
+    };
+
+    const handleAbrirArtigoDocs = (params) => {
+        window.open("https://docs.google.com/document/d/" + params.idDocumentoDrive + "/edit", "_blank");
+    };
 
     const columns = [
-        { field: "id", headerName: "ID", width: 50 },
-        { field: "titulo", headerName: "Título", flex: 1 },
-        { field: "conteudo", headerName: "Conteúdo", flex: 1 },
-        { field: "palavraChave", headerName: "Palavra-chave", flex: 1 },
-        { field: "redator", headerName: "Redator", flex: 1,  valueGetter: (params) => params.row.redator.nome, },
-        { field: "revisor", headerName: "Revisor", flex: 1,  valueGetter: (params) => params.row.revisor.nome,},
-        { field: "cliente", headerName: "Cliente", flex: 1,  valueGetter: (params) => params.row.cliente.nome, },
+        {
+            field: "actions",
+            headerName: "Ações",
+            headerClassName: "header-center",
+            width: 130,
+            renderCell: (params) => (
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Button
+                        color="primary"
+                        onClick={() => { handleAbrirArtigoDocs(params.row) }}
+                        sx={{
+                            fontSize: '1.7rem',
+                            cursor: 'pointer',
+                            marginLeft: '10px',
+                            marginRight: '10px',
+                            margin: '-5px',
+                            padding: '-20px',
+                            '&:hover': {
+                                backgroundColor: 'lightblue',
+                                padding: '1px',
+                                borderRadius: '10%',
+                            },
+                        }}
+                        disabled={params.row.estadoAtual === "ABERTO"}
+                    >
+                        <FileOpenIcon />
+                    </Button>
+                    <Button
+                        color="primary"
+                        onClick={() => { handleVisualizarArtigo(params.row) }}
+                        sx={{
+                            fontSize: '1.7rem',
+                            cursor: 'pointer',
+                            marginLeft: '10px',
+                            marginRight: '10px',
+                            margin: '-5px',
+                            padding: '-20px',
+                            '&:hover': {
+                                backgroundColor: 'lightblue',
+                                padding: '1px',
+                                borderRadius: '10%',
+                            },
+                        }}
+                    >
+                        <VisibilityIcon />
+                    </Button>
+                </div>
+            ),
+        },
+        { field: "id", headerName: "ID", width: 60 },
+        { field: "titulo", headerName: "Título", width: 200 },
+        //{ field: "conteudo", headerName: "Conteúdo", flex: 1 },
+        { field: "palavraChave", headerName: "Palavra-chave", width: 140 },
+        { field: "redator", headerName: "Redator", width: 200,  valueGetter: (params) => params.row.redator.nome, },
+        { field: "revisor", headerName: "Revisor", width: 200,  valueGetter: (params) => params.row.revisor.nome,},
+        { field: "cliente", headerName: "Cliente", width: 200,  valueGetter: (params) => params.row.cliente.nome, },
         { field: "estadoAtual",
             headerName: "Estado Atual",
-            width: 150,
+            width: 110,
             cellClassName: (params) => getEstadoAtualCellStyle(params.value),
             valueGetter: (params) => getEstadoAtualText(params.value),
         },
-        { field: "dataCriacao", headerName: "Data de Criação", flex: 1 },
-        { field: "dataFinalizacao", headerName: "Data de Finalização", flex: 1 },
+        { field: "dataCriacao", headerName: "Data de Criação", width: 100 },
+        { field: "dataFinalizacao", headerName: "Data de Finalização", width: 100 },
         {
             field: "historicoEstados",
             headerName: "Histórico de Estados",
-            flex: 2,
+            width: 200,
             valueGetter: (params) => {
                 const historicoEstados = params.row.historicoEstados;
                 return historicoEstados
@@ -168,6 +230,13 @@ export const HistoricoArtigos = () => {
                             />
                         </div>
                     </Box>
+
+                    <VisualizarArtigoDialog
+                        open={openVisualizarArtigoDialog}
+                        onClose={() => setOpenVisualizarArtigoDialog(false)}
+                        artigo={selectedArtigoVisualizar}
+                    />
+
                 </Container>
             </div>
         </ThemeProvider>

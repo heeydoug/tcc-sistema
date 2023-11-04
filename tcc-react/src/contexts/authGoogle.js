@@ -23,6 +23,7 @@ export const AuthGoogleProvider = ({ children }) => {
         loadStorageAuth();
     }, []);
     const signInGoogle = async () => {
+        toast.dismiss();
         try {
             const result = await signInWithPopup(auth, provider);
             const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -31,13 +32,16 @@ export const AuthGoogleProvider = ({ children }) => {
             setUser(user);
             sessionStorage.setItem("@AuthFirebase:token", token);
             sessionStorage.setItem("@AuthFirebase:user", JSON.stringify(user));
-            console.log(user.email)
             try {
                 const userExists = await checkUserByEmail(user.email);
                 const userLogadoSessao = await getUserByEmail(user.email);
 
                 if (userExists && userLogadoSessao) {
-                    toast.success(`Bem-vindo de volta, ${user.displayName}!`);
+                    toast.success(
+                        <span>
+                        Bem-vindo de volta, <span style={{ color: '#07BC0C' }}>{user.displayName}</span>!
+                    </span>
+                    );
                     sessionStorage.setItem("@AuthFirebase:userSession", JSON.stringify(userLogadoSessao));
                 } else {
                     const newUser = {
@@ -47,7 +51,12 @@ export const AuthGoogleProvider = ({ children }) => {
                     };
                     await createUser(newUser);
                     sessionStorage.setItem("@AuthFirebase:userSession", JSON.stringify(userLogadoSessao));
-                    toast.success(`Usuário ${newUser.nome} cadastrado com sucesso, seja bem-vindo!`);
+                    toast.success(
+                        <span>
+                        Usuário <span style={{ color: '#07BC0C' }}>{newUser.nome}</span> cadastrado com sucesso, seja bem-vindo!
+                    </span>
+                    );
+
                 }
             } catch (error) {
                 console.error('Erro ao verificar ou criar usuário no banco de dados:', error);

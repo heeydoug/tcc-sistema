@@ -13,8 +13,10 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import {gapi} from "gapi-script";
+import { makeStyles } from "@mui/styles";
 import {createArticle, updateArticle} from "../../actions/artigos";
 import { toast, ToastContainer } from "react-toastify";
+import "./artigos.css"
 
 const clientId = "308424476532-e40blk46kh67iussdbce2655m9lnacoq.apps.googleusercontent.com";
 const apiKey = "API_KEY";
@@ -33,11 +35,9 @@ export const CriarArtigoDialog = ({
                                       setSelectedRevisor,
                                       selectedCliente,
                                       setSelectedCliente,
-                                      handleRefresh,
+                                      startGridArtigo,
 
                                   }) => {
-
-    const [buttonClicked, setButtonClicked] = useState(false);
 
     // Função para redefinir os valores dos campos para nulo
     const resetDialogFields = () => {
@@ -53,7 +53,6 @@ export const CriarArtigoDialog = ({
     };
 
     //Criando as funções para criar artigo
-
     function zeroFill(i) {
         return (i < 10 ? '0' : '') + i;
     }
@@ -88,7 +87,7 @@ export const CriarArtigoDialog = ({
         var accessToken = gapi.auth.getToken().access_token;
         //var accessToken = "ya29.a0AfB_byDYlpivh_ZTL1QX8g8BPV-tbzRlH9hm8VnS0lBjh5NNVhHywF4q1oF1mP3CGSbzrG_eLyA2A5lJr5SQks-hdeEf-Dkcsbv_m3jIHR5wgUGQ8SuanKOQqpwxJPhkwPyofxQFavQMHt_VT1K-b7pKA94K9UriUN0aCgYKAQgSARMSFQGOcNnCxTyDy_tvcz1QeqHQ62R_nw0170";
         console.log(accessToken);
-        var fileName = tag + " " + getDateString() + " " + getTimeString();
+        var fileName = tag + "- " + getDateString() + " - " + getTimeString();
 
         return new Promise((resolve, reject) => {
             fetch('https://docs.googleapis.com/v1/documents?title=' + fileName, {
@@ -101,7 +100,12 @@ export const CriarArtigoDialog = ({
                     console.log(val.documentId);
 
                     const folderName = tag;
-                    const parentFolderId = '1EJrk68WbOvnuCEYN6qkQ1WlmWk2CksVr';
+
+                    //Pasta antiga
+                    //const parentFolderId = '1EJrk68WbOvnuCEYN6qkQ1WlmWk2CksVr';
+
+                    //Pasta nova
+                    const parentFolderId = '1vDJUQYI8dv3MyD4Ss2UxusUfBVZDgy4P';
 
                     const folderMetadata = {
                         name: folderName,
@@ -205,11 +209,15 @@ export const CriarArtigoDialog = ({
             // const updatedArticle = await updateArticle(idDoArtigo, artigoData);
             // console.log("Artigo atualizado com sucesso:", updatedArticle);
 
-            toast.success("Artigo '" + artigoData.titulo + "' criado com sucesso!");
+            toast.success(
+                <span>
+                    Artigo " <span style={{ color: '#07BC0C' }}>{artigoData.titulo}</span>" criado com sucesso!
+                </span>
+            );
 
             onClose();
             resetDialogFields();
-            handleRefresh();
+            startGridArtigo();
 
         } catch (error) {
             toast.error("Erro ao fazer a solicitação:", error);

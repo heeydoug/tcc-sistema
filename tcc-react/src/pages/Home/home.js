@@ -121,6 +121,12 @@ export const Home = () => {
       window.open("https://docs.google.com/document/d/" + val.documentId + "/edit", "_blank");
     });
   }
+  const cardStyle = {
+    padding: 20,
+    width: "100%",
+    backgroundColor: "#f9f9f9",
+    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
+  };
 
   const { user, signOut } = useContext(AuthGoogleContext);
   const userLogged = user;
@@ -136,15 +142,21 @@ export const Home = () => {
                   <CardContent>
                     <Box mt={2}>
                       <Typography variant="h3" component="div" gutterBottom fontWeight="bold">
-                        Bem vindo, {userLogged.displayName}!
+                        Bem-vindo, {userLogged.displayName}!
                       </Typography>
                       <hr />
-                      <Typography variant="body1" paragraph>
-                        E essa é sua área administrativa, utilize um dos menus ou botões abaixo para navegar pelo sistema.
+                      <Typography variant="body1" paragraph sx={{ textAlign: 'justify' }}>
+                        Explore nossa plataforma de integração de processos para serviços freelancers de redação de artigos.
                       </Typography>
-                      <Button variant="contained" color="primary" size="large" onClick={() => createFile('Teste 2: Firebase -')}>
-                        Criar Documento
-                      </Button>
+                      <Typography variant="body1" paragraph sx={{ textAlign: 'justify' }}>
+                        Nossa aplicação foi projetada para simplificar e aprimorar cada aspecto da sua jornada como redator freelancer.
+                      </Typography>
+                      <Typography variant="body1" paragraph sx={{ textAlign: 'justify' }}>
+                        Imagine a capacidade de gerir projetos de redação com eficiência e escrever de forma simplificada, sem burocracias e obstáculos. Com nossa aplicação, isso se torna realidade, facilitando a sua jornada como redator freelancer.
+                      </Typography>
+                      <Typography variant="body1" paragraph sx={{ textAlign: 'justify' }}>
+                        Aqui, você pode criar e gerenciar projetos de redação, colaborar de forma eficaz com clientes e colegas, e monitorar todo o seu progresso em um único painel intuitivo. Esqueça as complicações e concentre-se no que você faz de melhor: escrever artigos excepcionais.
+                      </Typography>
                     </Box>
                   </CardContent>
                 </Card>

@@ -13,7 +13,7 @@ import EnviarArtigoDialog from "./enviarArtigoEdicao";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisualizarArtigoDialog from "./visualizarArtigoDialog";
 import StartIcon from '@mui/icons-material/Start';
-
+import FileOpenIcon from '@mui/icons-material/FileOpen';
 
 import "./artigos.css"
 import {Start} from "@mui/icons-material";
@@ -42,24 +42,20 @@ export const Artigos = () => {
     const [artigos, setArtigos] = useState([]);
     const [openDialog, setOpenDialog] = useState(false);
     const [openEnviarArtigoDialog, setOpenEnviarArtigoDialog] = useState(false);
-
     const [selectedArtigo, setSelectedArtigo] = useState(null);
     const [selectedArtigoVisualizar, setSelectedArtigoVisulizar] = useState(null);
-
     const [openVisualizarArtigoDialog, setOpenVisualizarArtigoDialog] = useState(false);
 
-
-
-    // Função para buscar os artigos da API
-    const fetchArtigosData = async () => {
-        const response = await fetch("http://localhost:8080/artigos");
-        if (response.ok) {
-            return await response.json();
-        } else {
-            toast.error(`Erro na resposta da API: ${response.status}`);
-            return [];
-        }
-    };
+    // // Função para buscar os artigos da API
+    // const fetchArtigosData = async () => {
+    //     const response = await fetch("http://localhost:8080/artigos");
+    //     if (response.ok) {
+    //         return await response.json();
+    //     } else {
+    //         toast.error(`Erro na resposta da API: ${response.status}`);
+    //         return [];
+    //     }
+    // };
     const startGridArtigo = () => {
         getArticles()
             .then((data) => {
@@ -104,10 +100,29 @@ export const Artigos = () => {
             field: "actions",
             headerName: "Ações",
             headerClassName: "header-center",
-            width: 130,
+            width: 180,
             renderCell: (params) => (
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-
+                    <Button
+                        color="primary"
+                        onClick={() => { handleAbrirArtigoDocs(params.row) }}
+                        sx={{
+                            fontSize: '1.7rem',
+                            cursor: 'pointer',
+                            marginLeft: '10px',
+                            marginRight: '10px',
+                            margin: '-5px',
+                            padding: '-20px',
+                            '&:hover': {
+                                backgroundColor: 'lightblue',
+                                padding: '1px',
+                                borderRadius: '10%',
+                            },
+                        }}
+                        disabled={params.row.estadoAtual === "ABERTO"}
+                    >
+                        <FileOpenIcon />
+                    </Button>
                     <Button
                         color="primary"
                         onClick={() => { handleVisualizarArtigo(params.row) }}
@@ -128,7 +143,7 @@ export const Artigos = () => {
                         <VisibilityIcon />
                     </Button>
                     <Button
-                        color="secondary"
+                        color="primary"
                         onClick={() => handleEnviarArtigo(params.row)}
                         sx={{
                             fontSize: '1.7rem',
@@ -142,7 +157,7 @@ export const Artigos = () => {
                                 borderRadius: '10%',
                             },
                         }}
-                        disabled={!isAtualizarStatusHabilitado(params.row)}
+                        disabled={params.row.estadoAtual !== "ABERTO"}
                     >
                         <StartIcon />
                     </Button>
@@ -152,19 +167,29 @@ export const Artigos = () => {
         },
         { field: "id", headerName: "ID", width: 60 },
         { field: "titulo", headerName: "Título", width: 200 },
-        { field: "conteudo", headerName: "Conteúdo", width: 200 },
-        { field: "palavraChave", headerName: "Palavra-Chave", width: 180 },
-        { field: "redator", headerName: "Redator", width: 200 },
-        { field: "revisor", headerName: "Revisor", width: 200 },
-        { field: "cliente", headerName: "Cliente", width: 200 },
+        //{ field: "conteudo", headerName: "Conteúdo", width: 200 },
+        { field: "palavraChave", headerName: "Palavra-Chave", width: 140 },
+        { field: "redator.nome",
+            headerName: "Redator",
+            width: 200,
+            valueGetter: (params) => params.row.redator.nome
+        },
+        { field: "revisor.nome",
+            headerName: "Revisor",
+            width: 200,
+            valueGetter: (params) => params.row.revisor.nome},
+        { field: "cliente",
+            headerName: "Cliente",
+            width: 200,
+            valueGetter: (params) => params.row.cliente.nome},
         { field: "estadoAtual",
             headerName: "Estado Atual",
-            width: 150,
+            width: 110,
             cellClassName: (params) => getEstadoAtualCellStyle(params.value),
             valueGetter: (params) => getEstadoAtualText(params.value),
         },
-        { field: "dataCriacao", headerName: "Data de Criação", width: 150 },
-        { field: "dataFinalizacao", headerName: "Data de Finalização", width: 150 },
+        { field: "dataCriacao", headerName: "Data de Criação", width: 100 },
+        { field: "dataFinalizacao", headerName: "Data de Finalização", width: 100 },
         {
             field: "historicoEstados",
             headerName: "Histórico de Estados",
@@ -275,10 +300,12 @@ export const Artigos = () => {
     };
 
     const isAtualizarStatusHabilitado = (artigo) => {
-        return artigo.estadoAtual !== "EM_EDICAO";
+        return artigo.estadoAtual === "EM_EDICAO";
+    }
+
+    const handleAbrirArtigoDocs = (params) => {
+        window.open("https://docs.google.com/document/d/" + params.idDocumentoDrive + "/edit", "_blank");
     };
-
-
 
 
     return (
@@ -316,9 +343,9 @@ export const Artigos = () => {
                         <div style={{ marginBottom: "10px", textAlign: "right", height: "600px" }}>
                             <DataGrid rows={artigos.map((artigo) => ({
                                 ...artigo,
-                                redator: artigo.redator.nome,
-                                revisor: artigo.revisor.nome,
-                                cliente: artigo.cliente.nome,
+                                redator: artigo.redator,
+                                revisor: artigo.revisor,
+                                cliente: artigo.cliente,
                             }))}
                                       columns={columns}
                                       pagination
@@ -359,7 +386,7 @@ export const Artigos = () => {
                             clientes={clientes}
                             criarArtigo={criarArtigo}
                             novoArtigo={novoArtigo}
-                            handleRefresh={handleRefresh}
+                            startGridArtigo={startGridArtigo}
                             setNovoArtigo={setNovoArtigo}
                             selectedRedator={selectedRedator}
                             setSelectedRedator={setSelectedRedator}

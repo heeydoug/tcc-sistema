@@ -7,6 +7,26 @@ import TextField from "@mui/material/TextField";
 import {Button, DialogActions} from "@mui/material";
 
 export default function VisualizarArtigoDialog({ open, onClose, artigo }) {
+
+    function getEstadoAtualText(estadoAtual) {
+        switch (estadoAtual) {
+            case "ABERTO":
+                return "Aberto";
+            case "EM_REVISAO":
+                return "Em Revisão";
+            case "EM_EDICAO":
+                return "Em Edição";
+            case "REVISADO":
+                return "Revisado";
+            case "ACEITO":
+                return "Aceito";
+            case "CANCELADO":
+                return "Cancelado";
+            default:
+                return estadoAtual;
+        }
+    }
+
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>Detalhes do Artigo</DialogTitle>
@@ -21,82 +41,91 @@ export default function VisualizarArtigoDialog({ open, onClose, artigo }) {
                             variant="outlined"
                         />
                     </Grid>
+
                     <Grid item xs={12}>
                         <TextField
                             label="Título"
-                            value={artigo ? JSON.stringify(artigo.titulo ) : ''}
+                            value={artigo ? JSON.stringify(artigo.titulo).replace(/"/g, '') : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
                         />
                     </Grid>
+
                     <Grid item xs={12}>
                         <TextField
                             label="Conteúdo"
-                            value={artigo ? JSON.stringify(artigo.conteudo) : ''}
+                            value={artigo ? JSON.stringify(artigo.conteudo).replace(/"/g, '') : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
                         />
                     </Grid>
+
                     <Grid item xs={12}>
                         <TextField
                             label="Palavra-Chave"
-                            value={artigo ? JSON.stringify(artigo.palavraChave) : ''}
+                            value={artigo ? JSON.stringify(artigo.palavraChave).replace(/"/g, '') : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
                         />
                     </Grid>
+
                     <Grid item xs={12}>
                         <TextField
                             label="Redator"
-                            value={artigo ? JSON.stringify(artigo.redator) : ''}
+                            value={artigo ? JSON.stringify(artigo.redator.nome).replace(/"/g, '') : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
                         />
                     </Grid>
+
                     <Grid item xs={12}>
                         <TextField
                             label="Revisor"
-                            value={artigo ? JSON.stringify(artigo.revisor) : ''}
+                            value={artigo ? JSON.stringify(artigo.revisor.nome).replace(/"/g, '') : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
                         />
                     </Grid>
+
                     <Grid item xs={12}>
                         <TextField
                             label="Cliente"
-                            value={artigo ? JSON.stringify(artigo.cliente) : ''}
+                            value={artigo ? JSON.stringify(artigo.cliente.nome).replace(/"/g, '') : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
                         />
                     </Grid>
+
                     <Grid item xs={12}>
                         <TextField
                             label="Estado Atual"
-                            value={artigo ? JSON.stringify(artigo.estadoAtual) : ''}
+                            value={artigo ? getEstadoAtualText(artigo.estadoAtual) : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
                         />
                     </Grid>
+
                     <Grid item xs={12}>
                         <TextField
                             label="Data de Criação"
-                            value={artigo ? JSON.stringify(artigo.dataCriacao) : ''}
+                            value={artigo ? JSON.stringify(artigo.dataCriacao).replace(/"/g, '') : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
                         />
                     </Grid>
+
                     <Grid item xs={12}>
                         <TextField
                             label="Data de Finalização"
-                            value={artigo ? JSON.stringify(artigo.dataFinalizacao) : ''}
+                            value={artigo ? (artigo.dataFinalizacao !== null ? JSON.stringify(artigo.dataFinalizacao).replace(/"/g, '') : '') : ''}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             variant="outlined"
