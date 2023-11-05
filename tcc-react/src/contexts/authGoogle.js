@@ -11,6 +11,8 @@ export const AuthGoogleContext = createContext({});
 export const AuthGoogleProvider = ({ children }) => {
     const auth = getAuth(app);
     const [user, setUser, setUsuarioSessao] = useState(null);
+    const [userLogadoSessao, setUserLogadoSessao] = useState(null);
+
 
     useEffect(() => {
         const loadStorageAuth = () => {
@@ -35,6 +37,7 @@ export const AuthGoogleProvider = ({ children }) => {
             try {
                 const userExists = await checkUserByEmail(user.email);
                 const userLogadoSessao = await getUserByEmail(user.email);
+                setUserLogadoSessao(userLogadoSessao);
 
                 if (userExists && userLogadoSessao) {
                     toast.success(
@@ -73,6 +76,7 @@ export const AuthGoogleProvider = ({ children }) => {
     function signOut(){
         sessionStorage.clear();
         setUser(null)
+        setUserLogadoSessao(null);
         toast.success('Logout realizado com sucesso!');
         return <Navigate to="/" />
     }
@@ -82,6 +86,7 @@ export const AuthGoogleProvider = ({ children }) => {
         value={{
             signed: !!user,
             user,
+            userLogadoSessao,
             signInGoogle,
             signOut
         }}>

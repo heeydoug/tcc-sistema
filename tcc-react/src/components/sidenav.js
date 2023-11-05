@@ -20,7 +20,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import HomeIcon from '@mui/icons-material/Home';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import { useNavigate } from "react-router-dom";
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import {AuthGoogleContext} from "../contexts/authGoogle";
 import {useAppStore} from "../configs/appStore";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -83,266 +83,311 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
 );
 
-
 export default function MiniDrawer() {
     const theme = useTheme();
     const navigate = useNavigate();
     const open = useAppStore((state) => state.dopen);
 
-    const { user, signOut } = useContext(AuthGoogleContext);
+    const { user, userLogadoSessao, signOut } = useContext(AuthGoogleContext);
+    const [isLoading, setIsLoading] = useState(true);
 
+    useEffect(() => {
+        // Verifique se o userLogadoSessao está disponível
+        if (userLogadoSessao) {
+            setIsLoading(false);
+        }
+    }, [userLogadoSessao]);
 
     // Verifique se o usuário está logado
     if (!user) {
         return null; // Não renderize a Sidenav se o usuário não estiver logado
     }
-    return (
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <Box height={30} />
-            <Drawer variant="permanent" open={open}>
-                <DrawerHeader>
-                    <IconButton>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                    </IconButton>
-                </DrawerHeader>
-                <Divider />
-                <List>
-                    {/* Home */}
-                    <ListItem disablePadding sx={{ display: 'block'}} onClick={ () => {navigate("/home")}} >
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                                color: 'white'
-                            }}
-                        >
-                            <ListItemIcon
-                                sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
-                                    color: 'white'
-                                }}
-                            >
-                                <HomeIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
-                        </ListItemButton>
+    if (isLoading) {
 
-                    </ListItem>
+    } else {
+        return (
+            <Box sx={{display: 'flex'}}>
+                <CssBaseline/>
+                <Box height={30}/>
+                <Drawer variant="permanent" open={open}>
+                    <DrawerHeader>
+                        <IconButton>
+                            {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
+                        </IconButton>
+                    </DrawerHeader>
+                    <Divider/>
+                    <List>
+                        {/* Home */}
+                        <ListItem disablePadding sx={{display: 'block'}} onClick={() => {
+                            navigate("/home")
+                        }}>
+                            <ListItemButton
+                                sx={{
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
+                                    color: 'white'
+                                }}
+                            >
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                        color: 'white'
+                                    }}
+                                >
+                                    <HomeIcon/>
+                                </ListItemIcon>
+                                <ListItemText primary="Home" sx={{opacity: open ? 1 : 0}}/>
+                            </ListItemButton>
 
-                    {/* Usuários */}
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={ () => {navigate("/usuarios")}}>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                                color: 'white'
-                            }}
-                        >
-                            <ListItemIcon
-                                sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
-                                    color: 'white'
-                                }}
-                            >
-                                <PersonIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Usuários" sx={{ opacity: open ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
-                    {/* Clientes */}
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={ () => {navigate("/clientes")}}>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                                color: 'white'
-                            }}
-                        >
-                            <ListItemIcon
-                                sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
-                                    color: 'white'
-                                }}
-                            >
-                                <Person2Icon />
-                            </ListItemIcon>
-                            <ListItemText primary="Clientes" sx={{ opacity: open ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
-                    {/* Redatores */}
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={ () => {navigate("/redatores")}}>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                                color: 'white'
-                            }}
-                        >
-                            <ListItemIcon
-                                sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
-                                    color: 'white'
-                                }}
-                            >
-                                <Person3Icon />
-                            </ListItemIcon>
-                            <ListItemText primary="Redatores" sx={{ opacity: open ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
-                    {/* Revisores */}
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={ () => {navigate("/revisores")}}>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                                color: 'white'
-                            }}
-                        >
-                            <ListItemIcon
-                                sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
-                                    color: 'white'
-                                }}
-                            >
-                                <Person4Icon />
-                            </ListItemIcon>
-                            <ListItemText primary="Revisores" sx={{ opacity: open ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
-                    {/* Administradores */}
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={ () => {navigate("/administradores")}}>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                                color: 'white'
-                            }}
-                        >
-                            <ListItemIcon
-                                sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
-                                    color: 'white'
-                                }}
-                            >
-                                <SupervisorAccountIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Administradores" sx={{ opacity: open ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
-                    {/* Artigos */}
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={ () => {navigate("/artigos")}}>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                                color: 'white'
-                            }}
-                        >
-                            <ListItemIcon
-                                sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
-                                    color: 'white'
-                                }}
-                            >
-                                <ArticleIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Artigos" sx={{ opacity: open ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
-                    {/* Meus Artigos Vinculados */}
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={ () => {navigate("/meus-artigos")}}>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                                color: 'white'
-                            }}
-                        >
-                            <ListItemIcon
-                                sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
-                                    color: 'white'
-                                }}
-                            >
-                                <DatasetLinkedIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Meus Artigos" sx={{ opacity: open ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
-                    {/* Histórico de Artigos */}
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={ () => {navigate("/historico-artigos")}}>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                                color: 'white'
-                            }}
-                        >
-                            <ListItemIcon
-                                sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
-                                    color: 'white'
-                                }}
-                            >
-                                <TopicIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Histórico de Artigos" sx={{ opacity: open ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
-                    {/* Logout */}
-                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => signOut()}>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                                color: 'white'
-                            }}
-                        >
-                            <ListItemIcon
-                                sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
-                                    color: 'white'
-                                }}
-                            >
-                                <LogoutIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-            </Drawer>
+                        </ListItem>
 
-        </Box>
-    );
+                        {/* Usuários */}
+                        {userLogadoSessao && userLogadoSessao.tipo === 'ADMINISTRADOR' && (
+                            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => {
+                                navigate('/usuarios');
+                            }}>
+                                <ListItemButton
+                                    sx={{
+                                        minHeight: 48,
+                                        justifyContent: open ? 'initial' : 'center',
+                                        px: 2.5,
+                                        color: 'white',
+                                    }}
+                                >
+                                    <ListItemIcon
+                                        sx={{
+                                            minWidth: 0,
+                                            mr: open ? 3 : 'auto',
+                                            justifyContent: 'center',
+                                            color: 'white',
+                                        }}
+                                    >
+                                        <PersonIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Usuários" sx={{ opacity: open ? 1 : 0 }} />
+                                </ListItemButton>
+                            </ListItem>
+                        )}
+
+                        {/* Clientes */}
+                        {userLogadoSessao && userLogadoSessao.tipo === 'ADMINISTRADOR' && (
+                            <ListItem disablePadding sx={{display: 'block'}} onClick={() => {
+                                navigate("/clientes")
+                            }}>
+                                <ListItemButton
+                                    sx={{
+                                        minHeight: 48,
+                                        justifyContent: open ? 'initial' : 'center',
+                                        px: 2.5,
+                                        color: 'white'
+                                    }}
+                                >
+                                    <ListItemIcon
+                                        sx={{
+                                            minWidth: 0,
+                                            mr: open ? 3 : 'auto',
+                                            justifyContent: 'center',
+                                            color: 'white'
+                                        }}
+                                    >
+                                        <Person2Icon/>
+                                    </ListItemIcon>
+                                    <ListItemText primary="Clientes" sx={{opacity: open ? 1 : 0}}/>
+                                </ListItemButton>
+                            </ListItem>
+                        )}
+
+                        {/* Redatores */}
+                        {userLogadoSessao && userLogadoSessao.tipo === 'ADMINISTRADOR' && (
+                            <ListItem disablePadding sx={{display: 'block'}} onClick={() => {
+                                navigate("/redatores")
+                            }}>
+                                <ListItemButton
+                                    sx={{
+                                        minHeight: 48,
+                                        justifyContent: open ? 'initial' : 'center',
+                                        px: 2.5,
+                                        color: 'white'
+                                    }}
+                                >
+                                    <ListItemIcon
+                                        sx={{
+                                            minWidth: 0,
+                                            mr: open ? 3 : 'auto',
+                                            justifyContent: 'center',
+                                            color: 'white'
+                                        }}
+                                    >
+                                        <Person3Icon/>
+                                    </ListItemIcon>
+                                    <ListItemText primary="Redatores" sx={{opacity: open ? 1 : 0}}/>
+                                </ListItemButton>
+                            </ListItem>
+                        )}
+
+                        {/* Revisores */}
+                        {userLogadoSessao && userLogadoSessao.tipo === 'ADMINISTRADOR' && (
+                            <ListItem disablePadding sx={{display: 'block'}} onClick={() => {
+                                navigate("/revisores")
+                            }}>
+                                <ListItemButton
+                                    sx={{
+                                        minHeight: 48,
+                                        justifyContent: open ? 'initial' : 'center',
+                                        px: 2.5,
+                                        color: 'white'
+                                    }}
+                                >
+                                    <ListItemIcon
+                                        sx={{
+                                            minWidth: 0,
+                                            mr: open ? 3 : 'auto',
+                                            justifyContent: 'center',
+                                            color: 'white'
+                                        }}
+                                    >
+                                        <Person4Icon/>
+                                    </ListItemIcon>
+                                    <ListItemText primary="Revisores" sx={{opacity: open ? 1 : 0}}/>
+                                </ListItemButton>
+                            </ListItem>
+                        )}
+
+                        {/* Administradores */}
+                        {userLogadoSessao && userLogadoSessao.tipo === 'ADMINISTRADOR' && (
+                            <ListItem disablePadding sx={{display: 'block'}} onClick={() => {
+                                navigate("/administradores")
+                            }}>
+                                <ListItemButton
+                                    sx={{
+                                        minHeight: 48,
+                                        justifyContent: open ? 'initial' : 'center',
+                                        px: 2.5,
+                                        color: 'white'
+                                    }}
+                                >
+                                    <ListItemIcon
+                                        sx={{
+                                            minWidth: 0,
+                                            mr: open ? 3 : 'auto',
+                                            justifyContent: 'center',
+                                            color: 'white'
+                                        }}
+                                    >
+                                        <SupervisorAccountIcon/>
+                                    </ListItemIcon>
+                                    <ListItemText primary="Administradores" sx={{opacity: open ? 1 : 0}}/>
+                                </ListItemButton>
+                            </ListItem>
+                        )}
+
+                        {/* Artigos */}
+                        {userLogadoSessao && userLogadoSessao.tipo === 'ADMINISTRADOR' && (
+                            <ListItem disablePadding sx={{display: 'block'}} onClick={() => {
+                                navigate("/artigos")
+                            }}>
+                                <ListItemButton
+                                    sx={{
+                                        minHeight: 48,
+                                        justifyContent: open ? 'initial' : 'center',
+                                        px: 2.5,
+                                        color: 'white'
+                                    }}
+                                >
+                                    <ListItemIcon
+                                        sx={{
+                                            minWidth: 0,
+                                            mr: open ? 3 : 'auto',
+                                            justifyContent: 'center',
+                                            color: 'white'
+                                        }}
+                                    >
+                                        <ArticleIcon/>
+                                    </ListItemIcon>
+                                    <ListItemText primary="Artigos" sx={{opacity: open ? 1 : 0}}/>
+                                </ListItemButton>
+                            </ListItem>
+                        )}
+                        {/* Meus Artigos Vinculados */}
+                        <ListItem disablePadding sx={{display: 'block'}} onClick={() => {
+                            navigate("/meus-artigos")
+                        }}>
+                            <ListItemButton
+                                sx={{
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
+                                    color: 'white'
+                                }}
+                            >
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                        color: 'white'
+                                    }}
+                                >
+                                    <DatasetLinkedIcon/>
+                                </ListItemIcon>
+                                <ListItemText primary="Meus Artigos" sx={{opacity: open ? 1 : 0}}/>
+                            </ListItemButton>
+                        </ListItem>
+                        {/* Histórico de Artigos */}
+                        <ListItem disablePadding sx={{display: 'block'}} onClick={() => {
+                            navigate("/historico-artigos")
+                        }}>
+                            <ListItemButton
+                                sx={{
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
+                                    color: 'white'
+                                }}
+                            >
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                        color: 'white'
+                                    }}
+                                >
+                                    <TopicIcon/>
+                                </ListItemIcon>
+                                <ListItemText primary="Histórico de Artigos" sx={{opacity: open ? 1 : 0}}/>
+                            </ListItemButton>
+                        </ListItem>
+                        {/* Logout */}
+                        <ListItem disablePadding sx={{display: 'block'}} onClick={() => signOut()}>
+                            <ListItemButton
+                                sx={{
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
+                                    color: 'white'
+                                }}
+                            >
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                        color: 'white'
+                                    }}
+                                >
+                                    <LogoutIcon/>
+                                </ListItemIcon>
+                                <ListItemText primary="Logout" sx={{opacity: open ? 1 : 0}}/>
+                            </ListItemButton>
+                        </ListItem>
+                    </List>
+                </Drawer>
+
+            </Box>
+        );
+    }
 }
