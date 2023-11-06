@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import {toast} from "react-toastify";
 import {DialogContent, Typography} from "@mui/material";
 
-import {updateStatusArtigo} from "../../actions/artigos";
+import {updateStatusArtigo} from "../../../actions/artigos";
 import {gapi} from "gapi-script";
 
 const clientId = "308424476532-e40blk46kh67iussdbce2655m9lnacoq.apps.googleusercontent.com";
@@ -59,7 +59,7 @@ export default function EnviarArtigoDialog({ open, onClose, onEnviarArtigo, arti
             /*  Permissão do Cliente */
             addPermissions(artigo.cliente.email, 'reader')
 
-            toast.success("Artigo enviado com sucesso:", response);
+            toast.success("Artigo enviado com sucesso!", response);
             onClose();
             handleRefresh();
 

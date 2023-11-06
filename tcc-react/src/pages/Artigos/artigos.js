@@ -2,21 +2,73 @@ import React, { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { toast, ToastContainer } from "react-toastify";
-import { Button, createTheme, ThemeProvider } from "@mui/material";
+import {Button, createTheme, MenuItem, ThemeProvider, Tooltip} from "@mui/material";
 import {DataGrid, ptBR} from "@mui/x-data-grid";
 import { useAppStore } from "../../configs/appStore";
 import Typography from "@mui/material/Typography";
 import { CriarArtigoDialog } from "./criarArtigoDialog";
 import {getArticles} from "../../actions/artigos";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import EnviarArtigoDialog from "./enviarArtigoEdicao";
+import EnviarArtigoDialog from "./MaisAções/enviarArtigoEdicaoDialog";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisualizarArtigoDialog from "./visualizarArtigoDialog";
-import StartIcon from '@mui/icons-material/Start';
 import FileOpenIcon from '@mui/icons-material/FileOpen';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import CancelIcon from '@mui/icons-material/Cancel';
+import UndoIcon from '@mui/icons-material/Undo';
+import DoneIcon from '@mui/icons-material/Done';
 
 import "./artigos.css"
-import {Start} from "@mui/icons-material";
+import Menu from "@mui/material/Menu";
+import {alpha, styled} from "@mui/material/styles";
+import EditIcon from "@mui/icons-material/Edit";
+import CancelarArtigo from "./MaisAções/cancelarArtigoDialog";
+import RetornarArtigoEdicaoDialog from "./MaisAções/retornarArtigoEdicaoDialog";
+import CancelarArtigoDialog from "./MaisAções/cancelarArtigoDialog";
+import RetornarArtigoRevisao from "./MaisAções/retornarArtigoRevisaoDIalog";
+import ConcluirEtapaDialog from "./MaisAções/concluirEtapaDialog";
+
+const StyledMenu = styled((props) => (
+    <Menu
+        elevation={0}
+        anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+        }}
+        transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+        }}
+        {...props}
+    />
+))(({ theme }) => ({
+    '& .MuiPaper-root': {
+        borderRadius: 6,
+        marginTop: theme.spacing(1),
+        minWidth: 180,
+        color:
+            theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
+        boxShadow:
+            'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+        '& .MuiMenu-list': {
+            padding: '4px 0',
+        },
+        '& .MuiMenuItem-root': {
+            '& .MuiSvgIcon-root': {
+                fontSize: 18,
+                color: theme.palette.text.secondary,
+                marginRight: theme.spacing(1.5),
+            },
+            '&:active': {
+                backgroundColor: alpha(
+                    theme.palette.primary.main,
+                    theme.palette.action.selectedOpacity,
+                ),
+            },
+        },
+    },
+}));
+
 export const Artigos = () => {
     const theme = createTheme(
         {
@@ -42,20 +94,14 @@ export const Artigos = () => {
     const [artigos, setArtigos] = useState([]);
     const [openDialog, setOpenDialog] = useState(false);
     const [openEnviarArtigoDialog, setOpenEnviarArtigoDialog] = useState(false);
+    const [openCancelarArtigoDialog, setOpenCancelarArtigoDialog] = useState(false);
+    const [openRetornarEdicaoArtigoDialog, setRetornarEdicaoArtigoDialog] = useState(false);
+    const [openRetornarRevisaoArtigoDialog, setRetornarRevisaoArtigoDialog] = useState(false);
+    const [openConcluirEtapaArtigoDialog, setConcluirEtapaArtigoDialog] = useState(false);
     const [selectedArtigo, setSelectedArtigo] = useState(null);
     const [selectedArtigoVisualizar, setSelectedArtigoVisulizar] = useState(null);
     const [openVisualizarArtigoDialog, setOpenVisualizarArtigoDialog] = useState(false);
 
-    // // Função para buscar os artigos da API
-    // const fetchArtigosData = async () => {
-    //     const response = await fetch("http://localhost:8080/artigos");
-    //     if (response.ok) {
-    //         return await response.json();
-    //     } else {
-    //         toast.error(`Erro na resposta da API: ${response.status}`);
-    //         return [];
-    //     }
-    // };
     const startGridArtigo = () => {
         getArticles()
             .then((data) => {
@@ -95,6 +141,17 @@ export const Artigos = () => {
         closeDialogCriarArtigo();
     };
 
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event, params) => {
+        setSelectedArtigo(params);
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+
     const columns = [
         {
             field: "actions",
@@ -103,64 +160,134 @@ export const Artigos = () => {
             width: 180,
             renderCell: (params) => (
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button
-                        color="primary"
-                        onClick={() => { handleAbrirArtigoDocs(params.row) }}
-                        sx={{
-                            fontSize: '1.7rem',
-                            cursor: 'pointer',
-                            marginLeft: '10px',
-                            marginRight: '10px',
-                            margin: '-5px',
-                            padding: '-20px',
-                            '&:hover': {
-                                backgroundColor: 'lightblue',
-                                padding: '1px',
-                                borderRadius: '10%',
-                            },
+
+                    <Tooltip title="Abrir artigo no Google Docs" arrow placement="left-start">
+                            <Button
+                                color="primary"
+                                onClick={() => { handleAbrirArtigoDocs(params.row) }}
+                                sx={{
+                                    fontSize: '1.7rem',
+                                    cursor: 'pointer',
+                                    marginLeft: '10px',
+                                    marginRight: '10px',
+                                    margin: '-5px',
+                                    padding: '-20px',
+                                    '&:hover': {
+                                        backgroundColor: 'lightblue',
+                                        padding: '1px',
+                                        borderRadius: '10%',
+                                    },
+                                }}
+                                disabled={params.row.estadoAtual === "ABERTO"}
+                            >
+                                <FileOpenIcon />
+                            </Button>
+                    </Tooltip>
+
+                    <Tooltip title="Exibir detalhes do artigo" arrow placement="left-start">
+                            <Button
+                                color="primary"
+                                onClick={() => { handleVisualizarArtigo(params.row) }}
+                                sx={{
+                                    fontSize: '1.7rem',
+                                    cursor: 'pointer',
+                                    marginLeft: '10px',
+                                    marginRight: '10px',
+                                    margin: '-5px',
+                                    padding: '-20px',
+                                    '&:hover': {
+                                        backgroundColor: 'lightblue',
+                                        padding: '1px',
+                                        borderRadius: '10%',
+                                    },
+                                }}
+                            >
+                                <VisibilityIcon />
+                            </Button>
+                    </Tooltip>
+
+                    {/*<Tooltip title="Enviar artigo para edição" arrow placement="left-start">*/}
+                    {/*    <Button*/}
+                    {/*        color="primary"*/}
+                    {/*        onClick={() => handleEnviarArtigo(params.row)}*/}
+                    {/*        sx={{*/}
+                    {/*            fontSize: '1.7rem',*/}
+                    {/*            cursor: 'pointer',*/}
+                    {/*            marginLeft: '10px',*/}
+                    {/*            marginRight: '10px',*/}
+                    {/*            margin: '-5px',*/}
+                    {/*            padding: '-20px',*/}
+                    {/*            '&:hover': {*/}
+                    {/*                backgroundColor: 'lightblue',*/}
+                    {/*                borderRadius: '10%',*/}
+                    {/*            },*/}
+                    {/*        }}*/}
+                    {/*        disabled={params.row.estadoAtual !== "ABERTO"}*/}
+                    {/*    >*/}
+                    {/*        <StartIcon />*/}
+                    {/*    </Button>*/}
+                    {/*</Tooltip>*/}
+
+                    <Tooltip title="Mais ações" arrow placement="left-start">
+                            <Button
+                                id="demo-customized-button"
+                                sx={{
+                                    fontSize: '1.7rem',
+                                    cursor: 'pointer',
+                                    marginLeft: '10px',
+                                    marginRight: '10px',
+                                    margin: '-5px',
+                                    padding: '-20px',
+                                    '&:hover': {
+                                        backgroundColor: 'lightblue',
+                                        borderRadius: '10%',
+                                    },
+                                }}
+                                aria-controls={open ? 'demo-customized-menu' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={open ? 'true' : undefined}
+                                disableElevation
+                                onClick={(event) => handleClick(event, params.row)}
+                                >
+                                <MoreVertIcon />
+                            </Button>
+
+                    </Tooltip>
+
+                    <StyledMenu
+                        id="demo-customized-menu"
+                        MenuListProps={{
+                            'aria-labelledby': 'demo-customized-button',
                         }}
-                        disabled={params.row.estadoAtual === "ABERTO"}
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
                     >
-                        <FileOpenIcon />
-                    </Button>
-                    <Button
-                        color="primary"
-                        onClick={() => { handleVisualizarArtigo(params.row) }}
-                        sx={{
-                            fontSize: '1.7rem',
-                            cursor: 'pointer',
-                            marginLeft: '10px',
-                            marginRight: '10px',
-                            margin: '-5px',
-                            padding: '-20px',
-                            '&:hover': {
-                                backgroundColor: 'lightblue',
-                                padding: '1px',
-                                borderRadius: '10%',
-                            },
-                        }}
-                    >
-                        <VisibilityIcon />
-                    </Button>
-                    <Button
-                        color="primary"
-                        onClick={() => handleEnviarArtigo(params.row)}
-                        sx={{
-                            fontSize: '1.7rem',
-                            cursor: 'pointer',
-                            marginLeft: '10px',
-                            marginRight: '10px',
-                            margin: '-5px',
-                            padding: '-20px',
-                            '&:hover': {
-                                backgroundColor: 'lightblue',
-                                borderRadius: '10%',
-                            },
-                        }}
-                        disabled={params.row.estadoAtual !== "ABERTO"}
-                    >
-                        <StartIcon />
-                    </Button>
+                        <MenuItem onClick={() => handleCancelarArtigo(selectedArtigo)} disabled={selectedArtigo.estadoAtual === "CANCELADO"} disableRipple>
+                            <CancelIcon style={{ color: 'indianred' }} />
+                            Cancelar artigo
+                        </MenuItem>
+                        <MenuItem onClick={() => handleConcluirEtapaArtigoRevisao(selectedArtigo)} disableRipple>
+                            <DoneIcon style={{ color: 'forestgreen' }} />
+                            Concluir etapa
+                        </MenuItem>
+                        <MenuItem onClick={() => handleEnviarArtigo(selectedArtigo)} disabled={selectedArtigo.estadoAtual !== "ABERTO"} disableRipple>
+                            <EditIcon style={{ color: '#1976D2' }} />
+                            Enviar artigo para edição
+                        </MenuItem>
+                        <MenuItem onClick={() => handleRetornarArtigoEdicao(selectedArtigo)} disabled={selectedArtigo.estadoAtual !== "EM_REVISAO"} disableRipple>
+                            <UndoIcon style={{ color: 'gold' }} />
+                            Retornar artigo para edição
+                        </MenuItem>
+                        <MenuItem onClick={() => handleRetornarArtigoRevisao(selectedArtigo)} disabled={selectedArtigo.estadoAtual !== "CANCELADO"} disableRipple>
+                            <UndoIcon style={{ color: 'gold' }} />
+                            Retornar artigo para revisão
+                        </MenuItem>
+
+
+
+                    </StyledMenu>
+
 
                 </div>
             ),
@@ -293,6 +420,24 @@ export const Artigos = () => {
         setSelectedArtigo(params);
         setOpenEnviarArtigoDialog(true);
     };
+    const handleCancelarArtigo = (params) => {
+        setSelectedArtigo(params);
+        setOpenCancelarArtigoDialog(true);
+    };
+    const handleRetornarArtigoEdicao = (params) => {
+        setSelectedArtigo(params);
+        setRetornarEdicaoArtigoDialog(true);
+    };
+
+    const handleRetornarArtigoRevisao = (params) => {
+        setSelectedArtigo(params);
+        setRetornarRevisaoArtigoDialog(true);
+    };
+
+    const handleConcluirEtapaArtigoRevisao = (params) => {
+        setSelectedArtigo(params);
+        setConcluirEtapaArtigoDialog(true);
+    };
 
     const handleVisualizarArtigo = (params) => {
         setSelectedArtigoVisulizar(params);
@@ -303,7 +448,7 @@ export const Artigos = () => {
         return artigo.estadoAtual === "EM_EDICAO";
     }
 
-    const handleAbrirArtigoDocs = (params) => {
+    const  handleAbrirArtigoDocs = (params) => {
         window.open("https://docs.google.com/document/d/" + params.idDocumentoDrive + "/edit", "_blank");
     };
 
@@ -377,6 +522,35 @@ export const Artigos = () => {
                             artigo={selectedArtigo}
                             handleRefresh={startGridArtigo}
                         />
+
+                        <CancelarArtigoDialog
+                            open={openCancelarArtigoDialog}
+                            onClose={() => setOpenCancelarArtigoDialog(false)}
+                            artigo={selectedArtigo}
+                            handleRefresh={startGridArtigo}
+                        />
+
+                        <RetornarArtigoEdicaoDialog
+                            open={openRetornarEdicaoArtigoDialog}
+                            onClose={() => setRetornarEdicaoArtigoDialog(false)}
+                            artigo={selectedArtigo}
+                            handleRefresh={startGridArtigo}
+                        />
+
+                        <RetornarArtigoRevisao
+                            open={openRetornarRevisaoArtigoDialog}
+                            onClose={() => setRetornarRevisaoArtigoDialog(false)}
+                            artigo={selectedArtigo}
+                            handleRefresh={startGridArtigo}
+                        />
+
+                        <ConcluirEtapaDialog
+                            open={openConcluirEtapaArtigoDialog}
+                            onClose={() => setConcluirEtapaArtigoDialog(false)}
+                            artigo={selectedArtigo}
+                            handleRefresh={startGridArtigo}
+                        />
+
 
                         <CriarArtigoDialog
                             open={openDialog}
