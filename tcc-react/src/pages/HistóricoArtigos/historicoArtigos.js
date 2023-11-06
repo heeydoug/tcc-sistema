@@ -150,7 +150,7 @@ export const HistoricoArtigos = () => {
             field: "actions",
             headerName: "Ações",
             headerClassName: "header-center",
-            width: 140,
+            width: 160,
             renderCell: (params) => (
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <Tooltip title="Abrir artigo no Google Docs" arrow placement="left-start">

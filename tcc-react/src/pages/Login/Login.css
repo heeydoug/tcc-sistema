@@ -10,12 +10,12 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background: linear-gradient(to bottom, #1976D2, transparent);
+    background: linear-gradient(to bottom, #061b23, #007FEF);
 }
 
 .footerStyle {
-    background: #1976D2;
-    color: #fff;
+    background: #061b23;
+    color: white;
     text-align: center;
     padding: 10px;
     width: 100%;
@@ -26,8 +26,13 @@ body {
 .footer{
     height: 90px;
 }
-
+.blue-card {
+    border-radius: 10px;
+    padding: 20px;
+}
 
 .card {
-    width: 400px;
+    width: 65%;
+    height: 65%;
 }
+
