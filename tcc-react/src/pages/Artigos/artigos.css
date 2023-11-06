@@ -4,26 +4,30 @@
 
 .aberto-cell {
     text-align: center;
-    background-color: lightblue;
+    background-color: DodgerBlue;
 }
 
 .em-edicao-cell {
     text-align: center;
-    background-color: lightgreen;
+    background-color: MediumSpringGreen;
 }
 
 .em-revisao-cell {
-    background-color: yellow;
+    text-align: center;
+    background-color: gold;
 }
 
 .revisado-cell {
-    background-color: lightcoral;
+    text-align: center;
+    background-color: MediumTurquoise;
 }
 
 .aceito-cell {
-    background-color: lightgreen;
+    text-align: center;
+    background-color: mediumslateblue;
 }
 
 .cancelado-cell {
-    background-color: lightgray;
+    text-align: center;
+    background-color: indianred;
 }

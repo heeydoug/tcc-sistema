@@ -31,13 +31,13 @@ const RetornarArtigoRevisao = ({ open, onClose, onEnviarArtigo, artigo, handleRe
             // /*  Permissão do Cliente */
             // addPermissions(artigo.cliente.email, 'reader')
 
-            toast.success("Artigo alterado com sucesso!", response);
+            toast.success("Artigo retornado para revisão com sucesso!", response);
             onClose();
             handleRefresh();
 
         } catch (error) {
             setConfirmarEnvio(false);
-            toast.error("Erro ao alterar artigo:", error);
+            toast.error("Erro ao retornar artigo para revisão:", error);
         }
     };
 

@@ -19,25 +19,25 @@ const ConcluirEtapaArtigo = ({ open, onClose, onEnviarArtigo, artigo, handleRefr
     const handleSimClick = async () => {
         try {
 
-            const response = await updateStatusArtigo(artigo.id, "CANCELADO");
+            if(artigo.estadoAtual === 'EM_EDICAO'){
+                const response = await updateStatusArtigo(artigo.id, "EM_REVISAO")
+            }
+            if(artigo.estadoAtual === 'EM_REVISAO'){
+                const response = await updateStatusArtigo(artigo.id, "REVISADO")
+            }
+            if(artigo.estadoAtual === 'REVISADO'){
+                const response = await updateStatusArtigo(artigo.id, "ACEITO")
+            }
+
             setConfirmarEnvio(false);
 
-            // /*  Permissão do Redator */
-            // addPermissions(artigo.redator.email, 'writer')
-            //
-            // /*  Permissão do Revisor*/
-            // addPermissions(artigo.revisor.email,'commenter')
-            //
-            // /*  Permissão do Cliente */
-            // addPermissions(artigo.cliente.email, 'reader')
-
-            toast.success("Artigo cancelado com sucesso!", response);
+            toast.success("Etapa do artigo concluída com sucesso!");
             onClose();
             handleRefresh();
 
         } catch (error) {
             setConfirmarEnvio(false);
-            toast.error("Erro ao cancelar artigo:", error);
+            toast.error("Erro ao concluir etapa do artigo:", error);
         }
     };
 

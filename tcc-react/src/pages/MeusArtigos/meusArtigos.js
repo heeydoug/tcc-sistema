@@ -1,4 +1,4 @@
-import {Button, createTheme, ThemeProvider} from "@mui/material";
+import {Button, createTheme, MenuItem, ThemeProvider, Tooltip} from "@mui/material";
 import {DataGrid, ptBR} from "@mui/x-data-grid";
 import {useAppStore} from "../../configs/appStore";
 import Container from "@mui/material/Container";
@@ -10,8 +10,59 @@ import React, {useEffect, useState} from "react";
 import {listArticles} from "../../actions/artigos";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import StartIcon from "@mui/icons-material/Start";
 import VisualizarArtigoDialog from "../Artigos/visualizarArtigoDialog";
+import {alpha, styled} from "@mui/material/styles";
+import Menu from "@mui/material/Menu";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DoneIcon from "@mui/icons-material/Done";
+import UndoIcon from "@mui/icons-material/Undo";
+import EnviarArtigoDialog from "../Artigos/MaisAções/enviarArtigoEdicaoDialog";
+import CancelarArtigoDialog from "../Artigos/MaisAções/cancelarArtigoDialog";
+import RetornarArtigoEdicaoDialog from "../Artigos/MaisAções/retornarArtigoEdicaoDialog";
+import RetornarArtigoRevisao from "../Artigos/MaisAções/retornarArtigoRevisaoDIalog";
+import ConcluirEtapaDialog from "../Artigos/MaisAções/concluirEtapaDialog";
+
+
+const StyledMenu = styled((props) => (
+    <Menu
+        elevation={0}
+        anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+        }}
+        transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+        }}
+        {...props}
+    />
+))(({ theme }) => ({
+    '& .MuiPaper-root': {
+        borderRadius: 6,
+        marginTop: theme.spacing(1),
+        minWidth: 180,
+        color:
+            theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
+        boxShadow:
+            'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+        '& .MuiMenu-list': {
+            padding: '4px 0',
+        },
+        '& .MuiMenuItem-root': {
+            '& .MuiSvgIcon-root': {
+                fontSize: 18,
+                color: theme.palette.text.secondary,
+                marginRight: theme.spacing(1.5),
+            },
+            '&:active': {
+                backgroundColor: alpha(
+                    theme.palette.primary.main,
+                    theme.palette.action.selectedOpacity,
+                ),
+            },
+        },
+    },
+}));
 
 export const MeusArtigos = () => {
     const theme = createTheme(
@@ -27,64 +78,200 @@ export const MeusArtigos = () => {
 
     const dopen = useAppStore((state) => state.dopen);
     const [data, setData] = useState([]);
+    const [artigos, setArtigos] = useState([]);
     const [selectedArtigoVisualizar, setSelectedArtigoVisulizar] = useState(null);
     const [openVisualizarArtigoDialog, setOpenVisualizarArtigoDialog] = useState(false);
+    const [selectedArtigo, setSelectedArtigo] = useState(null);
+    const [openEnviarArtigoDialog, setOpenEnviarArtigoDialog] = useState(false);
+    const [openCancelarArtigoDialog, setOpenCancelarArtigoDialog] = useState(false);
+    const [openRetornarEdicaoArtigoDialog, setRetornarEdicaoArtigoDialog] = useState(false);
+    const [openRetornarRevisaoArtigoDialog, setRetornarRevisaoArtigoDialog] = useState(false);
+    const [openConcluirEtapaArtigoDialog, setConcluirEtapaArtigoDialog] = useState(false);
     const handleVisualizarArtigo = (params) => {
         setSelectedArtigoVisulizar(params);
         setOpenVisualizarArtigoDialog(true);
+    };
+
+    const handleCancelarArtigo = (params) => {
+        setAnchorEl(null);
+        setSelectedArtigo(params);
+        setOpenCancelarArtigoDialog(true);
+    };
+    const handleRetornarArtigoEdicao = (params) => {
+        setAnchorEl(null);
+        setSelectedArtigo(params);
+        setRetornarEdicaoArtigoDialog(true);
+    };
+
+    const handleRetornarArtigoRevisao = (params) => {
+        setAnchorEl(null);
+        setSelectedArtigo(params);
+        setRetornarRevisaoArtigoDialog(true);
+    };
+
+    const handleConcluirEtapaArtigoRevisao = (params) => {
+        setAnchorEl(null);
+        setSelectedArtigo(params);
+        setConcluirEtapaArtigoDialog(true);
+    };
+
+    const handleEnviarArtigo = (params) => {
+        setAnchorEl(null);
+        setSelectedArtigo(params);
+        setOpenEnviarArtigoDialog(true);
     };
 
     const handleAbrirArtigoDocs = (params) => {
         window.open("https://docs.google.com/document/d/" + params.idDocumentoDrive + "/edit", "_blank");
     };
 
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event, params) => {
+        setSelectedArtigo(params);
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const sessionUser = sessionStorage.getItem("@AuthFirebase:userSession");
+    const sessionUserF = JSON.parse(sessionUser);
+
+
     const columns = [
         {
             field: "actions",
             headerName: "Ações",
             headerClassName: "header-center",
-            width: 130,
+            width: 140,
             renderCell: (params) => (
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button
-                        color="primary"
-                        onClick={() => { handleAbrirArtigoDocs(params.row) }}
-                        sx={{
-                            fontSize: '1.7rem',
-                            cursor: 'pointer',
-                            marginLeft: '10px',
-                            marginRight: '10px',
-                            margin: '-5px',
-                            padding: '-20px',
-                            '&:hover': {
-                                backgroundColor: 'lightblue',
-                                padding: '1px',
-                                borderRadius: '10%',
-                            },
+                    <Tooltip title="Abrir artigo no Google Docs" arrow placement="left-start">
+                        <span>
+                            <Button
+                                color="primary"
+                                sx={{minWidth: '20px'}}
+                                onClick={() => { handleAbrirArtigoDocs(params.row) }}
+                                disabled={params.row.estadoAtual === "ABERTO"}
+                            >
+                                <FileOpenIcon />
+                            </Button>
+                        </span>
+
+                    </Tooltip>
+
+                    <Tooltip title="Exibir detalhes do artigo" arrow placement="left-start">
+                        <span>
+                            <Button
+                                color="primary"
+                                onClick={() => { handleVisualizarArtigo(params.row) }}
+                            >
+                                <VisibilityIcon />
+                            </Button>
+                        </span>
+                    </Tooltip>
+
+                    <Tooltip title="Mais ações" arrow placement="left-start">
+                        <span>
+                            <Button
+                                id="demo-customized-button"
+                                aria-controls={open ? 'demo-customized-menu' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={open ? 'true' : undefined}
+                                disableElevation
+                                sx={{minWidth: '20px'}}
+                                onClick={(event) => handleClick(event, params.row)}
+                            >
+                                <MoreVertIcon />
+                            </Button>
+                        </span>
+                    </Tooltip>
+
+                    <StyledMenu
+                        id="demo-customized-menu"
+                        MenuListProps={{
+                            'aria-labelledby': 'demo-customized-button',
                         }}
-                        disabled={params.row.estadoAtual === "ABERTO"}
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
                     >
-                        <FileOpenIcon />
-                    </Button>
-                    <Button
-                        color="primary"
-                        onClick={() => { handleVisualizarArtigo(params.row) }}
-                        sx={{
-                            fontSize: '1.7rem',
-                            cursor: 'pointer',
-                            marginLeft: '10px',
-                            marginRight: '10px',
-                            margin: '-5px',
-                            padding: '-20px',
-                            '&:hover': {
-                                backgroundColor: 'lightblue',
-                                padding: '1px',
-                                borderRadius: '10%',
-                            },
-                        }}
-                    >
-                        <VisibilityIcon />
-                    </Button>
+                        {/*<MenuItem onClick={() => handleCancelarArtigo(selectedArtigo)}*/}
+                        {/*          disabled={selectedArtigo ? (selectedArtigo.estadoAtual === "CANCELADO" || selectedArtigo.estadoAtual === "ACEITO") : false}*/}
+                        {/*          disableRipple>*/}
+                        {/*    <CancelIcon style={{ color: 'indianred' }} />*/}
+                        {/*    Cancelar artigo*/}
+                        {/*</MenuItem>*/}
+                        <MenuItem
+                            onClick={() => {
+                                if (
+                                    (sessionUserF.tipo === 'REDATOR' && selectedArtigo.estadoAtual === 'EM_EDICAO') ||
+                                    (sessionUserF.tipo === 'REVISOR' && selectedArtigo.estadoAtual === 'EM_REVISAO') ||
+                                    (sessionUserF.tipo === 'CLIENTE' && selectedArtigo.estadoAtual === 'REVISADO')
+                                ) {
+                                    handleConcluirEtapaArtigoRevisao(selectedArtigo);
+                                }
+                            }}
+                            disabled={
+                                selectedArtigo
+                                    ? !(
+                                        (sessionUserF.tipo === 'REDATOR' && selectedArtigo.estadoAtual === 'EM_EDICAO') ||
+                                        (sessionUserF.tipo === 'REVISOR' && selectedArtigo.estadoAtual === 'EM_REVISAO') ||
+                                        (sessionUserF.tipo === 'CLIENTE' && selectedArtigo.estadoAtual === 'REVISADO')
+                                    )
+                                    : true
+                            }
+                            disableRipple
+                        >
+                            <DoneIcon style={{ color: 'forestgreen' }} />
+                            Concluir etapa
+                        </MenuItem>
+
+                        {/*<MenuItem onClick={() => handleEnviarArtigo(selectedArtigo)} disabled={selectedArtigo ? selectedArtigo.estadoAtual !== "ABERTO" : false}*/}
+                        {/*          disableRipple>*/}
+                        {/*    <EditIcon style={{ color: '#1976D2' }} />*/}
+                        {/*    Enviar artigo para edição*/}
+                        {/*</MenuItem>*/}
+                        {sessionUserF.tipo === 'REVISOR' ? (
+                            <MenuItem
+                                onClick={() => {
+                                    if (sessionUserF.tipo === 'REVISOR' && selectedArtigo.estadoAtual === 'EM_REVISAO') {
+                                        handleRetornarArtigoEdicao(selectedArtigo);
+                                    }
+                                }}
+                                disabled={
+                                    selectedArtigo
+                                        ? !(sessionUserF.tipo === 'REVISOR' && selectedArtigo.estadoAtual === 'EM_REVISAO')
+                                        : false
+                                }
+                                disableRipple
+                            >
+                                <UndoIcon style={{ color: 'gold' }} />
+                                Retornar artigo para edição
+                            </MenuItem>
+                        ) : null}
+
+                        {sessionUserF.tipo === 'CLIENTE' && selectedArtigo && selectedArtigo.estadoAtual === 'REVISADO' ? (
+                            <MenuItem
+                                onClick={() => {
+                                    if (sessionUserF.tipo === 'CLIENTE' && selectedArtigo.estadoAtual === 'REVISADO') {
+                                        handleRetornarArtigoRevisao(selectedArtigo);
+                                    }
+                                }}
+                                disabled={
+                                    selectedArtigo
+                                        ? !(sessionUserF.tipo === 'CLIENTE' && selectedArtigo.estadoAtual === 'REVISADO')
+                                        : false
+                                }
+                                disableRipple
+                            >
+                                <UndoIcon style={{ color: 'gold' }} />
+                                Retornar artigo para revisão
+                            </MenuItem>
+                        ) : null }
+
+                    </StyledMenu>
                 </div>
             ),
         },
@@ -193,7 +380,6 @@ export const MeusArtigos = () => {
             toast.error("Error fetching data:", error);
         }
     };
-
     const handleRefresh = () => {
         fetchData();
         toast.success("Meus Artigos atualizados com sucesso!");
@@ -247,6 +433,41 @@ export const MeusArtigos = () => {
                         open={openVisualizarArtigoDialog}
                         onClose={() => setOpenVisualizarArtigoDialog(false)}
                         artigo={selectedArtigoVisualizar}
+                    />
+
+                    <EnviarArtigoDialog
+                        open={openEnviarArtigoDialog}
+                        onClose={() => setOpenEnviarArtigoDialog(false)}
+                        artigo={selectedArtigo}
+                        handleRefresh={fetchData}
+                    />
+
+                    <CancelarArtigoDialog
+                        open={openCancelarArtigoDialog}
+                        onClose={() => setOpenCancelarArtigoDialog(false)}
+                        artigo={selectedArtigo}
+                        handleRefresh={fetchData}
+                    />
+
+                    <RetornarArtigoEdicaoDialog
+                        open={openRetornarEdicaoArtigoDialog}
+                        onClose={() => setRetornarEdicaoArtigoDialog(false)}
+                        artigo={selectedArtigo}
+                        handleRefresh={fetchData}
+                    />
+
+                    <RetornarArtigoRevisao
+                        open={openRetornarRevisaoArtigoDialog}
+                        onClose={() => setRetornarRevisaoArtigoDialog(false)}
+                        artigo={selectedArtigo}
+                        handleRefresh={fetchData}
+                    />
+
+                    <ConcluirEtapaDialog
+                        open={openConcluirEtapaArtigoDialog}
+                        onClose={() => setConcluirEtapaArtigoDialog(false)}
+                        artigo={selectedArtigo}
+                        handleRefresh={fetchData}
                     />
 
                 </Container>

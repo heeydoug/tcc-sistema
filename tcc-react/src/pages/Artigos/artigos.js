@@ -157,101 +157,49 @@ export const Artigos = () => {
             field: "actions",
             headerName: "Ações",
             headerClassName: "header-center",
-            width: 180,
+            width: 140,
             renderCell: (params) => (
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-
                     <Tooltip title="Abrir artigo no Google Docs" arrow placement="left-start">
+                        <span>
                             <Button
                                 color="primary"
                                 onClick={() => { handleAbrirArtigoDocs(params.row) }}
-                                sx={{
-                                    fontSize: '1.7rem',
-                                    cursor: 'pointer',
-                                    marginLeft: '10px',
-                                    marginRight: '10px',
-                                    margin: '-5px',
-                                    padding: '-20px',
-                                    '&:hover': {
-                                        backgroundColor: 'lightblue',
-                                        padding: '1px',
-                                        borderRadius: '10%',
-                                    },
-                                }}
+                                sx={{minWidth: '20px'}}
                                 disabled={params.row.estadoAtual === "ABERTO"}
                             >
                                 <FileOpenIcon />
                             </Button>
+                        </span>
+
                     </Tooltip>
 
                     <Tooltip title="Exibir detalhes do artigo" arrow placement="left-start">
+                        <span>
                             <Button
                                 color="primary"
                                 onClick={() => { handleVisualizarArtigo(params.row) }}
-                                sx={{
-                                    fontSize: '1.7rem',
-                                    cursor: 'pointer',
-                                    marginLeft: '10px',
-                                    marginRight: '10px',
-                                    margin: '-5px',
-                                    padding: '-20px',
-                                    '&:hover': {
-                                        backgroundColor: 'lightblue',
-                                        padding: '1px',
-                                        borderRadius: '10%',
-                                    },
-                                }}
+                                sx={{minWidth: '20px'}}
                             >
                                 <VisibilityIcon />
                             </Button>
+                        </span>
                     </Tooltip>
 
-                    {/*<Tooltip title="Enviar artigo para edição" arrow placement="left-start">*/}
-                    {/*    <Button*/}
-                    {/*        color="primary"*/}
-                    {/*        onClick={() => handleEnviarArtigo(params.row)}*/}
-                    {/*        sx={{*/}
-                    {/*            fontSize: '1.7rem',*/}
-                    {/*            cursor: 'pointer',*/}
-                    {/*            marginLeft: '10px',*/}
-                    {/*            marginRight: '10px',*/}
-                    {/*            margin: '-5px',*/}
-                    {/*            padding: '-20px',*/}
-                    {/*            '&:hover': {*/}
-                    {/*                backgroundColor: 'lightblue',*/}
-                    {/*                borderRadius: '10%',*/}
-                    {/*            },*/}
-                    {/*        }}*/}
-                    {/*        disabled={params.row.estadoAtual !== "ABERTO"}*/}
-                    {/*    >*/}
-                    {/*        <StartIcon />*/}
-                    {/*    </Button>*/}
-                    {/*</Tooltip>*/}
-
                     <Tooltip title="Mais ações" arrow placement="left-start">
+                        <span>
                             <Button
                                 id="demo-customized-button"
-                                sx={{
-                                    fontSize: '1.7rem',
-                                    cursor: 'pointer',
-                                    marginLeft: '10px',
-                                    marginRight: '10px',
-                                    margin: '-5px',
-                                    padding: '-20px',
-                                    '&:hover': {
-                                        backgroundColor: 'lightblue',
-                                        borderRadius: '10%',
-                                    },
-                                }}
+                                sx={{minWidth: '20px'}}
                                 aria-controls={open ? 'demo-customized-menu' : undefined}
                                 aria-haspopup="true"
                                 aria-expanded={open ? 'true' : undefined}
                                 disableElevation
                                 onClick={(event) => handleClick(event, params.row)}
-                                >
+                            >
                                 <MoreVertIcon />
                             </Button>
-
+                        </span>
                     </Tooltip>
 
                     <StyledMenu
@@ -263,36 +211,43 @@ export const Artigos = () => {
                         open={open}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={() => handleCancelarArtigo(selectedArtigo)} disabled={selectedArtigo.estadoAtual === "CANCELADO"} disableRipple>
+                        <MenuItem onClick={() => handleCancelarArtigo(selectedArtigo)}
+                                  disabled={selectedArtigo ? (selectedArtigo.estadoAtual === "CANCELADO" || selectedArtigo.estadoAtual === "ACEITO") : false}
+                                  disableRipple>
                             <CancelIcon style={{ color: 'indianred' }} />
                             Cancelar artigo
                         </MenuItem>
-                        <MenuItem onClick={() => handleConcluirEtapaArtigoRevisao(selectedArtigo)} disableRipple>
+                        <MenuItem onClick={() => handleConcluirEtapaArtigoRevisao(selectedArtigo)} disabled={
+                            selectedArtigo
+                                ? !['EM_EDICAO', 'EM_REVISAO', 'REVISADO'].includes(
+                                    selectedArtigo.estadoAtual
+                                )
+                                : true
+                        }
+                                  disableRipple>
                             <DoneIcon style={{ color: 'forestgreen' }} />
                             Concluir etapa
                         </MenuItem>
-                        <MenuItem onClick={() => handleEnviarArtigo(selectedArtigo)} disabled={selectedArtigo.estadoAtual !== "ABERTO"} disableRipple>
+                        <MenuItem onClick={() => handleEnviarArtigo(selectedArtigo)} disabled={selectedArtigo ? selectedArtigo.estadoAtual !== "ABERTO" : false}
+                                  disableRipple>
                             <EditIcon style={{ color: '#1976D2' }} />
                             Enviar artigo para edição
                         </MenuItem>
-                        <MenuItem onClick={() => handleRetornarArtigoEdicao(selectedArtigo)} disabled={selectedArtigo.estadoAtual !== "EM_REVISAO"} disableRipple>
+                        <MenuItem onClick={() => handleRetornarArtigoEdicao(selectedArtigo)} disabled={selectedArtigo ? selectedArtigo.estadoAtual !== "EM_REVISAO" : false}
+                                  disableRipple>
                             <UndoIcon style={{ color: 'gold' }} />
                             Retornar artigo para edição
                         </MenuItem>
-                        <MenuItem onClick={() => handleRetornarArtigoRevisao(selectedArtigo)} disabled={selectedArtigo.estadoAtual !== "CANCELADO"} disableRipple>
+                        <MenuItem onClick={() => handleRetornarArtigoRevisao(selectedArtigo)} disabled={selectedArtigo ? selectedArtigo.estadoAtual !== "REVISADO" : false}
+                                  disableRipple>
                             <UndoIcon style={{ color: 'gold' }} />
                             Retornar artigo para revisão
                         </MenuItem>
-
-
-
                     </StyledMenu>
-
-
                 </div>
             ),
         },
-        { field: "id", headerName: "ID", width: 60 },
+        { field: "id", headerName: "ID", width: 60},
         { field: "titulo", headerName: "Título", width: 200 },
         //{ field: "conteudo", headerName: "Conteúdo", width: 200 },
         { field: "palavraChave", headerName: "Palavra-Chave", width: 140 },
@@ -417,24 +372,29 @@ export const Artigos = () => {
     };
 
     const handleEnviarArtigo = (params) => {
+        setAnchorEl(null);
         setSelectedArtigo(params);
         setOpenEnviarArtigoDialog(true);
     };
     const handleCancelarArtigo = (params) => {
+        setAnchorEl(null);
         setSelectedArtigo(params);
         setOpenCancelarArtigoDialog(true);
     };
     const handleRetornarArtigoEdicao = (params) => {
+        setAnchorEl(null);
         setSelectedArtigo(params);
         setRetornarEdicaoArtigoDialog(true);
     };
 
     const handleRetornarArtigoRevisao = (params) => {
+        setAnchorEl(null);
         setSelectedArtigo(params);
         setRetornarRevisaoArtigoDialog(true);
     };
 
     const handleConcluirEtapaArtigoRevisao = (params) => {
+        setAnchorEl(null);
         setSelectedArtigo(params);
         setConcluirEtapaArtigoDialog(true);
     };

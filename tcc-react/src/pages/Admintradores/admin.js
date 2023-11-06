@@ -94,9 +94,9 @@ export const Administrador = () => {
             width: 150,
             renderCell: (params) => (
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button color="primary" onClick={() => handleEdit(params.row.id)}>
-                        <EditIcon />
-                    </Button>
+                    {/*<Button color="primary" onClick={() => handleEdit(params.row.id)}>*/}
+                    {/*    <EditIcon />*/}
+                    {/*</Button>*/}
 
                     <Button color="secondary" onClick={() => handleDialogOpen(params.row.id)}>
                         <DeleteIcon />

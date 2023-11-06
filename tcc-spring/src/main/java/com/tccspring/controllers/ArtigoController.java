@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,7 +59,12 @@ public class ArtigoController {
         String estado = estadoAtual.getEstadoAtual();
 
         if (artigo != null) {
-            //EstadoArtigo estadoAnterior = artigo.getEstadoAtual();
+            // Verifica se o estado é 'CANCELADO' ou 'ACEITO'
+            if (estado.equals("CANCELADO") || estado.equals("ACEITO")) {
+                // Define a dataFinalizacao como a data atual
+                artigo.setDataFinalizacao(LocalDate.now());
+            }
+
             artigo.setEstadoAtual(EstadoArtigo.valueOf(estado));
             artigo.adicionarHistorico(EstadoArtigo.valueOf(estado));
 
