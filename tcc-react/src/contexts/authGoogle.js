@@ -24,6 +24,7 @@ export const AuthGoogleProvider = ({ children }) => {
         };
         loadStorageAuth();
     }, []);
+
     const signInGoogle = async () => {
         toast.dismiss();
         try {

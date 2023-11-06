@@ -83,10 +83,7 @@ export const CriarArtigoDialog = ({
 
     const createGoogleDriveDocument = (tag) => {
         const token = sessionStorage.getItem("@AuthFirebase:token");
-        console.log("Token do Firebase", token);
         var accessToken = gapi.auth.getToken().access_token;
-        //var accessToken = "ya29.a0AfB_byDYlpivh_ZTL1QX8g8BPV-tbzRlH9hm8VnS0lBjh5NNVhHywF4q1oF1mP3CGSbzrG_eLyA2A5lJr5SQks-hdeEf-Dkcsbv_m3jIHR5wgUGQ8SuanKOQqpwxJPhkwPyofxQFavQMHt_VT1K-b7pKA94K9UriUN0aCgYKAQgSARMSFQGOcNnCxTyDy_tvcz1QeqHQ62R_nw0170";
-        console.log(accessToken);
         var fileName = tag + "- " + getDateString() + " - " + getTimeString();
 
         return new Promise((resolve, reject) => {
@@ -96,9 +93,6 @@ export const CriarArtigoDialog = ({
             })
                 .then((res) => res.json())
                 .then(function (val) {
-                    console.log(val);
-                    console.log(val.documentId);
-
                     const folderName = tag;
 
                     //Pasta antiga
@@ -119,8 +113,6 @@ export const CriarArtigoDialog = ({
                             fields: 'id'
                         }).then(function (response) {
                             const folderId = response.result.id;
-                            console.log('Pasta criada com sucesso. ID da pasta:', folderId);
-
                             const fileId = val.documentId;
                             const folderIdN = folderId;
 
@@ -131,7 +123,6 @@ export const CriarArtigoDialog = ({
                             });
 
                             updateRequest.execute(function (response) {
-                                console.log('Documento atualizado:', response);
                                 resolve({
                                     idDocumentoDrive: val.documentId,
                                     idPastaDrive: folderId,
@@ -190,25 +181,8 @@ export const CriarArtigoDialog = ({
                 ]
             };
 
-
             // Fazendo a solicitação POST para o backend para criar o artigo
             const createdArticleResponse = await createArticle(artigoData);
-
-            console.log("Artigo Criado", createdArticleResponse);
-            //
-            // // Resposta do backend para obter o ID do artigo
-            // const artigoCriado = createdArticleResponse.id;
-            //
-            // const idDoArtigo = artigoCriado;
-            //
-            //
-            // // Atualizando o ID do artigo na parte de historicoEstados
-            // artigoData.historicoEstados[0].artigo.id = idDoArtigo;
-            //
-            // // Fazendo a solicitação para atualizar o artigo usando a função updateArticle
-            // const updatedArticle = await updateArticle(idDoArtigo, artigoData);
-            // console.log("Artigo atualizado com sucesso:", updatedArticle);
-
             toast.success(
                 <span>
                     Artigo " <span style={{ color: '#07BC0C' }}>{artigoData.titulo}</span>" criado com sucesso!

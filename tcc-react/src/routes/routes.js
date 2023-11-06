@@ -32,11 +32,9 @@ export const AppRoutes = () => {
                     </Route>
                     <Route path="/redatores" element={<PrivateRoutes />}>
                         <Route path="/redatores" element={<Redatores />} />
-
                     </Route>
                     <Route path="/revisores" element={<PrivateRoutes />}>
                         <Route path="/revisores" element={<Revisores />} />
-
                     </Route>
                     <Route path="/clientes" element={<PrivateRoutes />}>
                         <Route path="/clientes" element={<Clientes />} />
