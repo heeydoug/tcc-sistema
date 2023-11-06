@@ -440,11 +440,27 @@ export const Artigos = () => {
                             Gerenciar Artigos
                         </Typography>
 
-                        <div style={{ marginBottom: "10px", textAlign: "right"}}>
-                            <Button variant="contained" color="primary" onClick={handleRefresh}>
-                                <RefreshIcon />
-                            </Button>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px'}}>
+                            <div>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={openDialogCriarArtigo}
+                                >
+                                    Criar Artigo
+                                </Button>
+                            </div>
+                            <div>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleRefresh}
+                                >
+                                    <RefreshIcon />
+                                </Button>
+                            </div>
                         </div>
+
                         <div style={{ marginBottom: "10px", textAlign: "right", height: "600px" }}>
                             <DataGrid rows={artigos.map((artigo) => ({
                                 ...artigo,
@@ -459,15 +475,6 @@ export const Artigos = () => {
                                       disableRowSelectionOnClick
 
                             />
-                        </div>
-                        <div style={{ marginTop: "10px"}}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={openDialogCriarArtigo}
-                            >
-                                Criar Artigo
-                            </Button>
                         </div>
 
                         <VisualizarArtigoDialog
