@@ -1,6 +1,7 @@
 package com.tccspring.domains;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tccspring.domains.enums.TipoUsuario;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -24,10 +25,13 @@ public class Usuario {
     protected LocalDate dataCriacao = LocalDate.now();
     private boolean ativo;
     @OneToMany(mappedBy = "redator")
+    @JsonIgnoreProperties("redator")
     private List<Artigo> artigosRedator = new ArrayList<>();
     @OneToMany(mappedBy = "revisor")
+    @JsonIgnoreProperties("revisor")
     private List<Artigo> artigosRevisor = new ArrayList<>();
     @OneToMany(mappedBy = "cliente")
+    @JsonIgnoreProperties("cliente")
     private List<Artigo> artigosCliente = new ArrayList<>();
 
 }
