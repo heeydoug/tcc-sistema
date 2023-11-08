@@ -291,6 +291,7 @@ export const HistoricoArtigos = () => {
         { field: "estadoAtual",
             headerName: "Estado Atual",
             width: 110,
+            align: 'center',
             cellClassName: (params) => getEstadoAtualCellStyle(params.value),
             valueGetter: (params) => getEstadoAtualText(params.value),
         },

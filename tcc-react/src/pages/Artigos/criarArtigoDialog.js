@@ -52,6 +52,7 @@ export const CriarArtigoDialog = ({
         setSelectedCliente("");
     };
 
+
     //Criando as funções para criar artigo
     function zeroFill(i) {
         return (i < 10 ? '0' : '') + i;
@@ -194,7 +195,7 @@ export const CriarArtigoDialog = ({
             startGridArtigo();
 
         } catch (error) {
-            toast.error("Erro ao fazer a solicitação:", error);
+            toast.error('Erro:', error);
         }
     };
 

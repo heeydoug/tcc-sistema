@@ -34,7 +34,7 @@ export const Usuarios = () => {
         ptBR
     );
 
-    const [usuarios, setUsuarios] = useState([]); // Estado para armazenar os dados dos usuários
+    const [usuarios, setUsuarios] = useState([]);
 
     const [editDialogOpen, setEditDialogOpen] = useState(false);
     const [editingUserId, setEditingUserId] = useState(null);

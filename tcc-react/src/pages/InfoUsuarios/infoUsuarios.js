@@ -60,7 +60,7 @@ export const InfoUsuarios = () => {
 
     const getArticlesVinc = async () => {
         try {
-            if (sessionUserF && sessionUserF.tipo !== 'ADMINISTRADOR') {
+            if (sessionUserF && sessionUserF.tipo !== 'ADMINISTRADOR' && sessionUserF.tipo !== 'USUARIO') {
                 const response = await countArticleVinc(
                     sessionUserF.email,
                     sessionUserF.tipo
@@ -100,7 +100,7 @@ export const InfoUsuarios = () => {
                                                         sessionUserF.tipo === 'ADMINISTRADOR' ? 'Administrador' : 'Desconhecido'}
                                             </Typography>
                                             <Typography variant="subtitle1">Data de Registro: {sessionUserF.dataCriacao}</Typography>
-                                            {sessionUserF.tipo !== 'ADMINISTRADOR' && (
+                                            {sessionUserF.tipo !== 'ADMINISTRADOR' && sessionUserF.tipo !== 'USUARIO' && (
                                                 <Typography variant="subtitle1">Quantidade de Artigos Vinculados: {quantArtigoVinculados}</Typography>
                                             )}
                                             <Typography variant="subtitle1">Status: {sessionUserF.ativo === true ? 'Ativo' : 'Inativo'}</Typography>

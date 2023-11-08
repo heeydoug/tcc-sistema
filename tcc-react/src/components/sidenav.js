@@ -26,6 +26,8 @@ import {useAppStore} from "../configs/appStore";
 import LogoutIcon from "@mui/icons-material/Logout";
 import TopicIcon from '@mui/icons-material/Topic';
 import DatasetLinkedIcon from '@mui/icons-material/DatasetLinked';
+import NoteAltIcon from '@mui/icons-material/NoteAlt';
+import FolderSpecialSharpIcon from '@mui/icons-material/FolderSpecialSharp';
 
 const drawerWidth = 240;
 
@@ -283,7 +285,60 @@ export default function MiniDrawer() {
                                 </ListItemButton>
                             </ListItem>
                         )}
-
+                        {/* Pedidos de Artigos */}
+                        {userLogadoSessao && (userLogadoSessao.tipo === 'CLIENTE' || userLogadoSessao.tipo === 'ADMINISTRADOR') && (
+                            <ListItem disablePadding sx={{display: 'block'}} onClick={() => {
+                                navigate("/pedidos-artigos")
+                            }}>
+                                <ListItemButton
+                                    sx={{
+                                        minHeight: 48,
+                                        justifyContent: open ? 'initial' : 'center',
+                                        px: 2.5,
+                                        color: 'white'
+                                    }}
+                                >
+                                    <ListItemIcon
+                                        sx={{
+                                            minWidth: 0,
+                                            mr: open ? 3 : 'auto',
+                                            justifyContent: 'center',
+                                            color: 'white'
+                                        }}
+                                    >
+                                        <NoteAltIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Pedidos de Artigo" sx={{opacity: open ? 1 : 0}}/>
+                                </ListItemButton>
+                            </ListItem>
+                        )}
+                        {/* Gerenciar Pedidos de Artigos */}
+                        {userLogadoSessao && (userLogadoSessao.tipo === 'ADMINISTRADOR') && (
+                            <ListItem disablePadding sx={{display: 'block'}} onClick={() => {
+                                navigate("/gerenciar-pedidos-artigos")
+                            }}>
+                                <ListItemButton
+                                    sx={{
+                                        minHeight: 48,
+                                        justifyContent: open ? 'initial' : 'center',
+                                        px: 2.5,
+                                        color: 'white'
+                                    }}
+                                >
+                                    <ListItemIcon
+                                        sx={{
+                                            minWidth: 0,
+                                            mr: open ? 3 : 'auto',
+                                            justifyContent: 'center',
+                                            color: 'white'
+                                        }}
+                                    >
+                                        <FolderSpecialSharpIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Gerenciar Pedidos" sx={{opacity: open ? 1 : 0}}/>
+                                </ListItemButton>
+                            </ListItem>
+                        )}
                         {/* Artigos */}
                         {userLogadoSessao && userLogadoSessao.tipo === 'ADMINISTRADOR' && (
                             <ListItem disablePadding sx={{display: 'block'}} onClick={() => {
@@ -312,55 +367,59 @@ export default function MiniDrawer() {
                             </ListItem>
                         )}
                         {/* Meus Artigos Vinculados */}
-                        <ListItem disablePadding sx={{display: 'block'}} onClick={() => {
-                            navigate("/meus-artigos")
-                        }}>
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                    color: 'white'
-                                }}
-                            >
-                                <ListItemIcon
+                        {userLogadoSessao && userLogadoSessao.tipo !== 'USUARIO' && (
+                            <ListItem disablePadding sx={{display: 'block'}} onClick={() => {
+                                navigate("/meus-artigos")
+                            }}>
+                                <ListItemButton
                                     sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
+                                        minHeight: 48,
+                                        justifyContent: open ? 'initial' : 'center',
+                                        px: 2.5,
                                         color: 'white'
                                     }}
                                 >
-                                    <DatasetLinkedIcon/>
-                                </ListItemIcon>
-                                <ListItemText primary="Meus Artigos" sx={{opacity: open ? 1 : 0}}/>
-                            </ListItemButton>
-                        </ListItem>
+                                    <ListItemIcon
+                                        sx={{
+                                            minWidth: 0,
+                                            mr: open ? 3 : 'auto',
+                                            justifyContent: 'center',
+                                            color: 'white'
+                                        }}
+                                    >
+                                        <DatasetLinkedIcon/>
+                                    </ListItemIcon>
+                                    <ListItemText primary="Meus Artigos" sx={{opacity: open ? 1 : 0}}/>
+                                </ListItemButton>
+                            </ListItem>
+                        )}
                         {/* Histórico de Artigos */}
-                        <ListItem disablePadding sx={{display: 'block'}} onClick={() => {
-                            navigate("/historico-artigos")
-                        }}>
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                    color: 'white'
-                                }}
-                            >
-                                <ListItemIcon
+                        {userLogadoSessao && userLogadoSessao.tipo !== 'USUARIO' && (
+                            <ListItem disablePadding sx={{display: 'block'}} onClick={() => {
+                                navigate("/historico-artigos")
+                            }}>
+                                <ListItemButton
                                     sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
+                                        minHeight: 48,
+                                        justifyContent: open ? 'initial' : 'center',
+                                        px: 2.5,
                                         color: 'white'
                                     }}
                                 >
-                                    <TopicIcon/>
-                                </ListItemIcon>
-                                <ListItemText primary="Histórico de Artigos" sx={{opacity: open ? 1 : 0}}/>
-                            </ListItemButton>
-                        </ListItem>
+                                    <ListItemIcon
+                                        sx={{
+                                            minWidth: 0,
+                                            mr: open ? 3 : 'auto',
+                                            justifyContent: 'center',
+                                            color: 'white'
+                                        }}
+                                    >
+                                        <TopicIcon/>
+                                    </ListItemIcon>
+                                    <ListItemText primary="Histórico de Artigos" sx={{opacity: open ? 1 : 0}}/>
+                                </ListItemButton>
+                            </ListItem>
+                        )}
                         {/* Logout */}
                         <ListItem disablePadding sx={{display: 'block'}} onClick={() => signOut()}>
                             <ListItemButton

@@ -23,10 +23,21 @@ export const createUser = async (user) => {
 };
 
 // ======================================================================
+export const getClienteById = async (clienteId) => {
+    try {
+        const response = await axios.get(`/usuarios/${clienteId}`);
+        return await response.data;
+    } catch (error) {
+        console.error('Erro ao buscar cliente por ID:', error);
+    }
+    return null;
+};
+// ======================================================================
+
 export const checkUserByEmail = async (email) => {
     try {
         const response = await axios.get(`/usuarios/verificar-email?email=${email}`);
-        return response.data;
+        return await response.data;
     } catch (error) {
         throw error;
     }
