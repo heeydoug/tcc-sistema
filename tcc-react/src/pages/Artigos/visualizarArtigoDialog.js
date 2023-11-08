@@ -4,10 +4,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import {Button, DialogActions} from "@mui/material";
+import {Button, Chip, DialogActions} from "@mui/material";
 
 export default function VisualizarArtigoDialog({ open, onClose, artigo }) {
 
+    console.log(artigo)
     function getEstadoAtualText(estadoAtual) {
         switch (estadoAtual) {
             case "ABERTO":
@@ -27,8 +28,34 @@ export default function VisualizarArtigoDialog({ open, onClose, artigo }) {
         }
     }
 
+    function formatEstadoLabel(estado) {
+        return estado
+            .split('_')
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .join(' ');
+    }
+
+    function getCorPeloEstado(estado) {
+        switch (estado) {
+            case "ABERTO":
+                return "DodgerBlue";
+            case "EM_EDICAO":
+                return "MediumSpringGreen";
+            case "EM_REVISAO":
+                return "gold";
+            case "REVISADO":
+                return "MediumTurquoise";
+            case "ACEITO":
+                return "mediumslateblue";
+            case "CANCELADO":
+                return "indianred";
+            default:
+                return "gray"; // Cor padrão ou outra cor de sua escolha
+        }
+    }
+
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
             <DialogTitle>Detalhes do Artigo</DialogTitle>
             <DialogContent>
                 <Grid container spacing={2} sx={{paddingTop: '2%'}}>
@@ -111,6 +138,23 @@ export default function VisualizarArtigoDialog({ open, onClose, artigo }) {
                             variant="outlined"
                         />
                     </Grid>
+
+                    <Grid item xs={12}>
+                        <h3>Histórico de Estados</h3>
+                        <div className="historico-container">
+                            {artigo &&
+                                artigo.historicoEstados &&
+                                artigo.historicoEstados.map((historico, index) => (
+                                    <div key={index} className="historico-item">
+                                        <Chip
+                                            label={`${index + 1} - ${formatEstadoLabel(historico.estado)} - ${historico.dataRegistro}`}
+                                            style={{ backgroundColor: getCorPeloEstado(historico.estado) }}
+                                        />
+                                    </div>
+                                ))}
+                        </div>
+                    </Grid>
+
 
                     <Grid item xs={12}>
                         <TextField

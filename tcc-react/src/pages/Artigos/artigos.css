@@ -31,3 +31,59 @@
     text-align: center;
     background-color: indianred;
 }
+.historico-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+    /*justify-content: space-between;*/
+
+}
+.historico-item {
+    margin-bottom: 8px; /* Espaçamento entre os itens */
+    display: flex;
+    align-items: center; /* Alinha verticalmente os itens */
+}
+
+
+.historico-entry {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+}
+
+.historico-chip {
+    color: white;
+}
+.aberto-chip {
+    background-color: DodgerBlue !important;
+}
+
+.em-edicao-chip {
+    background-color: MediumSpringGreen !important;
+}
+
+.em-revisao-chip {
+    background-color: gold !important;
+}
+
+.revisado-chip {
+    background-color: MediumTurquoise !important;
+}
+
+.aceito-chip {
+    background-color: mediumslateblue !important;
+}
+
+.cancelado-chip {
+    background-color: indianred !important;
+}
+
+
+.historico-time {
+    font-weight: 600;
+}
