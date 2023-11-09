@@ -120,20 +120,20 @@ export const Artigos = () => {
             .catch((error) => console.error("Erro ao buscar dados de artigos:", error));
     };
 
-    const [selectedRedator, setSelectedRedator] = useState("");
-    const [selectedRevisor, setSelectedRevisor] = useState("");
-    const [selectedCliente, setSelectedCliente] = useState("");
-
-    const [clientes, setClientes] = useState([]);
-    const [redatores, setRedatores] = useState([]);
-    const [revisores, setRevisores] = useState([]);
-
-    const [novoArtigo, setNovoArtigo] = useState({
-        titulo: "",
-        conteudo: "",
-        palavraChave: "",
-        // Outros campos do artigo
-    });
+    // const [selectedRedator, setSelectedRedator] = useState("");
+    // const [selectedRevisor, setSelectedRevisor] = useState("");
+    // const [selectedCliente, setSelectedCliente] = useState("");
+    //
+    // const [clientes, setClientes] = useState([]);
+    // const [redatores, setRedatores] = useState([]);
+    // const [revisores, setRevisores] = useState([]);
+    //
+    // const [novoArtigo, setNovoArtigo] = useState({
+    //     titulo: "",
+    //     conteudo: "",
+    //     palavraChave: "",
+    //     // Outros campos do artigo
+    // });
 
     const criarArtigo = () => {
         // Envie os dados do novo artigo para o servidor
@@ -267,6 +267,7 @@ export const Artigos = () => {
         { field: "estadoAtual",
             headerName: "Estado Atual",
             width: 110,
+            align: 'center',
             cellClassName: (params) => getEstadoAtualCellStyle(params.value),
             valueGetter: (params) => getEstadoAtualText(params.value),
         },
@@ -304,7 +305,6 @@ export const Artigos = () => {
         }
     }
 
-
     function getEstadoAtualCellStyle(estadoAtual) {
         switch (estadoAtual) {
             case "ABERTO":
@@ -324,52 +324,51 @@ export const Artigos = () => {
         }
     }
 
-
     useEffect(() => {
-        async function fetchSelectData() {
-            const clientesData = await fetchClientesData();
-            const redatoresData = await fetchRedatoresData();
-            const revisoresData = await fetchRevisoresData();
+        // async function fetchSelectData() {
+        //     const clientesData = await fetchClientesData();
+        //     const redatoresData = await fetchRedatoresData();
+        //     const revisoresData = await fetchRevisoresData();
+        //
+        //     setClientes(clientesData);
+        //     setRedatores(redatoresData);
+        //     setRevisores(revisoresData);
+        // }
 
-            setClientes(clientesData);
-            setRedatores(redatoresData);
-            setRevisores(revisoresData);
-        }
-
-        fetchSelectData();
+        //fetchSelectData();
         startGridArtigo();
 
     }, []);
 
-    const fetchClientesData = async () => {
-        const response = await fetch("http://localhost:8080/usuarios/tipoCliente");
-        if (response.ok) {
-            return await response.json();
-        } else {
-            toast.error(`Erro na resposta da API: ${response.status}`);
-            return [];
-        }
-    };
-
-    const fetchRedatoresData = async () => {
-        const response = await fetch("http://localhost:8080/usuarios/tipoRedator");
-        if (response.ok) {
-            return await response.json();
-        } else {
-            toast.error("Erro ao buscar dados de redatores.");
-            return [];
-        }
-    };
-
-    const fetchRevisoresData = async () => {
-        const response = await fetch("http://localhost:8080/usuarios/tipoRevisor");
-        if (response.ok) {
-            return await response.json();
-        } else {
-            toast.error("Erro ao buscar dados de revisores.");
-            return [];
-        }
-    };
+    // const fetchClientesData = async () => {
+    //     const response = await fetch("http://localhost:8080/usuarios/tipoCliente");
+    //     if (response.ok) {
+    //         return await response.json();
+    //     } else {
+    //         toast.error(`Erro na resposta da API: ${response.status}`);
+    //         return [];
+    //     }
+    // };
+    //
+    // const fetchRedatoresData = async () => {
+    //     const response = await fetch("http://localhost:8080/usuarios/tipoRedator");
+    //     if (response.ok) {
+    //         return await response.json();
+    //     } else {
+    //         toast.error("Erro ao buscar dados de redatores.");
+    //         return [];
+    //     }
+    // };
+    //
+    // const fetchRevisoresData = async () => {
+    //     const response = await fetch("http://localhost:8080/usuarios/tipoRevisor");
+    //     if (response.ok) {
+    //         return await response.json();
+    //     } else {
+    //         toast.error("Erro ao buscar dados de revisores.");
+    //         return [];
+    //     }
+    // };
 
     const handleEnviarArtigo = (params) => {
         setAnchorEl(null);
@@ -442,13 +441,13 @@ export const Artigos = () => {
 
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px'}}>
                             <div>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={openDialogCriarArtigo}
-                                >
-                                    Criar Artigo
-                                </Button>
+                                {/*<Button*/}
+                                {/*    variant="contained"*/}
+                                {/*    color="primary"*/}
+                                {/*    onClick={openDialogCriarArtigo}*/}
+                                {/*>*/}
+                                {/*    Criar Artigo*/}
+                                {/*</Button>*/}
                             </div>
                             <div>
                                 <Button
@@ -519,23 +518,23 @@ export const Artigos = () => {
                         />
 
 
-                        <CriarArtigoDialog
-                            open={openDialog}
-                            onClose={closeDialogCriarArtigo}
-                            redatores={redatores}
-                            revisores={revisores}
-                            clientes={clientes}
-                            criarArtigo={criarArtigo}
-                            novoArtigo={novoArtigo}
-                            startGridArtigo={startGridArtigo}
-                            setNovoArtigo={setNovoArtigo}
-                            selectedRedator={selectedRedator}
-                            setSelectedRedator={setSelectedRedator}
-                            selectedRevisor={selectedRevisor}
-                            setSelectedRevisor={setSelectedRevisor}
-                            selectedCliente={selectedCliente}
-                            setSelectedCliente={setSelectedCliente}
-                        />
+                        {/*<CriarArtigoDialog*/}
+                        {/*    open={openDialog}*/}
+                        {/*    onClose={closeDialogCriarArtigo}*/}
+                        {/*    // redatores={redatores}*/}
+                        {/*    // revisores={revisores}*/}
+                        {/*    // clientes={clientes}*/}
+                        {/*    //criarArtigo={criarArtigo}*/}
+                        {/*    //novoArtigo={novoArtigo}*/}
+                        {/*    startGridArtigo={startGridArtigo}*/}
+                        {/*    // setNovoArtigo={setNovoArtigo}*/}
+                        {/*    // selectedRedator={selectedRedator}*/}
+                        {/*    // setSelectedRedator={setSelectedRedator}*/}
+                        {/*    // selectedRevisor={selectedRevisor}*/}
+                        {/*    // setSelectedRevisor={setSelectedRevisor}*/}
+                        {/*    // selectedCliente={selectedCliente}*/}
+                        {/*    // setSelectedCliente={setSelectedCliente}*/}
+                        {/*/>*/}
                     </Box>
                 </Container>
             </div>

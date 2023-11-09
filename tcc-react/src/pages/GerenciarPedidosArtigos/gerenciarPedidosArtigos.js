@@ -13,7 +13,9 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import React, {useEffect, useState} from "react";
 import {useAppStore} from "../../configs/appStore";
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import {CriarArtigoDialog} from "../Artigos/criarArtigoDialog";
 export const GerenciarPedidosArtigos = () => {
+
     const theme = createTheme(
         {
             palette: {
@@ -29,10 +31,25 @@ export const GerenciarPedidosArtigos = () => {
         fetchPedidosArtigos();
     }, []);
 
+    const dopen = useAppStore((state) => state.dopen);
+    const [data, setData] = useState([]);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [selectedRow, setSelectedRow] = useState(null);
+
+    const openDialogCriarArtigo = (row) => {
+        setSelectedRow(row);
+        setOpenDialog(true);
+    };
+
+    const closeDialogCriarArtigo = () => {
+        setOpenDialog(false);
+    };
+
     const columns = [
         { field: "id", headerName: "ID", flex: 1 },
         { field: "conteudo", headerName: "Conteúdo", flex: 3 },
         { field: "dataCriacao", headerName: "Data de Criação", flex: 2 },
+        { field: "clienteId", headerName: "ID do Cliente", flex: 2 },
         {
             field: 'acoes',
             headerName: 'Ações',
@@ -44,6 +61,7 @@ export const GerenciarPedidosArtigos = () => {
                     <Tooltip title="Criar Artigo" arrow placement="left-start">
                         <span>
                             <Button
+                                onClick={() => openDialogCriarArtigo(params.row)}
                             >
                                 <AddBoxIcon />
                             </Button>
@@ -83,8 +101,6 @@ export const GerenciarPedidosArtigos = () => {
         }
     };
 
-    const dopen = useAppStore((state) => state.dopen);
-    const [data, setData] = useState([]);
 
     return (
         <ThemeProvider theme={theme}>
@@ -135,6 +151,14 @@ export const GerenciarPedidosArtigos = () => {
                                 disableRowSelectionOnClick
                             />
                         </div>
+
+                        <CriarArtigoDialog
+                            open={openDialog}
+                            onClose={closeDialogCriarArtigo}
+                            startGridArtigo={fetchPedidosArtigos}
+                            selectedRow={selectedRow}
+
+                        />
 
                     </Box>
                 </Container>

@@ -55,10 +55,12 @@ const RetornarArtigoEdicao = ({ open, onClose, onEnviarArtigo, artigo, handleRef
             <DialogActions>
                 {!confirmarEnvio ? (
                     <>
-                        <Button color="primary" onClick={handleFechar}>
+                        <Button sx={{
+                            color: "indianred"
+                        }} onClick={handleFechar}>
                             Não
                         </Button>
-                        <Button color="secondary" onClick={handleSimClick}>
+                        <Button color="primary" onClick={handleSimClick}>
                             Sim
                         </Button>
                     </>

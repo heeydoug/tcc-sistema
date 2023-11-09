@@ -96,7 +96,9 @@ export const Usuarios = () => {
                         <EditIcon />
                     </Button>
 
-                    <Button color="secondary" onClick={() => handleDialogOpen(params.row.id)}>
+                    <Button sx={{
+                        color: "indianred"
+                    }} onClick={() => handleDialogOpen(params.row.id)}>
                         <DeleteIcon />
                     </Button>
                 </div>
@@ -250,10 +252,12 @@ export const Usuarios = () => {
                         </Typography>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleDialogClose} color="primary">
+                        <Button onClick={handleDialogClose} sx={{
+                            color: "indianred"
+                        }}>
                             Cancelar
                         </Button>
-                        <Button onClick={handleExcluir} color="secondary">
+                        <Button onClick={handleExcluir} color="primary">
                             Excluir
                         </Button>
                     </DialogActions>

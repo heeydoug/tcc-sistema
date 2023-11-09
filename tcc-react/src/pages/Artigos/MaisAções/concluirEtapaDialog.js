@@ -55,10 +55,12 @@ const ConcluirEtapaArtigo = ({ open, onClose, onEnviarArtigo, artigo, handleRefr
             <DialogActions>
                 {!confirmarEnvio ? (
                     <>
-                        <Button color="primary" onClick={handleFechar}>
+                        <Button sx={{
+                            color: "indianred"
+                        }} onClick={handleFechar}>
                             Não
                         </Button>
-                        <Button color="secondary" onClick={handleSimClick}>
+                        <Button color="primary" onClick={handleSimClick}>
                             Sim
                         </Button>
                     </>

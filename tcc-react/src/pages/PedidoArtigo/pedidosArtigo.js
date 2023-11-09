@@ -81,7 +81,6 @@ export const PedidosArtigo = () => {
                         <EditIcon />
                     </Button>
                     <Button
-                        color="secondary"
                         onClick={() => handleDialogOpen(params.row.id)}
                         sx={{
                             color: "indianred"

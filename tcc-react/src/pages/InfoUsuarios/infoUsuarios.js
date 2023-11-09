@@ -97,13 +97,19 @@ export const InfoUsuarios = () => {
                                                 Tipo do Usuário: {sessionUserF.tipo === 'USUARIO' ? 'Usuário' :
                                                 sessionUserF.tipo === 'REDATOR' ? 'Redator' :
                                                     sessionUserF.tipo === 'REVISOR' ? 'Revisor' :
-                                                        sessionUserF.tipo === 'ADMINISTRADOR' ? 'Administrador' : 'Desconhecido'}
+                                                        sessionUserF.tipo === 'ADMINISTRADOR' ? 'Administrador' : 'Usuário'}
                                             </Typography>
-                                            <Typography variant="subtitle1">Data de Registro: {sessionUserF.dataCriacao}</Typography>
+                                            {sessionUserF && (
+                                                <Typography variant="subtitle1">Data de Registro: {sessionUserF.dataCriacao}</Typography>
+                                            )}
                                             {sessionUserF.tipo !== 'ADMINISTRADOR' && sessionUserF.tipo !== 'USUARIO' && (
                                                 <Typography variant="subtitle1">Quantidade de Artigos Vinculados: {quantArtigoVinculados}</Typography>
                                             )}
-                                            <Typography variant="subtitle1">Status: {sessionUserF.ativo === true ? 'Ativo' : 'Inativo'}</Typography>
+                                            <Typography variant="subtitle1">
+                                                Status: <span style={{ color: sessionUserF.ativo ? 'green' : 'red', fontWeight: 'bold' }}>
+                                                            {sessionUserF.ativo ? 'Ativo' : 'Inativo'}
+                                                          </span>
+                                            </Typography>
                                         </div>
                                         <Button
                                             variant="outlined"

@@ -69,10 +69,12 @@ const EditarUsuario = ({ open, onClose, usuario, onSave }) => {
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <Button color="primary" onClick={onClose}>
+                <Button sx={{
+                    color: "indianred"
+                }} onClick={onClose}>
                     Cancelar
                 </Button>
-                <Button color="secondary" onClick={handleSave}>
+                <Button color="primary" onClick={handleSave}>
                     Salvar
                 </Button>
             </DialogActions>

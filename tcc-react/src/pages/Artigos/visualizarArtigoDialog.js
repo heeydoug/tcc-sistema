@@ -7,8 +7,6 @@ import TextField from "@mui/material/TextField";
 import {Button, Chip, DialogActions} from "@mui/material";
 
 export default function VisualizarArtigoDialog({ open, onClose, artigo }) {
-
-    console.log(artigo)
     function getEstadoAtualText(estadoAtual) {
         switch (estadoAtual) {
             case "ABERTO":
@@ -50,7 +48,7 @@ export default function VisualizarArtigoDialog({ open, onClose, artigo }) {
             case "CANCELADO":
                 return "indianred";
             default:
-                return "gray"; // Cor padrão ou outra cor de sua escolha
+                return "gray";
         }
     }
 
@@ -154,6 +152,7 @@ export default function VisualizarArtigoDialog({ open, onClose, artigo }) {
                                 ))}
                         </div>
                     </Grid>
+
 
 
                     <Grid item xs={12}>

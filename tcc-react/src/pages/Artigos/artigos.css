@@ -40,9 +40,9 @@
 
 }
 .historico-item {
-    margin-bottom: 8px; /* Espaçamento entre os itens */
+    margin-bottom: 8px;
     display: flex;
-    align-items: center; /* Alinha verticalmente os itens */
+    align-items: center;
 }
 
 

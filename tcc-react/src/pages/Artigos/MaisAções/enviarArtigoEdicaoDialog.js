@@ -14,6 +14,7 @@ const apiKey = "API_KEY";
 const scopes = "https://www.googleapis.com/auth/drive";
 
 export default function EnviarArtigoDialog({ open, onClose, onEnviarArtigo, artigo, handleRefresh }) {
+
     useEffect(() => {
         function start() {
             gapi.client.init({
@@ -65,6 +66,7 @@ export default function EnviarArtigoDialog({ open, onClose, onEnviarArtigo, arti
 
         } catch (error) {
             setConfirmarEnvio(false);
+            console.log(error)
             toast.error("Erro ao enviar o artigo:", error);
         }
     };
@@ -85,10 +87,12 @@ export default function EnviarArtigoDialog({ open, onClose, onEnviarArtigo, arti
             <DialogActions>
                 {!confirmarEnvio ? (
                     <>
-                        <Button color="primary" onClick={handleFechar}>
+                        <Button sx={{
+                            color: "indianred"
+                        }} onClick={handleFechar}>
                             Não
                         </Button>
-                        <Button color="secondary" onClick={handleSimClick}>
+                        <Button color="primary" onClick={handleSimClick}>
                             Sim
                         </Button>
                     </>

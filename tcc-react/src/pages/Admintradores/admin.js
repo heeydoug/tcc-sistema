@@ -98,7 +98,9 @@ export const Administrador = () => {
                     {/*    <EditIcon />*/}
                     {/*</Button>*/}
 
-                    <Button color="secondary" onClick={() => handleDialogOpen(params.row.id)}>
+                    <Button sx={{
+                        color: "indianred"
+                    }} onClick={() => handleDialogOpen(params.row.id)}>
                         <DeleteIcon />
                     </Button>
                 </div>
@@ -232,7 +234,9 @@ export const Administrador = () => {
                         <Button onClick={handleDialogClose} color="primary">
                             Cancelar
                         </Button>
-                        <Button onClick={handleExcluir} color="secondary">
+                        <Button onClick={handleExcluir} sx={{
+                            color: "indianred"
+                        }}>
                             Excluir
                         </Button>
                     </DialogActions>

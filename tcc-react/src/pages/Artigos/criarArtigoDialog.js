@@ -17,24 +17,56 @@ import { makeStyles } from "@mui/styles";
 import {createArticle, updateArticle} from "../../actions/artigos";
 import { toast, ToastContainer } from "react-toastify";
 import "./artigos.css"
+import {getClienteById, getUserByEmail} from "../../actions/usuarios";
 
 const clientId = "308424476532-e40blk46kh67iussdbce2655m9lnacoq.apps.googleusercontent.com";
 const apiKey = "API_KEY";
 const scopes = "https://www.googleapis.com/auth/drive";
+
+const fetchClientesData = async () => {
+    const response = await fetch("http://localhost:8080/usuarios/tipoCliente");
+    if (response.ok) {
+        return await response.json();
+    } else {
+        toast.error(`Erro na resposta da API: ${response.status}`);
+        return [];
+    }
+};
+
+const fetchRedatoresData = async () => {
+    const response = await fetch("http://localhost:8080/usuarios/tipoRedator");
+    if (response.ok) {
+        return await response.json();
+    } else {
+        toast.error("Erro ao buscar dados de redatores.");
+        return [];
+    }
+};
+
+const fetchRevisoresData = async () => {
+    const response = await fetch("http://localhost:8080/usuarios/tipoRevisor");
+    if (response.ok) {
+        return await response.json();
+    } else {
+        toast.error("Erro ao buscar dados de revisores.");
+        return [];
+    }
+};
 export const CriarArtigoDialog = ({
                                       open,
                                       onClose,
-                                      redatores,
-                                      revisores,
-                                      clientes,
-                                      novoArtigo,
-                                      setNovoArtigo,
-                                      selectedRedator,
-                                      setSelectedRedator,
-                                      selectedRevisor,
-                                      setSelectedRevisor,
-                                      selectedCliente,
-                                      setSelectedCliente,
+                                      selectedRow,
+                                      // redatores,
+                                      // revisores,
+                                      // clientes,
+                                      // novoArtigo,
+                                      // setNovoArtigo,
+                                      // selectedRedator,
+                                      // setSelectedRedator,
+                                      // selectedRevisor,
+                                      // setSelectedRevisor,
+                                      // selectedCliente,
+                                      // setSelectedCliente,
                                       startGridArtigo,
 
                                   }) => {
@@ -42,7 +74,6 @@ export const CriarArtigoDialog = ({
     // Função para redefinir os valores dos campos para nulo
     const resetDialogFields = () => {
         setNovoArtigo({
-
             titulo: "",
             conteudo: "",
             palavraChave: "",
@@ -52,6 +83,30 @@ export const CriarArtigoDialog = ({
         setSelectedCliente("");
     };
 
+    const [selectedRedator, setSelectedRedator] = useState("");
+    const [selectedRevisor, setSelectedRevisor] = useState("");
+    const [selectedCliente, setSelectedCliente] = useState("");
+
+    const [clientes, setClientes] = useState([]);
+    const [redatores, setRedatores] = useState([]);
+    const [revisores, setRevisores] = useState([]);
+    const [clientePedido, setClientePedido] = useState([]);
+    const [novoArtigo, setNovoArtigo] = useState({
+        titulo: "",
+        conteudo: "",
+        palavraChave: "",
+        // Outros campos do artigo
+    });
+
+    async function fetchSelectData() {
+        const clientesData = await fetchClientesData();
+        const redatoresData = await fetchRedatoresData();
+        const revisoresData = await fetchRevisoresData();
+        setClientes(clientesData);
+        setRedatores(redatoresData);
+        setRevisores(revisoresData);
+
+    }
 
     //Criando as funções para criar artigo
     function zeroFill(i) {
@@ -71,6 +126,7 @@ export const CriarArtigoDialog = ({
         return date.toLocaleTimeString();
     }
 
+
     useEffect(() => {
         function start() {
             gapi.client.init({
@@ -80,7 +136,33 @@ export const CriarArtigoDialog = ({
             });
         }
         gapi.load('client:auth2', start);
+        fetchSelectData();
+        startGridArtigo();
     }, []);
+
+    useEffect(() => {
+        if (selectedRow) {
+            setNovoArtigo((prevNovoArtigo) => ({
+                ...prevNovoArtigo,
+                conteudo: selectedRow.conteudo || "",
+            }));
+        }
+    }, [selectedRow]);
+
+    useEffect(() => {
+        async function fetchCliente() {
+            if (selectedRow?.clienteId) {
+                const cliente = await getClienteById(selectedRow?.clienteId);
+                setClientePedido(cliente);
+                console.log(clientePedido)
+            } else {
+                setClientePedido(null); // Limpa o cliente se não houver clienteId
+            }
+        }
+
+        fetchCliente();
+    }, [selectedRow]);
+
 
     const createGoogleDriveDocument = (tag) => {
         const token = sessionStorage.getItem("@AuthFirebase:token");
@@ -100,7 +182,7 @@ export const CriarArtigoDialog = ({
                     //const parentFolderId = '1EJrk68WbOvnuCEYN6qkQ1WlmWk2CksVr';
 
                     //Pasta nova
-                    const parentFolderId = '1vDJUQYI8dv3MyD4Ss2UxusUfBVZDgy4P';
+                    const parentFolderId = '1PoY2KvUQsLXIQACQDpxS3ruCmIefEabM';
 
                     const folderMetadata = {
                         name: folderName,
@@ -140,6 +222,23 @@ export const CriarArtigoDialog = ({
         });
     };
 
+    const handleExcluir = (id) => {
+        fetch(`http://localhost:8080/pedidos/${id}`, {
+            method: "DELETE",
+        })
+            .then((response) => {
+                if (response.ok) {
+                    startGridArtigo();
+                } else {
+                    toast.error("Erro ao excluir o pedido de artigo.");
+                }
+            })
+            .catch((error) => {
+                toast.error("Erro na solicitação:", error);
+            });
+
+    };
+
 
     const criarArtigo = async () => {
         if (
@@ -148,7 +247,7 @@ export const CriarArtigoDialog = ({
             novoArtigo.palavraChave === "" ||
             !selectedRedator ||
             !selectedRevisor ||
-            !selectedCliente
+            !clientePedido
         ) {
             toast.warning("Preencha todos os campos antes de criar o artigo.");
 
@@ -169,7 +268,7 @@ export const CriarArtigoDialog = ({
                 id: null, //ID em branco para que o banco de dados o gere automaticamente
                 redator: selectedRedator,
                 revisor: selectedRevisor,
-                cliente: selectedCliente,
+                cliente: clientePedido,
                 estadoAtual: "ABERTO",
                 historicoEstados: [
                     {
@@ -186,19 +285,20 @@ export const CriarArtigoDialog = ({
             const createdArticleResponse = await createArticle(artigoData);
             toast.success(
                 <span>
-                    Artigo " <span style={{ color: '#07BC0C' }}>{artigoData.titulo}</span>" criado com sucesso!
+                    Artigo "<span style={{ color: '#07BC0C' }}>{artigoData.titulo}</span>" criado com sucesso!
                 </span>
             );
 
             onClose();
             resetDialogFields();
+            handleExcluir(selectedRow.id)
             startGridArtigo();
 
         } catch (error) {
+            console.log(error)
             toast.error('Erro:', error);
         }
     };
-
 
 
     return (
@@ -271,9 +371,7 @@ export const CriarArtigoDialog = ({
                         <Autocomplete
                             options={clientes}
                             getOptionLabel={(option) => option ? option.nome : ''}
-                            value={selectedCliente}
-                            isOptionEqualToValue={(option, value) => option.id === value.id}
-                            onChange={(e, newValue) => setSelectedCliente(newValue)}
+                            value={clientePedido}
                             renderInput={(params) => <TextField {...params} label="Cliente" fullWidth />}
                         />
                     </Grid>
@@ -281,10 +379,12 @@ export const CriarArtigoDialog = ({
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => { onClose(); resetDialogFields(); }} color="primary">
+                <Button onClick={() => { onClose(); resetDialogFields(); }} sx={{
+                    color: "indianred"
+                }}>
                     Cancelar
                 </Button>
-                <Button onClick={criarArtigo} color="secondary">
+                <Button onClick={criarArtigo} color="primary">
                     Criar
                 </Button>
             </DialogActions>

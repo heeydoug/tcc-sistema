@@ -362,7 +362,7 @@ export default function MiniDrawer() {
                                     >
                                         <ArticleIcon/>
                                     </ListItemIcon>
-                                    <ListItemText primary="Artigos" sx={{opacity: open ? 1 : 0}}/>
+                                    <ListItemText primary="Gerenciar Artigos" sx={{opacity: open ? 1 : 0}}/>
                                 </ListItemButton>
                             </ListItem>
                         )}

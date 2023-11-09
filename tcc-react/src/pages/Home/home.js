@@ -145,6 +145,16 @@ export const Home = () => {
                         Bem-vindo, {userLogged.displayName}!
                       </Typography>
                       <hr />
+                      <img
+                          src={process.env.PUBLIC_URL + '/assets/home-img.png'}
+                          alt="img"
+                          style={{
+                            width: '40%',
+                            height: 'auto',
+                            margin: '0 auto',
+                            display: 'block',
+                          }}
+                      />
                       <Typography variant="body1" paragraph sx={{ textAlign: 'justify' }}>
                         Explore nossa plataforma de integração de processos para serviços freelancers de redação de artigos.
                       </Typography>
