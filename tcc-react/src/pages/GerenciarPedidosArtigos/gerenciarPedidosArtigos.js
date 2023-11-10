@@ -79,14 +79,13 @@ export const GerenciarPedidosArtigos = () => {
             if (response.ok) {
                 const pedidos = await response.json();
 
-                // Iterar pelos pedidos e buscar informações do cliente
                 const pedidosComCliente = await Promise.all(pedidos.map(async (pedido) => {
                     const clienteResponse = await fetch(`http://localhost:8080/usuarios/${pedido.clienteId}`);
                     if (clienteResponse.ok) {
                         const clienteData = await clienteResponse.json();
-                        return { ...pedido, nomeCliente: clienteData.nome }; // Adicionar o nome do cliente ao pedido
+                        return { ...pedido, nomeCliente: clienteData.nome };
                     } else {
-                        return pedido; // Manter o pedido sem informações adicionais se falhar ao buscar o cliente
+                        return pedido;
                     }
                 }));
 
@@ -105,14 +104,13 @@ export const GerenciarPedidosArtigos = () => {
             if (response.ok) {
                 const pedidos = await response.json();
 
-                // Iterar pelos pedidos e buscar informações do cliente
                 const pedidosComCliente = await Promise.all(pedidos.map(async (pedido) => {
                     const clienteResponse = await fetch(`http://localhost:8080/usuarios/${pedido.clienteId}`);
                     if (clienteResponse.ok) {
                         const clienteData = await clienteResponse.json();
-                        return { ...pedido, nomeCliente: clienteData.nome }; // Adicionar o nome do cliente ao pedido
+                        return { ...pedido, nomeCliente: clienteData.nome };
                     } else {
-                        return pedido; // Manter o pedido sem informações adicionais se falhar ao buscar o cliente
+                        return pedido;
                     }
                 }));
                 toast.success("Pedidos de artigos atualizado com sucesso!");
@@ -125,21 +123,6 @@ export const GerenciarPedidosArtigos = () => {
             toast.error("Erro ao buscar dados dos pedidos de artigos:", error);
         }
     };
-
-
-    // const fetchPedidosArtigosHandle = async () => {
-    //     try {
-    //         const response = await fetch("http://localhost:8080/pedidos");
-    //         if (response.ok) {
-    //             const data = await response.json();
-    //             setData(data);
-    //         } else {
-    //             toast.error("Falha ao buscar dados dos pedidos de artigos.");
-    //         }
-    //     } catch (error) {
-    //         toast.error("Erro ao buscar dados dos pedidos de artigos:", error);
-    //     }
-    // };
 
 
     return (
