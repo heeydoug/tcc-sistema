@@ -37,10 +37,12 @@ export const PedidosArtigo = () => {
     const [pedidoIdToDelete, setPedidoIdToDelete] = useState(null);
     const [pedidoParaEditar, setPedidoParaEditar] = useState(null);
 
+    const sessionUser = sessionStorage.getItem("@AuthFirebase:userSession");
+    const sessionUserF = JSON.parse(sessionUser);
 
     const fetchPedidosArtigos = async () => {
         try {
-            const response = await fetch("http://localhost:8080/pedidos");
+            const response = await fetch(`http://localhost:8080/pedidos/${sessionUserF.id}`);
             if (response.ok) {
                 const data = await response.json();
                 setData(data);

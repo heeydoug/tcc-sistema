@@ -41,6 +41,13 @@ public class PedidoArtigoService {
         }
     }
 
+    public List<PedidoArtigoDTO> listarPedidosArtigoPorCliente(Long clienteId) {
+        List<PedidoArtigo> pedidos = pedidoArtigoRepository.findByClienteId(clienteId);
+        return pedidos.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     public PedidoArtigo salvarPedidoArtigo(PedidoArtigo pedidoArtigo) {
         return pedidoArtigoRepository.save(pedidoArtigo);
     }

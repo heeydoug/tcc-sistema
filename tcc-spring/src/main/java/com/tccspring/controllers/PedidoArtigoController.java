@@ -51,6 +51,11 @@ public class PedidoArtigoController {
         return pedidoArtigoService.listarPedidosArtigo();
     }
 
+    @GetMapping("/{clienteId}")
+    public List<PedidoArtigoDTO> listarPedidosArtigoPorCliente(@PathVariable Long clienteId) {
+        return pedidoArtigoService.listarPedidosArtigoPorCliente(clienteId);
+    }
+
     private PedidoArtigoDTO convertToDTO(PedidoArtigo pedidoArtigo) {
         PedidoArtigoDTO pedidoArtigoDTO = new PedidoArtigoDTO();
         pedidoArtigoDTO.setId(pedidoArtigo.getId());
