@@ -97,6 +97,7 @@ export const InfoUsuarios = () => {
                                                 Tipo do Usuário: {sessionUserF.tipo === 'USUARIO' ? 'Usuário' :
                                                 sessionUserF.tipo === 'REDATOR' ? 'Redator' :
                                                     sessionUserF.tipo === 'REVISOR' ? 'Revisor' :
+                                                            sessionUserF.tipo === 'CLIENTE' ? 'Cliente' :
                                                         sessionUserF.tipo === 'ADMINISTRADOR' ? 'Administrador' : 'Usuário'}
                                             </Typography>
                                             {sessionUserF && (

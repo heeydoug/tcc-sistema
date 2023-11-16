@@ -327,6 +327,8 @@ export const CriarArtigoDialog = ({
                         <TextField
                             label="Conteúdo"
                             fullWidth
+                            multiline
+                            rows={4}
                             value={novoArtigo.conteudo}
                             onChange={(e) =>
                                 setNovoArtigo({ ...novoArtigo, conteudo: e.target.value })

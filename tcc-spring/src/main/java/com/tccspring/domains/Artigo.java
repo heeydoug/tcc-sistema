@@ -23,6 +23,7 @@ public class Artigo {
     private String idPastaDrive;
     private String idDocumentoDrive;
     @ManyToOne
+
     @JsonIgnoreProperties(value = "artigosRedator")
     private Usuario redator;
     @ManyToOne
